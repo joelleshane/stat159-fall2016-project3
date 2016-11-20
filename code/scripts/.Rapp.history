@@ -1,0 +1,479 @@
+install.packages("pls")
+library("pls")
+?plsr()
+credit <- read.csv('../../data/Credit.csv')
+bplot.xy(credit$Gender, credit$Balance)
+library(fields)
+bplot.xy(credit$Gender, credit$Balance)
+bplot.xy(credit$Balance ~ credit$Gen	der)
+credit$Gender
+hist(credit$Balance ~ credit$Gen	der)
+hist(credit$Balance ~ credit$Gender)
+bplot.xy(credit$Balance ~ credit$Gender)
+gender = as.list(levels(credit$Gender))
+bplot.xy(credit$Balance ~ gender)
+library("pls")#
+#
+training_data <- read.csv("../../data/training_data.csv")#
+training_data <- training_data[,-1]#
+#
+response <- training_data$Balance#
+response <- as.matrix(response)#
+predictors <- training_data[,-12]#
+predictors <- as.matrix(predictors)#
+#
+set.seed(1)#
+plsr_obj <- plsr(response ~ predictors, validation = "CV")
+plsr_obj
+plsr_model <- plsr_obj$validation$PRESS
+plsr_model
+validationplot(plsr_obj, val.type = "MSEP")
+colnames(test_data)
+test_data <- read.csv("../../data/test_data.csv")#
+test_response <- test_data$balance#
+test_data <- test_data[, -1]
+colnames(test_data)
+test_data <- read.csv("../../data/test_data.csv")#
+test_response <- test_data$balance#
+test_data <- test_data[, -1]#
+test_predictors <- test_data[,-12]#
+test_predictors <- as.matrix(test_predictors)
+test_plsr <- predict(plsr_obj, newx = test_predictors, s = "validation$PRESS", type = "response")
+library("pls")#
+#
+training_data <- read.csv("../../data/training_data.csv")#
+training_data <- training_data[,-1]#
+#
+response <- training_data$Balance#
+response <- as.matrix(response)#
+predictors <- training_data[,-12]#
+predictors <- as.matrix(predictors)#
+#
+set.seed(1)#
+plsr_obj <- plsr(response ~ predictors, validation = "CV")#
+#
+plsr_model <- plsr_obj$validation$PRESS#
+#
+sink("../../plsr_model.txt")#
+plsr_model#
+sink()#
+#
+png("../../images/CV_Errors_plsr.png")#
+validationplot(plsr_obj, val.type = "MSEP")#
+dev.off()#
+#
+test_data <- read.csv("../../data/test_data.csv")#
+test_response <- test_data$balance#
+test_data <- test_data[, -1]#
+test_predictors <- test_data[,-12]#
+test_predictors <- as.matrix(test_predictors)#
+#
+test_plsr <- predict(plsr_obj, newx = test_predictors, s = "validation$PRESS", type = "response")
+test_plsr
+save(test_plsr, file = "../../data/testing_plsr.RData")
+full_data <- read.csv("../../data/scaled_credit.csv")
+full_data <- full_data[,-1]
+full_data <- read.csv("../../data/scaled_credit.csv")#
+full_data <- full_data[,-1]#
+#
+full_response <- full_data$Balance#
+full_response <- as.matrix(full_response)#
+full_predictors <- full_data[,-12]#
+full_predictors <- as.matrix(full_predictors)#
+#
+full_plsr <- plsr(full_response ~ full_predictors, validation = "CV")#
+#
+plsr_coef <- coef(full_plsr)#
+save(plsr_coef, file = "../../data/full_coefficients_plsr.RData")
+credit <- read.csv('../../data/Credit.csv')
+library('ggplot2')#
+ggplot(credit, aes(x = Gender, y = Balance))
+ggplot(credit, aes(x = credit$Gender, y = credit$Balance))
+ggplot(credit, aes(x = credit$Gender, y = credit$Balance)) + geom_boxplot()
+ggplot(credit, aes(x = Gender, y = Balance)) + geom_boxplot()
+ggplot(credit, aes(x = Gender, y = Balance), xlab = Gender) + geom_boxplot()
+gender_conditional_plot <- ggplot(credit, aes(x = Gender, y = Balance), xlab = Gender) + geom_boxplot()
+gender_conditional_plot <- ggplot(credit, aes(x = Gender, y = Balance)) + geom_boxplot()
+png('../../images/gender_conditional_plot.png')#
+gender_conditional_plot#
+dev.off()
+gender_conditional_plot <- ggplot(credit, aes(x = Gender, y = Balance, fill = gender)) + geom_boxplot()
+png('../../images/gender_conditional_plot.png')#
+gender_conditional_plot#
+dev.off()
+gender_conditional_plot <- ggplot(credit, aes(x = Gender, y = Balance, fill = Gender)) + geom_boxplot()
+png('../../images/gender_conditional_plot.png')#
+gender_conditional_plot#
+dev.off()
+ethnicity_conditional_plot <- ggplot(credit, aes(x = Ethnicity, y = Balance, fill = Ethnicity)) + geom_boxplot()#
+#
+png('../../images/ethnicity_conditional_plot.png')#
+ethnicity_conditional_plot#
+dev.off()
+student_conditional_plot <- ggplot(credit, aes(x = Student, y = Balance, fill = Student)) + geom_boxplot()#
+#
+png('../../images/gender_conditional_plot.png')#
+student_conditional_plot#
+dev.off()
+library("pls")#
+#
+training_data <- read.csv("../../data/training_data.csv")#
+training_data <- training_data[,-1]#
+#
+response <- training_data$Balance#
+response <- as.matrix(response)#
+predictors <- training_data[,-12]#
+predictors <- as.matrix(predictors)#
+#
+set.seed(1)#
+plsr_obj <- plsr(response ~ predictors, validation = "CV")#
+#
+plsr_model <- plsr_obj$validation$PRESS#
+#
+sink("../../data/plsr_model.txt")#
+plsr_model#
+sink()
+gender_conditional_plot <- ggplot(credit, aes(x = Gender, y = Balance, fill = Gender)) + geom_boxplot()#
+#
+png('../../images/gender_conditional_plot.png')#
+gender_conditional_plot#
+dev.off()#
+ethnicity_conditional_plot <- ggplot(credit, aes(x = Ethnicity, y = Balance, fill = Ethnicity)) + geom_boxplot()#
+#
+png('../../images/ethnicity_conditional_plot.png')#
+ethnicity_conditional_plot#
+dev.off()#
+student_conditional_plot <- ggplot(credit, aes(x = Student, y = Balance, fill = Student)) + geom_boxplot()#
+#
+png('../../images/student_conditional_plot.png')#
+student_conditional_plot#
+dev.off()
+married_conditional_plot <- ggplot(credit, aes(x = Married, y = Balance, fill = Married)) + geom_boxplot()#
+#
+png('../../images/married_conditional_plot.png')#
+married_conditional_plot#
+dev.off()
+credit <- read.csv('../../data/Credit.csv')#
+#
+Balance <- credit$Balance#
+Income <- credit$Income#
+Limit <- credit$Limit#
+Rating <- credit$Rating#
+Cards <- credit$Cards#
+Age <- credit$Age#
+Education <- credit$Education#
+#
+bal_summary <- summary(Balance)#
+inc_summary <- summary(Income)#
+limit_summary <- summary(Limit)#
+rate_summary <- summary(Rating)#
+card_summary <- summary(Cards)#
+age_summary <- summary(Age)#
+edu_summary <- summary(Education)#
+quantitative_summary <- rbind(bal_summary, inc_summary, limit_summary, rate_summary, card_summary, age_summary, edu_summary)#
+quantitative_summary <- as.data.frame(quantitative_summary)#
+#
+bal_IQR <- IQR(Balance)#
+inc_IQR <- IQR(Income)#
+limit_IQR <- IQR(Limit)#
+rate_IQR <- IQR(Rating)#
+card_IQR <- IQR(Cards)#
+age_IQR <- IQR(Age)#
+edu_IQR <- IQR(Education)#
+variable_IQR <- rbind(bal_IQR, inc_IQR, rate_IQR, card_IQR, age_IQR, edu_IQR)#
+variable_IQR <- as.data.frame(variable_IQR)#
+colnames(variable_IQR) <- "IQR"#
+#
+bal_sd <- sd(Balance)#
+inc_sd <- sd(Income)#
+limit_sd <- sd(Limit)#
+rate_sd <- sd(Rating)#
+card_sd <- sd(Cards)#
+age_sd <- sd(Age)#
+edu_sd <- sd(Education)#
+variable_sd <- rbind(bal_sd, inc_sd, rate_sd, card_sd, age_sd, edu_sd)#
+variable_sd <- as.data.frame(variable_sd)#
+colnames(variable_sd) <- "SD"#
+#
+dependent.matrix <- credit[,c(2,3,4,5,6,7)]#
+cor_matrix <- as.matrix(cor(dependent.matrix))#
+#
+sink("../../data/eda_quantitative_output.txt")#
+quantitative_summary#
+variable_IQR#
+variable_sd#
+cor_matrix#
+sink()#
+#
+save(cor_matrix, file = "../../data/correlation_matrix.RData")#
+#
+png('../../images/scatterplot_matrix.png')#
+pairs(dependent.matrix)#
+dev.off()#
+png('../../images/histogram_income.png')#
+hist(Income)#
+dev.off()#
+#
+png('../../images/histogram_limit.png')#
+hist(Limit)#
+dev.off()#
+#
+png('../../images/histogram_rating.png')#
+hist(Rating)#
+dev.off()#
+#
+png('../../images/histogram_cards.png')#
+hist(Cards)#
+dev.off()#
+#
+png('../../images/histogram_age.png')#
+hist(Age)#
+dev.off()#
+#
+png('../../images/histogram_education.png')#
+hist(Education)#
+dev.off()#
+#
+png('../../images/histogram_balance.png')#
+hist(Balance)#
+dev.off()#
+png('../../images/boxplot_income.png')#
+boxplot(Income)#
+dev.off()#
+#
+png('../../images/boxplot_limit.png')#
+boxplot(Limit)#
+dev.off()#
+#
+png('../../images/boxplot_rating.png')#
+boxplot(Rating)#
+dev.off()#
+#
+png('../../images/boxplot_cards.png')#
+boxplot(Cards)#
+dev.off()#
+#
+png('../../images/boxplot_age.png')#
+boxplot(Age)#
+dev.off()#
+#
+png('../../images/boxplot_education.png')#
+boxplot(Education)#
+dev.off()#
+#
+png('../../images/boxplot_Balance.png')#
+boxplot(Balance)#
+dev.off()#
+#
+library('plyr')#
+#
+colnames(credit)#
+qual_variables <- credit[,c(8,9,10,11)]#
+gender_freq <- count(qual_variables$Gender)#
+gender_freq$'relative frequency' <- round(gender_freq$freq/sum(gender_freq$freq), 2)#
+colnames(gender_freq)[1] <- "Gender"#
+#
+student_freq <- count(qual_variables$Student)#
+student_freq$'relative frequency' <- round(student_freq$freq/sum(student_freq$freq), 2)#
+colnames(student_freq)[1] <- "Student"#
+#
+married_freq <- count(qual_variables$Married)#
+married_freq$'relative frequency' <- round(married_freq$freq/sum(married_freq$freq), 2)#
+colnames(married_freq)[1] <- "Married"#
+#
+ethnicity_freq <- count(qual_variables$Ethnicity)#
+ethnicity_freq$'relative frequency' <- round(ethnicity_freq$freq/sum(ethnicity_freq$freq), 3)#
+colnames(ethnicity_freq)[1] <- "Ethnicity"#
+#
+sink("../../data/eda_qualitative_output.txt")#
+gender_freq#
+student_freq#
+married_freq#
+ethnicity_freq#
+sink()#
+png('../../images/barplot_gender.png')#
+barplot(gender_freq$freq, main = "Gender Frequencies", names.arg = c("Male", "Female"))#
+dev.off()#
+#
+png('../../images/barplot_student.png')#
+barplot(student_freq$freq, main = "Student Frequencies", names.arg = c("No", "Yes"))#
+dev.off()#
+#
+png('../../images/barplot_married.png')#
+barplot(married_freq$freq, main = "Married Frequencies", names.arg = c("No", "Yes"))#
+dev.off()#
+#
+png('../../images/barplot_ethnicity.png')#
+barplot(ethnicity_freq$freq, main = "Ethnicity Frequencies", names.arg = c("African American", "Asian", "Caucasian"))#
+dev.off()#
+#
+colnames(qual_credit)#
+qual_credit <- credit[, c(8,9,10,11,12)]#
+anova_analysis <- aov(Balance ~ Gender + Student + Married + Ethnicity, data = qual_credit)#
+#
+sink("../../data/ANOVA_output.txt")#
+anova_analysis#
+sink()#
+#
+library('ggplot2')#
+gender_conditional_plot <- ggplot(credit, aes(x = Gender, y = Balance, fill = Gender)) + geom_boxplot()#
+#
+png('../../images/gender_conditional_plot.png')#
+gender_conditional_plot#
+dev.off()#
+ethnicity_conditional_plot <- ggplot(credit, aes(x = Ethnicity, y = Balance, fill = Ethnicity)) + geom_boxplot()#
+#
+png('../../images/ethnicity_conditional_plot.png')#
+ethnicity_conditional_plot#
+dev.off()#
+student_conditional_plot <- ggplot(credit, aes(x = Student, y = Balance, fill = Student)) + geom_boxplot()#
+#
+png('../../images/student_conditional_plot.png')#
+student_conditional_plot#
+dev.off()#
+married_conditional_plot <- ggplot(credit, aes(x = Married, y = Balance, fill = Married)) + geom_boxplot()#
+#
+png('../../images/married_conditional_plot.png')#
+married_conditional_plot#
+dev.off()
+library("pls")#
+#
+training_data <- read.csv("../../data/training_data.csv")#
+training_data <- training_data[,-1]#
+#
+response <- training_data$Balance#
+response <- as.matrix(response)#
+predictors <- training_data[,-12]#
+predictors <- as.matrix(predictors)#
+#
+set.seed(1)#
+plsr_obj <- plsr(response ~ predictors, validation = "CV")#
+#
+plsr_model <- plsr_obj$validation$PRESS#
+#
+save(plsr_model, file = "../../data/plsr_model.RData")#
+#
+png("../../images/CV_Errors_plsr.png")#
+validationplot(plsr_obj, val.type = "MSEP")#
+dev.off()#
+#
+test_data <- read.csv("../../data/test_data.csv")#
+test_response <- test_data$balance#
+test_data <- test_data[, -1]#
+test_predictors <- test_data[,-12]#
+test_predictors <- as.matrix(test_predictors)#
+#
+test_plsr <- predict(plsr_obj, newx = test_predictors, s = "validation$PRESS", type = "response")#
+save(test_plsr, file = "../../data/testing_plsr.RData")#
+#
+source("../functions/mse_function.R")#
+plsr_mse <- MSE(test_plsr, test_response)#
+#
+save(plsr_mse, file = "../../data/mse_plsr.RData")#
+#
+full_data <- read.csv("../../data/scaled_credit.csv")#
+full_data <- full_data[,-1]#
+#
+full_response <- full_data$Balance#
+full_response <- as.matrix(full_response)#
+full_predictors <- full_data[,-12]#
+full_predictors <- as.matrix(full_predictors)#
+#
+full_plsr <- plsr(full_response ~ full_predictors, validation = "CV")#
+#
+plsr_coef <- coef(full_plsr)#
+save(plsr_coef, file = "../../data/full_coefficients_plsr.RData")#
+sink("../../data/plsr_model.txt")#
+print("model coefficients")#
+plsr_model#
+print("applied predictors")#
+test_plsr#
+print("mse of prediction")#
+plsr_mse#
+print("full model coefficients")#
+plsr_coef#
+sink()
+library("glmnet")#
+library("lars")#
+library("MASS")#
+#
+training_data <- read.csv(file = "../../data/training_data.csv")#
+training_data <- training_data[,-1]#
+#
+#formatting response and predictors #
+response <- training_data$Balance #Balance#
+response <- as.matrix(response)#
+predictors <- training_data[,-12]  #everythning but Balance#
+predictors <- as.matrix(predictors)#
+grid <- 10^seq(10, -2, length = 100)#
+set.seed(100)#
+cross_v <- cv.glmnet(x = predictors, y = response, intercept = FALSE, standardize = FALSE, lambda = grid, alpha = 0)#
+#
+best_model_ridge <- coef(cross_v, cross_v$lambda.min)
+save(best_model_ridge, file = "../../data/ridge_model.RData")
+library("glmnet")#
+library("lars")#
+library("MASS")#
+#
+training_data <- read.csv(file = "../../data/training_data.csv")#
+training_data <- training_data[,-1]#
+#
+#formatting response and predictors #
+response <- training_data$Balance #Balance#
+response <- as.matrix(response)#
+predictors <- training_data[,-12]  #everythning but Balance#
+predictors <- as.matrix(predictors)#
+grid <- 10^seq(10, -2, length = 100)#
+set.seed(100)#
+cross_v <- cv.glmnet(x = predictors, y = response, intercept = FALSE, standardize = FALSE, lambda = grid, alpha = 0)#
+#
+best_model_ridge <- coef(cross_v, cross_v$lambda.min)[which(coef(cross_v, s = "lambda.min") != 0)]#
+#saving coefficients of the model#
+save(best_model_ridge, file = "../../data/ridge_model.RData")
+library("glmnet")#
+library("lars")#
+library("MASS")#
+#
+training_data <- read.csv(file = "../../data/training_data.csv")#
+training_data <- training_data[,-1]#
+#
+#formatting response and predictors #
+response <- training_data$Balance #Balance#
+response <- as.matrix(response)#
+predictors <- training_data[,-12]  #everythning but Balance#
+predictors <- as.matrix(predictors)#
+grid <- 10^seq(10, -2, length = 100)#
+set.seed(100)#
+cross_v <- cv.glmnet(x = predictors, y = response, intercept = FALSE, standardize = FALSE, lambda = grid, alpha = 0)#
+#
+best_model_ridge <- coef(cross_v, cross_v$lambda.min)#
+#saving coefficients of the model#
+save(best_model_ridge, file = "../../data/ridge_model.RData")
+pcr_obj
+require("pls")#
+#
+training_data <- read.csv(file = "../../data/training_data.csv")#
+training_data <- training_data[,-1]#
+#
+#formatting response and predictors #
+response <- training_data$Balance #Balance#
+response <- as.matrix(response)#
+predictors <- training_data[,-12]  #everythning but Balance#
+predictors <- as.matrix(predictors)#
+set.seed(100)
+pcr_obj
+pcr_obj <- pcr(response ~ predictors, validation = "CV")
+pcr_obj
+credit <- read.csv("../../data/MERGED2041_15_PP.csv")
+credit <- read.csv("../../data/MERGED2014_15_PP.csv")
+credit <- read.csv("../../data/MERGED2014_15_PP.csv")
+getwd()
+read.csv("../../data/MERGED2014_15_PP.csv")
+data_2015 <- read.csv("../../data/MERGED2014_15_PP.csv")
+setwd("/Users/toddvogel/Documents/Senior Year/Stat 159/stat159-fall2016-project3/code/scripts")
+data_2015 <- read.csv("../../data/MERGED2014_15_PP.csv")
+colnames(data_2015)
+is.character(data_2015[2,11])
+data_2015 <- gsub("PrivacySuppressed", NULL, data_2015)
+data_2015 <- gsub(NULL, NA, data_2015)
+data_2015 <- gsub("NULL", "NA", data_2015)

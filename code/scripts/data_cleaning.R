@@ -1,0 +1,20 @@
+setwd("/Users/toddvogel/Documents/Senior Year/Stat 159/stat159-fall2016-project3/code/scripts")
+
+data_2015 <- read.csv("../../data/MERGED2014_15_PP.csv")
+
+for (i in 1:ncol(data_2015)) {
+  if (is.factor(data_2015[,i]) == TRUE) {
+    data_2015[,i] <- as.numeric(levels(data_2015[,i]))[data_2015[,i]]
+  }
+}
+
+##### remove columns with greater than 90% of data missing
+
+data_2015 <- data_2015[, colSums(is.na(data_2015)) <= .1 * nrow(data_2015)]
+
+##### scaling and mean centering data
+
+scaled_data_2015 <- scale(new_credit, center = TRUE, scale = TRUE)
+scaled_data_2015 <- cbind( data_2015[, c(1,2)], scaled_data_2015[,c(-1,-2)])
+
+write.csv(scaled_data_2015, file = "../../data/scaled_data_2015.csv")
