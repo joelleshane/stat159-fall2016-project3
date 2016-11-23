@@ -21,4 +21,6 @@ for(i in 1:ncol(scaled_data_2015)){
   scaled_data_2015[is.na(scaled_data_2015[,i]), i] <- median(scaled_data_2015[,i], na.rm = TRUE)
 }
 
+scaled_data_2015 <- scaled_data_2015[, colSums(is.na(scaled_data_2015)) <= .5 * nrow(scaled_data_2015)]
+
 write.csv(scaled_data_2015, file = "../../data/scaled_data_2015.csv")
