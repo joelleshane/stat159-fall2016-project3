@@ -8,13 +8,13 @@ for (i in 1:ncol(data_2015)) {
   }
 }
 
-##### remove columns with greater than 90% of data missing
+##### remove columns with greater than 50% of data missing
 
-data_2015 <- data_2015[, colSums(is.na(data_2015)) <= .1 * nrow(data_2015)]
+data_2015 <- data_2015[, colSums(is.na(data_2015)) <= .5 * nrow(data_2015)]
 
 ##### scaling and mean centering data
 
-scaled_data_2015 <- scale(new_credit, center = TRUE, scale = TRUE)
+scaled_data_2015 <- scale(data_2015, center = TRUE, scale = TRUE)
 scaled_data_2015 <- cbind( data_2015[, c(1,2)], scaled_data_2015[,c(-1,-2)])
 
 write.csv(scaled_data_2015, file = "../../data/scaled_data_2015.csv")
