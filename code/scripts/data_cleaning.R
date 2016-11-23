@@ -17,4 +17,8 @@ data_2015 <- data_2015[, colSums(is.na(data_2015)) <= .5 * nrow(data_2015)]
 scaled_data_2015 <- scale(data_2015, center = TRUE, scale = TRUE)
 scaled_data_2015 <- cbind( data_2015[, c(1,2)], scaled_data_2015[,c(-1,-2)])
 
+for(i in 1:ncol(scaled_data_2015)){
+  scaled_data_2015[is.na(scaled_data_2015[,i]), i] <- median(scaled_data_2015[,i], na.rm = TRUE)
+}
+
 write.csv(scaled_data_2015, file = "../../data/scaled_data_2015.csv")
