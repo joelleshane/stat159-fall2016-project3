@@ -4,18 +4,41 @@
 
 ### Reading in the data
 
+data_2006 <- read.csv("../../data/data_2006.csv")
 scaled <- read.csv("../../data/scaled_data_2006.csv")
 test <- read.csv("../../data/test_data.csv")
 train <- read.csv("../../data/training_data.csv")
 
 ### Breaking the data into groups dependent on how much federal funding the school/students enrolled at the school received
+#### Independent Variable :
+#### Percent of undergraduates recieving federal financial aid
+
+lo <- data_2006$INC_PCT_LO
+m1 <- data_2006$INC_PCT_M1
+m2 <- data_2006$INC_PCT_M2
+h1 <- data_2006$INC_PCT_H1
+pct_fin <- lo + m1 + m2 + h1
+
+#### Visualizing data to get a better idea of how to split it into groups
+
+data_2006 <- cbind(data_2006, pct_fin)
+
+png("../../images/percent_aided_students_hist.png")
+hist(data_2006$pct_fin, breaks = 30, main = "Histogram of Financial Aid", xlab = "Percent of Students")
+dev.off()
+
+mysum <- summary(pct_fin)
+
+save(mysum, file = "../../data/financial_aid_percentage.RData")
+
+#### Splitting the data by percentage of federal financial aid recieved by students
 
 
-low <- subset(scaled, )
-low_mid <- 
-middle <- 
-mid_high <-
-high <- 
+low <- subset(data_2006, pct_fin >= 0.6 & pct_fin < 0.91)
+low_mid <- subset(data_2006, pct_fin >= 0.91 & pct_fin < 0.96)
+mid_high <- subset(data_2006, pct_fin >= 0.96 & pct_fin < 0.984)
+high <- subset(data_2006, pct_fin >= 0.984 & pct_fin < 1)
+
 
 ### Null hypothesis says all funding groups should have the same preformance 
  
