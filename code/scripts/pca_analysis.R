@@ -25,6 +25,15 @@ coefplot(pcr_model)
 # MN_EARN_WNE_INC3_P10
 
 
+#GT_25K_P6 Share of students earning over $25,000/year (threshold earnings) 6 years after entry
+
+#GT_25K_P7 Share of students earning over $25,000/year (threshold earnings) 7 years after entry
+
+
+#LN_MEDIAN_HH_INC - Log of the median household income
+
+#MN_EARN_WNE_P10 - Mean earnings of students working and not enrolled 10 years after entry
+
 
 ####### NOTES ########
 
