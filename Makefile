@@ -74,4 +74,5 @@ documentation:
 
 
 
-#remove any data that you end up not using to save time for new people, don't want to download everthing 
+#remove any data that you end up not using to save time for new people, don't want to download everything
+#need to download data file “MERGED2005_06_PP.csv” (data_cleaning.R)
