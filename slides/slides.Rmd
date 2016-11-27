@@ -1,0 +1,10 @@
+---
+title: "Predicting and Validationg College Success"
+author: "Bryan Alcorn, Joella Shane, Todd Vogel, and Abby Vogel"
+output: 
+  ioslides_presentation:
+      fig_height: 7
+      fig_width: 7
+---
+
+## Introduction 
