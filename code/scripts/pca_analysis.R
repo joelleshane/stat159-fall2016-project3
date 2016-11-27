@@ -14,34 +14,32 @@ post_earning <- read.csv("../../data/post_earning.csv")
 #The predictor will be part of the dataset unemprate
 
 #unemployment rate
-pcr_model <- pcr(UNEMP_RATE~., data = full_2015, scale = TRUE, validation = "CV")
+pcr_model <- pcr(UNEMP_RATE~., data = training_data, scale = TRUE, validation = "CV")
 
 summary(pcr_model)
 validationplot(pcr_model)
 predplot(pcr_model)
 coefplot(pcr_model)
 
-# Mean earnings of students working and not enrolled 10 years after entry in the highest income tercile $75,001+ (MN_EARN_WNE_INC3_P10)
-# MN_EARN_WNE_INC3_P10
+
+#now testing our model on the test-data
 
 
-#GT_25K_P6 Share of students earning over $25,000/year (threshold earnings) 6 years after entry
+test_data <- read.csv("../../data/test_data.csv")
 
-#GT_25K_P7 Share of students earning over $25,000/year (threshold earnings) 7 years after entry
+#need to figure out how many components, look at validation plot
+pcr_pred <- predict(pcr_model, test_data, ncomp = 90)
+
+#error, test accuracy
+mse_pca <- mean((pcr_pred - test_data["UNEMP_RATE"])^2)
+
+
 
 
 #LN_MEDIAN_HH_INC - Log of the median household income
 
+#Other data we considered trying to model
 #MN_EARN_WNE_P10 - Mean earnings of students working and not enrolled 10 years after entry
-
-
-####### NOTES ########
-
-df1 = data.frame(CustomerId=c(1:10),
-                 Hobby = c(rep("sing", 4), rep("pingpong", 3), rep("hiking", 3)),
-                 Product=c(rep("Toaster",3),rep("Phone", 2), rep("Radio",3), rep("Stereo", 2)))
-
-df2 = data.frame(CustomerId=c(2,4,6, 8, 10),State=c(rep("Alabama",2),rep("Ohio",1),   rep("Cal", 2)),
-                 like=c("sing", 'hiking', "pingpong", 'hiking', "sing"))
-
-df3 = merge(df1, df2, by.x=c("CustomerId", "Hobby"), by.y=c("CustomerId", "like"))
+#GT_25K_P7 Share of students earning over $25,000/year (threshold earnings) 7 years after entry
+#GT_25K_P6 Share of students earning over $25,000/year (threshold earnings) 6 years after entry
+#MN_EARN_WNE_INC3_P10 Mean earnings of students working and not enrolled 10 years after entry in the highest income tercile $75,001+
