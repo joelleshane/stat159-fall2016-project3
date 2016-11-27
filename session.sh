@@ -1,5 +1,5 @@
 # output file
-info=session-info.txt
+info=session_info.txt
 
 # Record Session Information
 echo "Session Info" > $info
@@ -34,4 +34,4 @@ echo "glmnet, lars, MASS, pls, reshape2, Matrix" >> $info
 # Version of R
 echo "R Version" >> $info
 echo "---------" >> $info
-cd code/scripts; Rscript session-info.R
+cd code/scripts; Rscript session_info.R
