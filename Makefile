@@ -39,8 +39,7 @@ regressions:
 #session info
 session:
 	bash session.sh
-	cd code/scripts; Rscript session-info.R
-	
+		
 	
 #getting all data files
 data: data/dataset.zip data/scorecard.csv data/recent.csv data/new_NSLDS.csv data/post_earning.csv
