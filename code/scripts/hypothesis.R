@@ -71,38 +71,28 @@ dev.off()
 
 ### Response variable will be unemployment rate, making estimate of effect of funding on unemployment rate
 
-estimate <- (.5*mean(low$) + .5*mean(low_mid$)) - (.5*mean(mid_high$) + .5*mean(high$))
+estimate <- (.5*low_mean + .5*low_mid_mean) - (.5*mid_high_mean + .5*high_mean)
 
 
-standard error = wi^2 * sum(var(mean of yi))
- --> sigma^2 * sum(wi^2 / ni)
+#### standard error = wi^2 * sum(var(mean of yi))
+#### --> sigma^2 * sum(wi^2 / ni)
 
-wi = -1 if i = 1
-wi = 1/3 if i = 3, 4 or 5
+#### wi = -.5 if i = 1 or 2
+#### wi = .5 if i = 3, 4
 
 ### Finding standard error of estimate
 
 
-x <- c(low$score, low_mid$score, mid_high$score, high$score)
-varx <- (var(x)) * (((.5^2)/length(low$) + 
-                    ((.5^2)/length(low_mid$)) +
-                     ((.5^2)/length(mid_high$)) +
-                     ((.5^2)/length(high$))
+x <- c(unemp_low, unemp_low_mid, unemp_mid_high, unemp_high)
+varx <- (var(x)) * (((.5^2)/length(unemp_low)) + 
+                    ((.5^2)/length(unemp_low_mid)) +
+                     ((.5^2)/length(unemp_mid_high)) +
+                     ((.5^2)/length(unemp_high))
                      )
-
-
-
-estimate - 0 / sqrt(varx) -- > 
-estimate/sqrt(varx)
-
-#### two-tailed t-test at 5% significance level with 39 degrees of freedom
-
-length(c(low$, low_mid$, mid_high$, high$)) - 4 --> ~2.33
-
 
 ### Constructing confidence interval:
 
-estimate + (2.33 * sqrt(varx))
-estimate - (2.33*sqrt(varx))
-
-plot
+sink("../../data/CI_hyptest_1.txt")
+noquote(paste("high end :", estimate + (1.96 * sqrt(varx)), sep = " "))
+noquote(paste("low end :", estimate - (1.96*sqrt(varx)), sep = " "))
+sink()
