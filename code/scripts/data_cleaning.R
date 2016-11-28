@@ -1,4 +1,3 @@
-setwd("/Users/toddvogel/Documents/Senior Year/Stat 159/stat159-fall2016-project3/code/scripts")
 
 data_2006 <- read.csv("../../data/MERGED2005_06_PP.csv")
 
