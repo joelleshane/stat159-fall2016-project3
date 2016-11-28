@@ -39,6 +39,30 @@ low_mid <- subset(data_2006, pct_fin >= 0.91 & pct_fin < 0.96)
 mid_high <- subset(data_2006, pct_fin >= 0.96 & pct_fin < 0.984)
 high <- subset(data_2006, pct_fin >= 0.984 & pct_fin < 1)
 
+#### Response Variable:
+#### Unemployment Rate - Number of students not working and not enrolled 6 years after entry (COUNT_NWNE_P6 - row 1894 / COUNT_WNE_P6 - row 1895)
+
+#### Getting rid of response variables that are non-numeric values and finding response variable
+
+
+source("../functions/unemployment.R")
+
+unemp_low <- unemployment_six_years(low)
+low_mean <- mean(unemp_low)
+
+unemp_low_mid <- unemployment_six_years(low_mid)
+low_mid_mean <- mean(unemp_low_mid)
+
+unemp_mid_high <- unemployment_six_years(mid_high)
+mid_high_mean <- mean(unemp_mid_high)
+
+unemp_high <- unemployment_six_years(high)
+high_mean <- mean(unemp_high)
+
+png("../../images/unemployment.png")
+barplot(c(low_mean, low_mid_mean, mid_high_mean, high_mean), col = c("#DB71C3", "#49A8BE", "#C8A9D1", "#D11D56"), main = "Unemployment Rate by Aid Percentage", xlab = "Percentage of Students who Recieved Financial Aid", ylab = "Unemployment Rate Six Years after Entry", names.arg = c("Low", "Low-Middle", "Middle-High", "High"), cex.names = 0.6)
+dev.off()
+
 
 ### Null hypothesis says all funding groups should have the same preformance 
  
