@@ -2,19 +2,15 @@
 .PHONY: all
 .PHONY: tests
 .PHONY: eda
-.PHONY: ols
-.PHONY: ridge
-.PHONY: lasso
-.PHONY: pcr
-.PHONY: plsr
+.PHONY: pca
 .PHONY: regressions
 .PHONY: report
 .PHONY: slides
 .PHONY: session
 .PHONY: clean
 .PHONY: data
-.PHONY: analysis
 .PHONY: documentation
+.PHONY: shiny
 
 #make a data phony
 all:
@@ -24,6 +20,7 @@ all:
 	make tests
 	make slides
 	make report
+	make shiny
 	make session
 
 #all regression models
@@ -31,10 +28,13 @@ regressions:
 	make ols
 	make ridge
 	make lasso
-	make pcr
+	make pca
 	make plsr
-	make analysis
 	
+#runnings the scripts
+pca:
+	cd code/scripts && Rscript pca_analysis.R
+
 	
 #session info
 session:
@@ -62,16 +62,34 @@ data/new_NSLDS.csv:
 data/post_earning.csv:
 	curl -o data/post_earning.csv "https://ed-public-download.apps.cloud.gov/downloads/Most-Recent-Cohorts-Treasury-Elements.csv"
 	
-	
-	
-
-
+#The documentation such as the data dictionary	
 documentation:
 	curl -o documentation/introduction.pdf https://collegescorecard.ed.gov/assets/BetterInformationForBetterCollegeChoiceAndInstitutionalPerformance.pdf
 	curl -o documentation/federal_info.pdf https://collegescorecard.ed.gov/assets/UsingFederalDataToMeasureAndImprovePerformance.pdf
 	curl -o documentation/data_dict.csv https://collegescorecard.ed.gov/assets/CollegeScorecardDataDictionary-10-26-2016.xlsx
 	curl -o documentation/data_report.pdf https://collegescorecard.ed.gov/assets/FullDataDocumentation.pdf
+	
 
+#creating the report - depends on running the regression
+main = report.pdf
+combined = report.Rmd
 
+report: $(main)
+report.pdf: $(combined)
+	cd report; R -e "rmarkdown::render(\"report.Rmd\", \"all\")"
+report.Rmd:
+	cd report; cat sections/*.Rmd > $@
 
-#remove any data that you end up not using to save time for new people, don't want to download everthing 
+#creating the slides
+slides:
+	cd slides && R -e "rmarkdown::render('presentation.Rmd')"
+
+#cleaning the report
+clean:
+	rm report/report.*
+	rm slides/presentation.html
+	rm session-info.txt
+
+#testing
+test:
+	cd code/tests; Rscript -e 'library(testthat); test_file("all_tests.R")'
