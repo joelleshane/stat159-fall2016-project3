@@ -19,6 +19,7 @@ m2 <- data_2006$INC_PCT_M2
 h1 <- data_2006$INC_PCT_H1
 pct_fin <- lo + m1 + m2 + h1
 
+
 #### Visualizing data to get a better idea of how to split it into groups
 
 data_2006 <- cbind(data_2006, pct_fin)
@@ -38,6 +39,9 @@ low <- subset(data_2006, pct_fin >= 0.6 & pct_fin < 0.91)
 low_mid <- subset(data_2006, pct_fin >= 0.91 & pct_fin < 0.96)
 mid_high <- subset(data_2006, pct_fin >= 0.96 & pct_fin < 0.984)
 high <- subset(data_2006, pct_fin >= 0.984 & pct_fin < 1)
+
+save(low, low_mid, mid_high, high, file = "../../data/data_by_finaid.RData")
+
 
 #### Response Variable:
 #### Unemployment Rate - Number of students not working and not enrolled 6 years after entry (COUNT_NWNE_P6 - row 1894 / COUNT_WNE_P6 - row 1895)
