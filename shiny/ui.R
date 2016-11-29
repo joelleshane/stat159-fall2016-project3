@@ -4,21 +4,30 @@ library(shiny)
 shinyUI(fluidPage(
   
   # Application title
-  titlePanel("Hello Shiny!"),
+  titlePanel("Predicting Unemployment Rate"),
   
   # Sidebar with a slider input for the number of bins
   sidebarLayout(
     sidebarPanel(
-      sliderInput("bins",
-                  "Number of bins:",
-                  min = 1,
-                  max = 50,
-                  value = 30)
+      selectInput(inputId = "Model", label = "Choose a Model to run on the testing data",
+                  choices = list("pcr_model")
+      )
     ),
     
-    # Show a plot of the generated distribution
+    # Show Graphs corresponding to the models
     mainPanel(
-      plotOutput("distPlot")
+      tabsetPanel(
+        tabPanel("Model Graphs",
+                 # fluidRow(...)
+                 plotOutput("modelPlot1"),
+                 plotOutput("modelPlot2")
+        ),
+        tabPanel("Compare MSE",
+                plotOutput("MSE_combined")         
+        )
+      )
     )
+    
+    
   )
 ))

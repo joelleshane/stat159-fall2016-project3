@@ -10,11 +10,30 @@ shinyServer(function(input, output) {
   #     when inputs change
   #  2) Its output type is a plot
   
-  output$distPlot <- renderPlot({
-    x    <- faithful[, 2]  # Old Faithful Geyser data
-    bins <- seq(min(x), max(x), length.out = input$bins + 1)
-    
-    # draw the histogram with the specified number of bins
-    hist(x, breaks = bins, col = 'darkgray', border = 'white')
+  
+  
+  output$modelPlot1 <- renderPlot({
+    model_load <- paste("../data/",input$Model, ".RData", sep = "")
+    load(model_load)
+    model_var = as.symbol(input$Model)
+    validationplot(eval(model_var))
   })
+  output$modelPlot2 <- renderPlot({
+    model_load <- paste("../data/",input$Model, ".RData", sep = "")
+    load(model_load)
+    model_var = as.symbol(input$Model)
+    plot(eval(model_var))
+  })
+  
+  output$MSE_combined <- renderPlot({
+    
+    #I want to change this to display the table of mean squared errors
+    model_load <- paste("../data/",input$Model, ".RData", sep = "")
+    load(model_load)
+    model_var = as.symbol(input$Model)
+    plot(eval(model_var))
+  })
+  
+  
+  
 })
