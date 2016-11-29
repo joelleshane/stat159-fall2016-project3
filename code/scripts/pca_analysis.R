@@ -59,6 +59,5 @@ print("applied predictors")
 pcr_pred
 print("The PCR MSE")
 MSE_pcr
-print("The coefficients on the full dataset")
 sink()
 
