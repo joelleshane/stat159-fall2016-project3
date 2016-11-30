@@ -1,5 +1,3 @@
-setwd("/Users/toddvogel/Documents/Senior Year/Stat 159/stat159-fall2016-project3/code/scripts")
-
 data_2006 <- read.csv("../../data/MERGED2005_06_PP.csv")
 
 for (i in 1:ncol(data_2006)) {
@@ -8,9 +6,9 @@ for (i in 1:ncol(data_2006)) {
   }
 }
 
-##### remove columns with greater than 50% of data missing
+##### remove columns with less than 25% of data missing
 
-data_2006 <- data_2006[, colSums(is.na(data_2006)) <= .5 * nrow(data_2006)]
+data_2006 <- data_2006[, colSums(is.na(data_2006)) <= .25 * nrow(data_2006)]
 
 ##### scaling and mean centering data
 
