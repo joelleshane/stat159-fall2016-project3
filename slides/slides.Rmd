@@ -3,8 +3,9 @@ title: "Predicting and Validationg College Success"
 author: "Bryan Alcorn, Joella Shane, Todd Vogel, and Abby Vogel"
 output: 
   ioslides_presentation:
-      fig_height: 7
-      fig_width: 7
+      fig_height: 4
+      fig_width: 4
+      smaller : true
 ---
 
 ## Introduction 
@@ -49,7 +50,55 @@ $S_N$ : Number of Students Not Working and not enrolled six years after entry
 $S_W$ : Number of Students working and not enrolled six years after entry
 
 
+## Hypothesis Testing -- Method
+
+Data was split into four groups:
+  Schools that recieved relatively low, low-middle, middle-high, and a high amount of funding
+  
+If the amount of funding recieved by the school has no effect on quality of education rate, we should see little difference in the response variable (unemployment rate), and that difference is solely due to chance.
 
 
+## Hypothesis Testing -- Method
+
+$$\frac{(u_1 + u_2)}{2} = \frac{(u_3 + u_4)}{2}$$
+
+$u_1$ = mean of unemployment rate for school with low funding
+
+$u_2$ = mean of unemployment rate for school with low-mid funding
+
+$u_3$ = mean of unemployment rate for school with mid-high funding
+
+$u_3$ = mean of unemployment rate for school with high funding
+
+Estimate of Effect of Spending is $y_i = (u_1 + u_2) - (u_3 + u_4)$. The vector of coefficients for this model is $W(u) = (0.5, 0.5, -0.5, -0.5)$.
+
+
+$$ error = \sigma^2 * \sum{} (\frac{w_i^2}{n_i}) $$
+
+$\sigma^2$ : overall variance
+
+$w_i$ : coefficent for group
+
+$n_i$ : number of observations in the group
+
+## Hypothesis Testing -- Results
+
+<div class="columns-2">
+
+
+<img src="../images/unemployment.png"/>
+<div>
+
+...
+
+</div>
+
+
+
+</div>
+
+## new slide
+#### standard error = wi^2 * sum(var(mean of yi))
+#### --> sigma^2 * sum(wi^2 / ni)
 
 
