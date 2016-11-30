@@ -8,3 +8,48 @@ output:
 ---
 
 ## Introduction 
+
+Statistical Analysis to determine if public spending improves the quality of education.
+
+Models used to estimate effect of spending on education:
+
+1. PCA
+2. Hypothesis Tests
+3. Lasso
+4. Ridge
+
+## PCA
+```
+Percentage of aided students whose family income is between $0-$30,000
+```
+
+## Hypothesis Tests -- Data
+
+Independent Variable : The Amount of Funding a School Recieved 
+    
+  $$P_f = \frac{\sum_{} (P_i * N_i)}{N_s} $$
+  
+$P_f$ : Percent of students recieving financial aid 
+
+$P_i$ : Percentage of aided students whose family income is between x-y 
+
+$N_i$ : Number of students in that category
+
+$N_s$ : Total number of students
+    
+
+## Hypothesis Testing -- Data
+
+Response Variable : Unemployment Rate
+
+  $$ U = \frac{S_N}{S_N + S_W} $$
+
+$S_N$ : Number of Students Not Working and not enrolled six years after entry 
+
+$S_W$ : Number of Students working and not enrolled six years after entry
+
+
+
+
+
+
