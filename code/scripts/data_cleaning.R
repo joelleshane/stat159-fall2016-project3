@@ -11,6 +11,8 @@ for (i in 1:ncol(data_2006)) {
 
 data_2006 <- data_2006[, colSums(is.na(data_2006)) <= .5 * nrow(data_2006)]
 
+write.csv(data_2006, file = "../../data/data_2006.csv")
+
 ##### scaling and mean centering data
 
 scaled_data_2006 <- scale(data_2006, center = TRUE, scale = TRUE)
