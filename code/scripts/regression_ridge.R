@@ -15,10 +15,10 @@ predictors <- as.matrix(predictors)
 grid <- 10^seq(10, -2, length = 100)
 set.seed(100)
 cross_v <- cv.glmnet(x = predictors, y = response, intercept = FALSE, standardize = FALSE, lambda = grid, alpha = 0)
-
 best_model_ridge <- coef(cross_v, cross_v$lambda.min)
+ridge_model <- best_model_ridge
 #saving coefficients of the model
-save(best_model_ridge, file = "../../data/ridge_model.RData")
+save(best_model_ridge,ridge_model, file = "../../data/ridge_model.RData")
 
 
 
