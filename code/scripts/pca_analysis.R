@@ -25,7 +25,7 @@ pcr_model <- pcr(UNEMP_RATE~., data = training_data, scale = TRUE, validation = 
 
 ncomp_pcr <- which(pcr_model$validation$PRESS == min(pcr_model$validation$PRESS)) #selects components with best model
 pcr_coef <- coef(pcr_model)
-save(pcr_coef, pcr_model, file = "../../data/pcr_model.RData")
+save(pcr_coef, file = "../../data/pcr_model.RData")
 
 
 predplot(pcr_model)
@@ -101,13 +101,13 @@ save(MSE_short_pcr, file = "../../data/MSE_short_pcr.RData")
 
 
 #saving  the important stuff
-sink(file = "../../data/pcr_model.txt")
+sink(file = "../../data/pcr_short_model.txt")
 print("The PCR model")
 pcr_short_coef
 print("applied predictors")
 pcr_short_pred
 print("The PCR MSE")
-MSE_short_pcr
+MSE_pcr
 sink()
 
 
