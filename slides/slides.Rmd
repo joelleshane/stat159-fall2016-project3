@@ -3,22 +3,163 @@ title: "Predicting and Validationg College Success"
 author: "Bryan Alcorn, Joella Shane, Todd Vogel, and Abby Vogel"
 output: 
   ioslides_presentation:
-      fig_height: 7
-      fig_width: 7
+      fig_height: 4
+      fig_width: 4
+      smaller : true
 ---
 
 ## Introduction 
 
-Can we use public data to predict the success of individual colleges and do variables like spending help lead to higher successes in colleges?
+Statistical Analysis to determine if public spending improves the quality of education.
 
-## Assumptions and Conditions
+Assumption: Examing a college based on post educational undemployment rate can be used as an effective metric for postgrad success of institutions
 
-1. Examing a college based on post educational undemployment rate can be used as an effective metric for postgrad success of institutions
 
-## Results of the Models
+Models used to estimate effect of spending on education:
 
-## Hypothesis testing
+1. Hypothesis Tests
+2. Lasso
+3. Ridge
+4. PCR
 
-## Results of Testing
+## Hypothesis Tests -- Data
 
-## Conclusion
+Independent Variable : The Amount of Funding a School Recieved 
+    
+  $$P_f = \frac{\sum_{} (P_i * N_i)}{N_s} $$
+  
+$P_f$ : Percent of students recieving financial aid 
+
+$P_i$ : Percentage of aided students whose family income is between x-y 
+
+$N_i$ : Number of students in that category
+
+$N_s$ : Total number of students
+    
+
+## Hypothesis Testing -- Data
+
+Response Variable : Unemployment Rate
+
+  $$ U = \frac{S_N}{S_N + S_W} $$
+
+$S_N$ : Number of Students Not Working and not enrolled six years after entry 
+
+$S_W$ : Number of Students working and not enrolled six years after entry
+
+
+## Hypothesis Testing -- Method
+
+Data was split into four groups:
+  Schools that recieved relatively low, low-middle, middle-high, and a high amount of funding
+  
+If the amount of funding recieved by the school has no effect on quality of education rate, we should see little difference in the response variable (unemployment rate), and that difference is solely due to chance.
+
+
+## Hypothesis Testing -- Method
+
+$$\frac{(u_1 + u_2)}{2} = \frac{(u_3 + u_4)}{2}$$
+
+$u_1$ = mean of unemployment rate for school with low funding
+
+$u_2$ = mean of unemployment rate for school with low-mid funding
+
+$u_3$ = mean of unemployment rate for school with mid-high funding
+
+$u_3$ = mean of unemployment rate for school with high funding
+
+Estimate of Effect of Spending is $y_i = (u_1 + u_2) - (u_3 + u_4)$. The vector of coefficients for this model is $W(u) = (0.5, 0.5, -0.5, -0.5)$.
+
+
+$$ error = \sigma^2 * \sum{} (\frac{w_i^2}{n_i}) $$
+
+$\sigma^2$ : overall variance
+
+$w_i$ : coefficent for group
+
+$n_i$ : number of observations in the group
+
+## Hypothesis Testing -- Results
+
+<div class="columns-2">
+
+
+<img src="../images/unemployment.png" style='height: 100%; width: 100%; object-fit: contain'/>
+
+<div>
+
+<div>
+
+```{r, echo = FALSE, include = FALSE}
+load("../data/hyp_results.RData")
+```
+
+Estimate for effect of spending : `r estimate`
+
+Standard error of the estimate : `r sqrt(varx)`
+
+</div>
+
+## Modeling -- Data
+
+1. Make all factors numeric variables
+2. Remove all columns with greater than 50% missing data
+3. Mean centered and standardized data
+
+## Modeling -- Method
+
+Ridge & Lasso were the two shrinkage modelling methods used. When using shrinkage methods the goal is to penalize certain parameters that should have a less significant effect on the model.
+
+For Ridge, the cofficients that minimize the following equation are determined:
+
+$$ \sum_{i=1}^{n}(y_i-\beta_0-\sum_{j=1}^{p}\beta_jx_{ij}) + \lambda\sum_{j=1}^{p}\beta_{j}^{2} $$
+
+For lambda, the same equation is used but $\beta$ is not squared.
+
+PCR is the dimension reduction modelling methods we used.  This method labors under the assumption that a subset of all of the predictor variables account for the vast majority of the variance.  These more significant variables are referred to as principle components (M).  PCR works by setting M equal to some reduced number of variables and running cross validation on, the model with the lowest cross validation error is selected.
+
+Eleven variables thought to be significant were pulled in order to get more interpretable results with less betas. 
+
+## Modeling: Lasso -- Results
+
+```{r, echo = FALSE, include = FALSE}
+load("../data/lasso_short_model.RData")
+```
+
+lasso_short_coef
+
+## Modeling: Ridge -- Results
+
+```{r, echo = FALSE, include = FALSE}
+load("../data/ridge_short_model.RData")
+```
+
+ridge_short_coef
+
+## Modeling: PCR -- Results
+
+```{r, echo = FALSE, include = FALSE}
+load("../data/pcr_short_model.RData")
+```
+
+pcr_short_coef
+
+## Modeling : Comparing Models
+
+```{r, echo = FALSE, include = FALSE}
+load("../data/")
+load("../MSE_")
+```
+
+Mean Squared Error of Model 
+
+| Dataset | MSE
+| ------|---- | 
+| Ridge: Full Data | ddd |
+| Ridge : Shortened Data | ddd |
+| Lasso : Full Data | ddd |
+| Lasso: Shortened Data | dda |
+| PCR : Full Data | ddd |
+| PCR : Shortened Data | ddd |
+
+## Conclusions
