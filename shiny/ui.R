@@ -10,7 +10,7 @@ shinyUI(fluidPage(
   sidebarLayout(
     sidebarPanel(
       selectInput(inputId = "Model", label = "Choose a Model to run on the testing data",
-                  choices = list("pcr", "ridge", "lasso")
+                  choices = list("pcr", "ridge", "lasso", "pcr_short", "ridge_short", "lasso_short")
       )
     ),
     
