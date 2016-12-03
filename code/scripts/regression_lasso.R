@@ -13,10 +13,10 @@ grid <- 10^seq(10, -2, length = 100)
 
 set.seed(1)
 lm.lasso <- cv.glmnet(predictors, response, lambda = grid, alpha = 1, intercept = FALSE, standardize = FALSE)
-bestmodel_lasso <- coef(lm.lasso, lm.lasso$lambda.min)
+best_model_lasso <- coef(lm.lasso, lm.lasso$lambda.min)
 
 lasso_model <- lm.lasso
-save(bestmodel_lasso,lasso_model, file = "../../data/lasso_model.RData")
+save(best_model_lasso,lasso_model, file = "../../data/lasso_model.RData")
 
 png("../../images/CV_errors_lasso.png")
 plot(lm.lasso, main = "CV Errors Lasso")

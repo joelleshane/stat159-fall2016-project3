@@ -15,7 +15,7 @@ write.csv(data_short_2006, file = "../../data/data_short_2006.csv")
 
 data_2006 <- data_2006[, colSums(is.na(data_2006)) <= .5 * nrow(data_2006)]
 
-data_2006 <- data-2006[,c(-1,-2,-3)]
+data_2006 <- data_2006[,c(-1,-2,-3)]
 
 write.csv(data_2006, file = "../../data/data_2006.csv")
 
