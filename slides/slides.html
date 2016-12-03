@@ -183,6 +183,16 @@
 
 </article></slide><slide class=''><hgroup><h2>Modeling &#8211; Method</h2></hgroup><article  id="modeling----method" class="smaller ">
 
+<p>Ridge &amp; Lasso were the two shrinkage modelling methods used. When using shrinkage methods the goal is to penalize certain parameters that should have a less significant effect on the model.</p>
+
+<p>For Ridge, the cofficients that minimize the following equation are determined:</p>
+
+<p>\[ \sum_{i=1}^{n}(y_i-\beta_0-\sum_{j=1}^{p}\beta_jx_{ij}) + \lambda\sum_{j=1}^{p}\beta_{j}^{2} \]</p>
+
+<p>For lambda, the same equation is used but \(\beta\) is not squared.</p>
+
+<p>PCR is the dimension reduction modelling methods we used. This method labors under the assumption that a subset of all of the predictor variables account for the vast majority of the variance. These more significant variables are referred to as principle components (M). PCR works by setting M equal to some reduced number of variables and running cross validation on, the model with the lowest cross validation error is selected.</p>
+
 <p>Twelve variables thought to be significant were pulled in order to get more interpretable results with less betas.</p>
 
 </article></slide><slide class=''><hgroup><h2>Modeling: Lasso &#8211; Results</h2></hgroup><article  id="modeling-lasso----results" class="smaller ">
@@ -215,6 +225,14 @@
 <tr class="even">
 <td align="left">Lasso: Shortened Data</td>
 <td align="left">dda</td>
+</tr>
+<tr class="odd">
+<td align="left">PCR : Full Data</td>
+<td align="left">ddd</td>
+</tr>
+<tr class="even">
+<td align="left">PCR : Shortened Data</td>
+<td align="left">ddd</td>
 </tr>
 </table>
 
