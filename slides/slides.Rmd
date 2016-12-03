@@ -12,17 +12,15 @@ output:
 
 Statistical Analysis to determine if public spending improves the quality of education.
 
+Assumption: Examing a college based on post educational undemployment rate can be used as an effective metric for postgrad success of institutions
+
+
 Models used to estimate effect of spending on education:
 
-1. PCA
-2. Hypothesis Tests
-3. Lasso
-4. Ridge
-
-## PCA
-```
-Percentage of aided students whose family income is between $0-$30,000
-```
+1. Hypothesis Tests
+2. Lasso
+3. Ridge
+4. PCR
 
 ## Hypothesis Tests -- Data
 
@@ -86,19 +84,40 @@ $n_i$ : number of observations in the group
 <div class="columns-2">
 
 
-<img src="../images/unemployment.png"/>
+<img src="../images/unemployment.png" style='height: 100%; width: 100%; object-fit: contain'/>
+
 <div>
 
-...
+<div>
+
+```{r, echo = FALSE, include = FALSE}
+load("../data/hyp_results.RData")
+```
+
+Estimate for effect of spending : `r estimate`
+
+Standard error of the estimate : `r sqrt(varx)`
 
 </div>
 
+## Modeling -- Data
+
+1. Make all factors numeric variables
+2. Remove all columns with greater than 50% missing data
+3. Mean centered and standardized data
+
+## Modeling -- Method
 
 
-</div>
 
-## new slide
-#### standard error = wi^2 * sum(var(mean of yi))
-#### --> sigma^2 * sum(wi^2 / ni)
+## Modeling: Lasso -- Results
+
+
+
+## Modeling: Ridge -- Results
+
+## Modeling: PCR -- Results
+
+## Conclusions
 
 

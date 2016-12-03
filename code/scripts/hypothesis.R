@@ -93,6 +93,8 @@ varx <- (var(x)) * (((.5^2)/length(unemp_low)) +
                      ((.5^2)/length(unemp_mid_high)) +
                      ((.5^2)/length(unemp_high))
                      )
+                     
+save(estimate, x, varx, file = "../../data/hyp_results.RData")
 
 ### Constructing confidence interval:
 
