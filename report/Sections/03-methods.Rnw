@@ -2,7 +2,14 @@
 \usepackage{Sweave}
 \begin{document}
 \SweaveOpts{concordance=TRUE}
+
+\title{The Title}
+\author{A. Author}
+\date{\today}
+
 \maketitle
+
+
 
 \section{Methods}
 
