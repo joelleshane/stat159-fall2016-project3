@@ -8,15 +8,15 @@ shinyServer(function(input, output) {
     load(model_load)
     model <- paste(input$Model,"_model", sep = "")
     model_var = as.symbol(model)
-    plot(eval(model_var))
+    plot(eval(model_var), main = paste(model, "plot", sep = " "))
   })
   output$modelPlot2 <- renderPlot({
     model_load <- paste("../data/",input$Model, "_model.RData", sep = "")
     load(model_load)
     model <- paste(input$Model,"_model", sep = "")
     model_var = as.symbol(model)
-    if(model == "pcr_model"){
-      validationplot(eval(model_var))
+    if(model == "pcr_model" | model == "pcr_short_model"){
+      validationplot(eval(model_var), main = "Validation Plot")
     }
   })
   
