@@ -25,7 +25,7 @@ pcr_model <- pcr(UNEMP_RATE~., data = training_data, scale = TRUE, validation = 
 
 ncomp_pcr <- which(pcr_model$validation$PRESS == min(pcr_model$validation$PRESS)) #selects components with best model
 pcr_coef <- coef(pcr_model)
-save(pcr_coef, file = "../../data/pcr_model.RData")
+save(pcr_coef,pcr_model, file = "../../data/pcr_model.RData")
 
 
 predplot(pcr_model)
@@ -65,7 +65,8 @@ sink()
 ######### SHORT VERSION ##########
 
 #Begin Analysis on the short training data
-training_data <- read.csv("../../data/training_short_data.csv")
+training_short_data <- read.csv("../../data/training_short_data.csv")
+training_short_data <- training_short_data[,-1]
 
 #for principal component regression
 
@@ -73,8 +74,8 @@ set.seed (1000)
 pcr_short_model <- pcr(UNEMP_RATE~., data = training_short_data, scale = TRUE, validation = "CV")
 
 ncomp_short_pcr <- which(pcr_short_model$validation$PRESS == min(pcr_short_model$validation$PRESS)) #selects components with best model
-pcr_short_coef <- coef(pcr_model)
-save(pcr_short_coef, file = "../../data/pcr_short_model.RData")
+pcr_short_coef <- coef(pcr_short_model)
+save(pcr_short_coef, pcr_short_model, file = "../../data/pcr_short_model.RData")
 
 
 predplot(pcr_short_model)
@@ -88,10 +89,12 @@ dev.off()
 
 #Test Data
 test_short_data <- read.csv("../../data/test_short_data.csv")
+test_short_data <- test_short_data[,-1]
 
 #need to figure out how many components, look at validation plot
-pcr_short_pred <- predict(pcr_short_model, test_short_data, ncomp = 90)
+pcr_short_pred <- predict(pcr_short_model, test_short_data, ncomp = length(pcr_short_coef))
 response_short <- test_short_data["UNEMP_RATE"]
+
 response_short <- as.matrix(response_short)
 
 #error, test accuracy
@@ -107,7 +110,7 @@ pcr_short_coef
 print("applied predictors")
 pcr_short_pred
 print("The PCR MSE")
-MSE_pcr
+MSE_short_pcr
 sink()
 
 
