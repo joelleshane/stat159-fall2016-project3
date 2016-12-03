@@ -7,7 +7,7 @@ for (i in 1:ncol(data_2006)) {
   }
 }
 
-data_short_2006 <- data_2006[,c("UNEMP_RATE", "INEXPFTE", "TUITIONFEE_IN", "AVGFACSAL", "C150_4", "C150_L4", "RET_FT4", "PELL_COMP_ORIG_YR2_RT", "PELL_COMP_ORIG_YR3_RT", "PELL_COMP_ORIG_YR4_RT", "CDR2", "CDR3")]
+data_short_2006 <- data_2006[,c("UNEMP_RATE", "INEXPFTE", "TUITIONFEE_IN", "AVGFACSAL", "C150_4", "C150_L4", "RET_FT4", "PELL_COMP_ORIG_YR2_RT", "PELL_COMP_ORIG_YR3_RT", "PELL_COMP_ORIG_YR4_RT", "CDR2")]
 
 write.csv(data_short_2006, file = "../../data/data_short_2006.csv")
 
