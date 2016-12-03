@@ -109,14 +109,44 @@ Standard error of the estimate : `r sqrt(varx)`
 ## Modeling -- Method
 
 
+Twelve variables thought to be significant were pulled in order to get more interpretable results with less betas. 
 
 ## Modeling: Lasso -- Results
 
+```{r, echo = FALSE, include = FALSE}
+
+```
 
 
 ## Modeling: Ridge -- Results
 
+```{r, echo = FALSE, include = FALSE}
+
+```
+
 ## Modeling: PCR -- Results
+
+```{r, echo = FALSE, include = FALSE}
+
+```
+
+## Modeling : Comparing Models
+
+```{r, echo = FALSE, include = FALSE}
+load("../data/MSE_lasso.RData")
+load("../data/MSE_ridge.RData")
+```
+
+Mean Squared Error of Model 
+
+| Dataset | MSE
+| ------|---- | 
+| Ridge: Full Data | ddd |
+| Ridge : Shortened Data | ddd |
+| Lasso : Full Data | ddd |
+| Lasso: Shortened Data | dda |
+| PCR : Full Data | ddd |
+| PCR : Shortened Data | ddd |
 
 ## Conclusions
 
