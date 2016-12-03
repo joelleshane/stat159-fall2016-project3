@@ -1,0 +1,70 @@
+\documentclass{article}
+\usepackage{Sweave}
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+\maketitle
+
+\section{Results}
+
+\subsection{Modelling}
+
+After forming the aforementioned regression models we found 10 coefficients that represent the best fit for each model. The resulting predictive function looks like:
+
+\begin{equation}
+Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_3 + \beta_4 X_4 + \beta_5 X_5 + \beta_6 X_6 + \beta_7 X_7 + \beta_8 X_8 + \beta_9 X_9 + \beta_{10} X_{10} + \beta_{11} X_{11}
+\end{equation}
+
+<<echo=FALSE,include=FALSE>>=
+load('../../data/MSE_ridge.RData')
+load('../../data/MSE_pcr.RData')
+load('../../data/mse_lasso.RData')
+load('../../data/ridge_model.RData')
+load('../../data/lasso_model.RData')
+load('../../data/pcr_model.RData')
+
+library(xtable)
+library(Matrix)
+options(xtable.caption.placement = 'top', xtable.comment = FALSE)
+@
+
+\begin{center}
+<<echo=FALSE, results='asis'>>=
+
+Variables <- c()
+
+Ridge <- as.vector(best_model_ridge)
+Lasso <- as.vector(bestmodel_lasso)
+PCR <- as.vector(pcr_coef)
+
+
+Coef.frame <- data.frame(Variables, Ridge, Lasso, PCR)
+
+Coef_table <- xtable(Coef.frame, caption="Information about Model Coefficients", digits = 3)
+print(Coef_table, type="latex")
+@
+\end{center}
+
+This table presents the fit between the prediction variables and the response variable ($Balance$) determined from the $cv.glmnet()$ and $pcr()$ functions, for each of our 3 models (Ridge, Lasso, PCR).
+
+After finding the 5 predictive functions, we found the MSE's for each model:
+
+\begin{center}
+<<echo=FALSE, results='asis'>>=
+MSE <- c(MSE_ridge, lasso_mse, MSE_pcr)
+Model <- c('Ridge', 'Lasso', 'PCR')
+mse.frame <- data.frame(Model, MSE)
+
+MSE_table <- xtable(mse.frame, caption="Information about Mean Squared Errors", digits = 3)
+print(MSE_table, type="latex")
+@
+\end{center}
+
+Analysis of these numbers will reveal which model has the most predictive power.
+
+\subsection{Hypothesis Testing}
+
+For hypothesis testing method unemployment rate was set as our response variable and school funding was set as the independent variable (percent of students recieving financial aid).
+
+If the amount of funding received by the school has no effect on quality of education rate, we should see little difference in the response variable (unemployment rate), and that difference is solely due to chance.
+
+

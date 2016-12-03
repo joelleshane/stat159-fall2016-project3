@@ -466,7 +466,6 @@ pcr_obj <- pcr(response ~ predictors, validation = "CV")
 pcr_obj
 credit <- read.csv("../../data/MERGED2041_15_PP.csv")
 credit <- read.csv("../../data/MERGED2014_15_PP.csv")
-credit <- read.csv("../../data/MERGED2014_15_PP.csv")
 getwd()
 read.csv("../../data/MERGED2014_15_PP.csv")
 data_2015 <- read.csv("../../data/MERGED2014_15_PP.csv")

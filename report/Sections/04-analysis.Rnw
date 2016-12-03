@@ -1,0 +1,9 @@
+\documentclass{article}
+\usepackage{Sweave}
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+\maketitle
+
+
+\section{Analysis}
+
