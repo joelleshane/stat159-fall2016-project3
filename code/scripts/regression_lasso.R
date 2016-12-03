@@ -15,7 +15,7 @@ set.seed(1)
 lm.lasso <- cv.glmnet(predictors, response, lambda = grid, alpha = 1, intercept = FALSE, standardize = FALSE)
 bestmodel_lasso <- coef(lm.lasso, lm.lasso$lambda.min)
 
-lasso_model <- bestmodel_lasso
+lasso_model <- lm.lasso
 save(bestmodel_lasso,lasso_model, file = "../../data/lasso_model.RData")
 
 png("../../images/CV_errors_lasso.png")
