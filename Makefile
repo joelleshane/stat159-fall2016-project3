@@ -39,11 +39,17 @@ pca:
 #session info
 session:
 	bash session.sh
-	cd code/scripts; Rscript session-info.R
+		
 	
-	
-#getting all data files
-data: data/dataset.zip data/scorecard.csv data/recent.csv data/new_NSLDS.csv data/post_earning.csv
+#getting all data files and getting training and test sets
+dataset = data/dataset.zip
+scorecard = data/scorecard.csv
+recent = data/recent.csv
+new_NSLDS = data/new_NSLDS.csv
+post_earnings = data/post_earning.csv
+clean_data = data/test_data.csv
+
+data: dataset scorecard recent new_NSLDS post_earnings clean_data   
 	
 data/dataset.zip:
 	curl -o data/dataset.zip "https://ed-public-download.apps.cloud.gov/downloads/CollegeScorecard_Raw_Data.zip"
@@ -61,6 +67,10 @@ data/new_NSLDS.csv:
 	
 data/post_earning.csv:
 	curl -o data/post_earning.csv "https://ed-public-download.apps.cloud.gov/downloads/Most-Recent-Cohorts-Treasury-Elements.csv"
+	
+clean_data:
+	cd code/scripts; Rscript data_cleaning.R
+	cd code/scripts; Rscript data_separation.R
 	
 #The documentation such as the data dictionary	
 documentation:
@@ -89,7 +99,24 @@ clean:
 	rm report/report.*
 	rm slides/presentation.html
 	rm session-info.txt
+	
 
 #testing
 test:
 	cd code/tests; Rscript -e 'library(testthat); test_file("all_tests.R")'
+
+
+######### NOTES #########
+#remove any data that you end up not using to save time for new people, don't want to #download everthing 
+#need to download file "MERGED2005_2006_PP.csv" for (data_cleaning.R)
+#remove any data that you end up not using to save time for new people, don't want to #download everything
+#need to download data file “MERGED2005_06_PP.csv” (data_cleaning.R)
+
+
+######### Extra commands ##########
+
+rm_test_data:
+	cd data; rm data_2006.csv scaled_data_2006.csv training_data.csv test_data.csv
+
+
+

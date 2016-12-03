@@ -25,7 +25,7 @@ pcr_model <- pcr(UNEMP_RATE~., data = training_data, scale = TRUE, validation = 
 
 ncomp_pcr <- which(pcr_model$validation$PRESS == min(pcr_model$validation$PRESS)) #selects components with best model
 pcr_coef <- coef(pcr_model)
-save(pcr_coef, file = "../../data/pcr_model.RData")
+save(pcr_coef, pcr_model, file = "../../data/pcr_model.RData")
 
 
 predplot(pcr_model)

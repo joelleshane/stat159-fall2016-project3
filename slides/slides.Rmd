@@ -1,0 +1,24 @@
+---
+title: "Predicting and Validationg College Success"
+author: "Bryan Alcorn, Joella Shane, Todd Vogel, and Abby Vogel"
+output: 
+  ioslides_presentation:
+      fig_height: 7
+      fig_width: 7
+---
+
+## Introduction 
+
+Can we use public data to predict the success of individual colleges and do variables like spending help lead to higher successes in colleges?
+
+## Assumptions and Conditions
+
+1. Examing a college based on post educational undemployment rate can be used as an effective metric for postgrad success of institutions
+
+## Results of the Models
+
+## Hypothesis testing
+
+## Results of Testing
+
+## Conclusion
