@@ -148,7 +148,8 @@ pcr_short_coef
 
 ```{r, echo = FALSE, include = FALSE}
 load("../data/")
-load("../MSE_")
+load("../MSE_pcr.RData")
+load("../MSE_short_pcr.RData")
 ```
 
 Mean Squared Error of Model 
@@ -159,7 +160,8 @@ Mean Squared Error of Model
 | Ridge : Shortened Data | ddd |
 | Lasso : Full Data | ddd |
 | Lasso: Shortened Data | dda |
-| PCR : Full Data | ddd |
-| PCR : Shortened Data | ddd |
+| PCR : Full Data | `r MSE_pcr` |
+| PCR : Shortened Data | `r MSE_short_pcr` |
 
 ## Conclusions
+
