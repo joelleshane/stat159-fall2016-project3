@@ -135,19 +135,6 @@ sd(data_2006_full$CDR2)
 
 sink()
 
-########################
-# Matrix of Correlation
-########################
-
-#this  doen't work lol
-
-quant_vars <- data.frame(data_2006_full$UNEMP_RATE, data_2006_full$AVGFACSAL, data_2006_full$INEXPFTE, data_2006_full$TUITIONFEE_IN, data_2006_full$C150_4, data_2006_full$RET_FT4,  data_2006_full$PELL_COMP_ORIG_YR2_RT, data_2006_full$PELL_COMP_ORIG_YR3_RT, data_2006_full$PELL_COMP_ORIG_YR4_RT, data_2006_full$CDR2)
-matofcor <- cor(quant_vars)
-
-
-sink("../../data/eda-output-matofcorr.txt")
-matofcor
-sink()
 
 
 ########################
