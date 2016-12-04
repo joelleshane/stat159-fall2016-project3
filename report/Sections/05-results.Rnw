@@ -1,12 +1,14 @@
 \documentclass{article}
-\usepackage{Sweave}
+\usepackage{Sweave, graphicx}
 \begin{document}
 \SweaveOpts{concordance=TRUE}
 \title{The Title}
-\maketitle
-
 \author{A. Author}
 \date{\today}
+\maketitle
+
+
+
 
 \section{Results}
 
@@ -14,17 +16,24 @@
 After forming the aforementioned regression models we found 10 coefficients that represent the best fit for each model. The resulting predictive function looks like:
 
 \begin{equation}
-Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_3 + \beta_4 X_4 + \beta_5 X_5 + \beta_6 X_6 + \beta_7 X_7 + \beta_8 X_8 + \beta_9 X_9 + \beta_{10} X_{10} + \beta_{11} X_{11}
+Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_3 + \beta_4 X_4 + \beta_5 X_5 + \beta_6 X_6 + \beta_7 X_7 + \beta_8 X_8 + \beta_9 X_9 + \beta_{10} X_{10}
 \end{equation}
 
 <<echo=FALSE,include=FALSE>>=
+
 load('../../data/MSE_ridge.RData')
 load('../../data/MSE_pcr.RData')
-load('../../data/mse_lasso.RData')
+load('../../data/MSE_lasso.RData')
 load('../../data/ridge_model.RData')
 load('../../data/lasso_model.RData')
 load('../../data/pcr_model.RData')
-load('../../data/hype_results.RData')
+load('../../data/MSE_short_ridge.RData')
+load('../../data/MSE_short_pcr.RData')
+load('../../data/MSE_short_lasso.RData')
+load('../../data/ridge_short_model.RData')
+load('../../data/lasso_short_model.RData')
+load('../../data/pcr_short_model.RData')
+load('../../data/hyp_results.RData')
 
 library(xtable)
 library(Matrix)
@@ -32,14 +41,14 @@ options(xtable.caption.placement = 'top', xtable.comment = FALSE)
 @
 
 \begin{center}
-<<echo=FALSE>>=
+<<echo=FALSE, label=tab1, results=tex>>=
 
-Variables <- c()
+Variables <- c("UNEMP_RATE", "INEXPFTE", "TUITIONFEE_IN", "AVGFACSAL", "C150_4", "C150_L4", "RET_FT4", "PELL_COMP_ORIG_YR2_RT", "PELL_COMP_ORIG_YR3_RT", "PELL_COMP_ORIG_YR4_RT", "CDR2")
 
-Ridge <- as.vector(best_model_ridge)
-Lasso <- as.vector(bestmodel_lasso)
-PCR <- as.vector(pcr_coef)
-
+Ridge <- as.vector(ridge_short_coef)
+Lasso <- as.vector(lasso_short_coef)
+PCR <- as.vector(pcr_short_coef)
+PCR <- append(PCR, 0, 0)
 
 Coef.frame <- data.frame(Variables, Ridge, Lasso, PCR)
 
@@ -48,15 +57,15 @@ print(Coef_table, type="latex")
 @
 \end{center}
 
-This table presents the fit between the prediction variables and the response variable ($Balance$) determined from the $cv.glmnet()$ and $pcr()$ functions, for each of our 3 models (Ridge, Lasso, PCR).
+This table presents the fit between the prediction variables and the response variable ($Unemployment$) determined from the $cv.glmnet()$ and $pcr()$ functions, for each of our 3 models (Ridge, Lasso, PCR).
 
 After finding the 5 predictive functions, we found the MSE's for each model:
 
 \begin{center}
 
-<<echo=FALSE>>=
-MSE <- c(MSE_ridge, lasso_mse, MSE_pcr)
-Model <- c('Ridge', 'Lasso', 'PCR')
+<<echo=FALSE, label=tab1, results=tex>>=
+MSE <- c(MSE_ridge, MSE_short_ridge, MSE_lasso, MSE_short_lasso, MSE_pcr, MSE_short_pcr)
+Model <- c('Ridge', 'Short Ridge', 'Lasso', 'Short Lasso', 'PCR', 'Short PCR')
 mse.frame <- data.frame(Model, MSE)
 
 MSE_table <- xtable(mse.frame, caption="Information about Mean Squared Errors", digits = 3)
@@ -74,15 +83,16 @@ For hypothesis testing method unemployment rate was set as our response variable
 
 If the amount of funding received by the school has no effect on quality of education rate, we should see little difference in the response variable (unemployment rate), and that difference is solely due to chance.
 
-\begin{center}
+\graphicspath{ {../../images/} }
 \begin{figure}
-\includegraphic
-[height = 2in]{../../images/unemployment.png}
+\centering
+\includegraphics[scale=.5]{unemployment}
+\caption{The}
 \end{figure}
-\end{center}
 
 
-Looking for estimate (of effect of spending on unemployment)
+We looked for estimate (of effect of spending on unemployment). This value will reveal the relationship between our two variables.  A higher estimate means that spending has a significant effect on unemployment and a negative estimate means that spending has an inverse effect on unemployment
+
 <<echo=FALSE>>=
 print(estimate)
 @
