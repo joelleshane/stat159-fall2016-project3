@@ -476,3 +476,624 @@ is.character(data_2015[2,11])
 data_2015 <- gsub("PrivacySuppressed", NULL, data_2015)
 data_2015 <- gsub(NULL, NA, data_2015)
 data_2015 <- gsub("NULL", "NA", data_2015)
+library("glmnet")#
+library("lars")#
+library("MASS")#
+#
+training_data <- read.csv(file = "../../data/training_data.csv")#
+training_data <- training_data[,-1]#
+#
+#formatting response and predictors #
+response <- training_data$LN_MEDIAN_HH_INC #Log of median income#
+response <- as.matrix(response)#
+predictors <- training_data[,-which(names(training_data) == "LN_MEDIAN_HH_INC")]  #everythning but median income#
+predictors <- as.matrix(predictors)#
+grid <- 10^seq(10, -2, length = 100)#
+set.seed(100)#
+cross_v <- cv.glmnet(x = predictors, y = response, intercept = FALSE, standardize = FALSE, lambda = grid, alpha = 0)#
+best_model_ridge <- coef(cross_v, cross_v$lambda.min)#
+ridge_model <- best_model_ridge#
+#saving coefficients of the model#
+save(best_model_ridge,ridge_model, file = "../../data/ridge_model.RData")#
+#Adding Histograms to Images#
+png('../../images/CV_Errors_Ridge.png')#
+plot(cross_v, main = "CV Errors Ridge")#
+dev.off()#
+test_set <- read.csv(file = "../../data/test_data.csv")#
+response = test_set$LN_MEDIAN_HH_INC#
+test_set <- test_set[,-1]#
+test_set <- test_set[,-which(names(training_data) == "LN_MEDIAN_HH_INC")] #
+test_predictors = as.matrix(test_set)#
+#
+test_ridge <- predict(cross_v, newx = test_predictors, s = "lambda.min", type="response")#
+save(test_ridge,file =  "../../data/testing_ridge.RData")#
+#
+source("../functions/mse_function.R")#
+MSE_ridge = MSE(test_ridge, response)#
+#
+save(MSE_ridge, file = "../../data/MSE_ridge.RData" )#
+#
+full_data <- read.csv(file = "../../data/scaled_data_2006.csv")#
+full_data <- full_data[,-1]#
+#
+response <- full_data$LN_MEDIAN_HH_INC #median income#
+response <- as.matrix(response)#
+predictors <- full_data[,-which(names(training_data) == "LN_MEDIAN_HH_INC")]  #everythning but median income#
+predictors <- as.matrix(predictors)#
+#
+#rerunning model on the full data set#
+full_ridge = glmnet(x = predictors, y = response, intercept = FALSE, standardize = FALSE, lambda = cross_v$lambda.min, alpha = 0)#
+#
+#getting coefficients and saving#
+ridge_coef <- coef(full_ridge)#
+save(ridge_coef, file = "../../data/full_coeffecients_ridge.RData")  #
+#
+#saving data from this model to a txt file#
+sink(file = "../../data/ridge_model.txt")#
+best_model_ridge#
+print("Coefficients for the Ridge Model")#
+best_model_ridge#
+print("MSE for the Ridge Model")#
+MSE_ridge#
+print("Coefficients for the model run on the full data set")#
+ridge_coef#
+sink()
+library("glmnet")#
+library("lars")#
+library("MASS")#
+#
+training_data <- read.csv(file = "../../data/training_data.csv")#
+training_data <- training_data[,-1]#
+#
+#formatting response and predictors #
+response <- training_data$LN_MEDIAN_HH_INC #Log of median income#
+response <- as.matrix(response)#
+predictors <- training_data[,-which(names(training_data) == "LN_MEDIAN_HH_INC")]  #everythning but median income#
+predictors <- as.matrix(predictors)#
+grid <- 10^seq(10, -2, length = 100)#
+set.seed(100)#
+cross_v <- cv.glmnet(x = predictors, y = response, intercept = FALSE, standardize = FALSE, lambda = grid, alpha = 0)#
+best_model_ridge <- coef(cross_v, cross_v$lambda.min)#
+ridge_model <- best_model_ridge#
+#saving coefficients of the model#
+save(best_model_ridge,ridge_model, file = "../../data/ridge_model.RData")#
+#Adding Histograms to Images#
+png('../../images/CV_Errors_Ridge.png')#
+plot(cross_v, main = "CV Errors Ridge")#
+dev.off()#
+test_set <- read.csv(file = "../../data/test_data.csv")#
+response = test_set$LN_MEDIAN_HH_INC#
+test_set <- test_set[,-1]#
+test_set <- test_set[,-which(names(training_data) == "LN_MEDIAN_HH_INC")] #
+test_predictors = as.matrix(test_set)#
+#
+test_ridge <- predict(cross_v, newx = test_predictors, s = "lambda.min", type="response")#
+save(test_ridge,file =  "../../data/testing_ridge.RData")#
+#
+source("../functions/mse_function.R")#
+MSE_ridge = MSE(test_ridge, response)#
+#
+save(MSE_ridge, file = "../../data/MSE_ridge.RData" )#
+#
+full_data <- read.csv(file = "../../data/scaled_data_2006.csv")#
+full_data <- full_data[,-1]#
+#
+response <- full_data$LN_MEDIAN_HH_INC #median income#
+response <- as.matrix(response)#
+predictors <- full_data[,-which(names(training_data) == "LN_MEDIAN_HH_INC")]  #everythning but median income#
+predictors <- as.matrix(predictors)#
+#
+#rerunning model on the full data set#
+full_ridge = glmnet(x = predictors, y = response, intercept = FALSE, standardize = FALSE, lambda = cross_v$lambda.min, alpha = 0)#
+#
+#getting coefficients and saving#
+ridge_coef <- coef(full_ridge)#
+save(ridge_coef, file = "../../data/full_coeffecients_ridge.RData")  #
+#
+#saving data from this model to a txt file#
+sink(file = "../../data/ridge_model.txt")#
+best_model_ridge#
+print("Coefficients for the Ridge Model")#
+best_model_ridge#
+print("MSE for the Ridge Model")#
+MSE_ridge#
+print("Coefficients for the model run on the full data set")#
+ridge_coef#
+sink()
+data_2006 <- read.csv("../../data/MERGED2005_06_PP.csv")#
+#
+for (i in 1:ncol(data_2006)) {#
+  if (is.factor(data_2006[,i]) == TRUE) {#
+    data_2006[,i] <- as.numeric(levels(data_2006[,i]))[data_2006[,i]]#
+  }#
+}#
+#
+##### remove columns with greater than 50% of data missing#
+#
+data_2006 <- data_2006[, colSums(is.na(data_2006)) <= .5 * nrow(data_2006)]#
+#
+write.csv(data_2006, file = "../../data/data_2006.csv")#
+#
+##### scaling and mean centering data#
+#
+scaled_data_2006 <- scale(data_2006, center = TRUE, scale = TRUE)#
+scaled_data_2006 <- cbind( data_2006[, c(1,2)], scaled_data_2006[,c(-1,-2)])#
+#
+for(i in 1:ncol(scaled_data_2006)){#
+  scaled_data_2006[is.na(scaled_data_2006[,i]), i] <- median(scaled_data_2006[,i], na.rm = TRUE)#
+}#
+#
+scaled_data_2006 <- scaled_data_2006[, colSums(is.na(scaled_data_2006)) <= .5 * nrow(scaled_data_2006)]#
+#
+write.csv(scaled_data_2006, file = "../../data/scaled_data_2006.csv")
+data_2006 <- read.csv("../../data/MERGED2005_06_PP.csv")#
+#
+for (i in 1:ncol(data_2006)) {#
+  if (is.factor(data_2006[,i]) == TRUE) {#
+    data_2006[,i] <- as.numeric(levels(data_2006[,i]))[data_2006[,i]]#
+  }#
+}#
+#
+##### remove columns with greater than 50% of data missing#
+#
+data_2006 <- data_2006[, colSums(is.na(data_2006)) <= .25 * nrow(data_2006)]#
+#
+write.csv(data_2006, file = "../../data/data_2006.csv")#
+#
+##### scaling and mean centering data#
+#
+scaled_data_2006 <- scale(data_2006, center = TRUE, scale = TRUE)#
+scaled_data_2006 <- cbind( data_2006[, c(1,2)], scaled_data_2006[,c(-1,-2)])#
+#
+for(i in 1:ncol(scaled_data_2006)){#
+  scaled_data_2006[is.na(scaled_data_2006[,i]), i] <- median(scaled_data_2006[,i], na.rm = TRUE)#
+}#
+#
+scaled_data_2006 <- scaled_data_2006[, colSums(is.na(scaled_data_2006)) <= .5 * nrow(scaled_data_2006)]#
+#
+write.csv(scaled_data_2006, file = "../../data/scaled_data_2006.csv")
+scaled_data_2006 <- read.csv("../../data/scaled_data_2006.csv")#
+set.seed(1)#
+training_data <- scaled_data_2006[sample(nrow(scaled_data_2006), round(.75 * nrow(scaled_data_2006))),]#
+sort(training_data$X)#
+training_data <- training_data[,-1]#
+#
+write.csv(training_data, file = "../../data/training_data.csv")#
+#
+set.seed(1)#
+test_data <- scaled_data_2006[-sample(nrow(scaled_data_2006), round(.75 * nrow(scaled_data_2006))),]#
+test_data <- test_data[,-1]#
+#
+write.csv(test_data, file = "../../data/test_data.csv")
+library("glmnet")#
+library("lars")#
+library("MASS")#
+#
+training_data <- read.csv(file = "../../data/training_data.csv")#
+training_data <- training_data[,-1]#
+#
+#formatting response and predictors #
+response <- training_data$LN_MEDIAN_HH_INC #Log of median income#
+response <- as.matrix(response)#
+predictors <- training_data[,-which(names(training_data) == "LN_MEDIAN_HH_INC")]  #everythning but median income#
+predictors <- as.matrix(predictors)#
+grid <- 10^seq(10, -2, length = 100)#
+set.seed(100)#
+cross_v <- cv.glmnet(x = predictors, y = response, intercept = FALSE, standardize = FALSE, lambda = grid, alpha = 0)#
+best_model_ridge <- coef(cross_v, cross_v$lambda.min)#
+ridge_model <- best_model_ridge#
+#saving coefficients of the model#
+save(best_model_ridge,ridge_model, file = "../../data/ridge_model.RData")#
+#Adding Histograms to Images#
+png('../../images/CV_Errors_Ridge.png')#
+plot(cross_v, main = "CV Errors Ridge")#
+dev.off()#
+test_set <- read.csv(file = "../../data/test_data.csv")#
+response = test_set$LN_MEDIAN_HH_INC#
+test_set <- test_set[,-1]#
+test_set <- test_set[,-which(names(training_data) == "LN_MEDIAN_HH_INC")] #
+test_predictors = as.matrix(test_set)#
+#
+test_ridge <- predict(cross_v, newx = test_predictors, s = "lambda.min", type="response")#
+save(test_ridge,file =  "../../data/testing_ridge.RData")#
+#
+source("../functions/mse_function.R")#
+MSE_ridge = MSE(test_ridge, response)#
+#
+save(MSE_ridge, file = "../../data/MSE_ridge.RData" )#
+#
+full_data <- read.csv(file = "../../data/scaled_data_2006.csv")#
+full_data <- full_data[,-1]#
+#
+response <- full_data$LN_MEDIAN_HH_INC #median income#
+response <- as.matrix(response)#
+predictors <- full_data[,-which(names(training_data) == "LN_MEDIAN_HH_INC")]  #everythning but median income#
+predictors <- as.matrix(predictors)#
+#
+#rerunning model on the full data set#
+full_ridge = glmnet(x = predictors, y = response, intercept = FALSE, standardize = FALSE, lambda = cross_v$lambda.min, alpha = 0)#
+#
+#getting coefficients and saving#
+ridge_coef <- coef(full_ridge)#
+save(ridge_coef, file = "../../data/full_coeffecients_ridge.RData")  #
+#
+#saving data from this model to a txt file#
+sink(file = "../../data/ridge_model.txt")#
+best_model_ridge#
+print("Coefficients for the Ridge Model")#
+best_model_ridge#
+print("MSE for the Ridge Model")#
+MSE_ridge#
+print("Coefficients for the model run on the full data set")#
+ridge_coef#
+sink()
+training_data <- read.csv("../../data/training_data.csv")#
+training_data <- training_data[,-1]#
+#
+library("glmnet")#
+library("lars")#
+#
+response <- training_data$LN_MEDIAN_HH_INC#
+response <- as.matrix(response)#
+predictors <- training_data[,-which(names(training_data) == "LN_MEDIAN_HH_INC")]#
+predictors <- as.matrix(predictors)#
+#
+grid <- 10^seq(10, -2, length = 100)#
+#
+set.seed(1)#
+lm.lasso <- cv.glmnet(predictors, response, lambda = grid, alpha = 1, intercept = FALSE, standardize = FALSE)#
+bestmodel_lasso <- coef(lm.lasso, lm.lasso$lambda.min)#
+#
+lasso_model <- bestmodel_lasso#
+save(bestmodel_lasso,lasso_model, file = "../../data/lasso_model.RData")#
+#
+png("../../images/CV_errors_lasso.png")#
+plot(lm.lasso, main = "CV Errors Lasso")#
+dev.off()#
+#
+test_data <- read.csv("../../data/test_data.csv")#
+test_data <- test_data[,-1]#
+test_predictors <- test_data[,-which(names(training_data) == "LN_MEDIAN_HH_INC")]#
+test_predictors <- as.matrix(test_predictors)#
+test_response <- test_data$LN_MEDIAN_HH_INC#
+#
+predicted_response <- predict(lm.lasso, newx=test_predictors, s = "lambda.min", type = "response")#
+predicted_response <- as.vector(predicted_response)#
+#
+source("../functions/mse_function.R")#
+lasso_mse <- MSE(predicted_response, test_response)#
+save(lasso_mse, file = "../../data/MSE_lasso.RData")#
+scaled_data_2006 <- read.csv("../../data/scaled_data_2006.csv")#
+scaled_data_2006 <- scaled_data_2006[,-1]#
+total_response <- scaled_data_2006$LN_MEDIAN_HH_INC#
+total_response <- as.matrix(total_response)#
+total_predictors <- scaled_data_2006[,-which(names(training_data) == "LN_MEDIAN_HH_INC")]#
+total_predictors <- as.matrix(total_predictors)#
+full.lasso <- glmnet(total_predictors, total_response, lambda = lm.lasso$lambda.min, alpha = 1, intercept = FALSE, standardize = FALSE)#
+full_coefficients <- coef(full.lasso)#
+#
+save(full_coefficients, file = "../../data/full_coefficients_lasso.RData")#
+sink("../../data/lasso_model.txt")#
+print("model coefficients")#
+bestmodel_lasso#
+print("prediction mse")#
+lasso_mse#
+print("full model coefficients")#
+full_coefficients#
+sink()
+# Purpose of this file: Use PCA #
+# This helps with dimension reduction and reducing the risk of multicollinearity#
+#Begin Analysis on the training data#
+training_data <- read.csv("../../data/training_data.csv")#
+#unemployment rate, this is our first indicator of a successful college#
+set.seed (1000)#
+pca<- prcomp(training_data, center = TRUE, scale. = FALSE)#
+#
+#note that the first component contains all the variance pca this means all the variance in the data is explained in the first principal component#
+plot(pca, type = "l")#
+summary(pca)#
+#
+#All the data goes to the first component, no dimensionality reduction is useful #
+#for principal component regression#
+require(pls) #
+#
+set.seed (1000)#
+pcr_model <- pcr(UNEMP_RATE~., data = training_data, scale = TRUE, validation = "CV")#
+#
+ncomp_pcr <- which(pcr_model$validation$PRESS == min(pcr_model$validation$PRESS)) #selects components with best model#
+pcr_coef <- coef(pcr_model)#
+save(pcr_coef, pcr_model, file = "../../data/pcr_model.RData")#
+predplot(pcr_model)#
+coefplot(pcr_model)#
+#
+#Adding Histograms to Images#
+png('../../images/CV_Errors_pcr.png')#
+validationplot(pcr_model, val.type = "MSEP")#
+dev.off()#
+#Test Data#
+test_data <- read.csv("../../data/test_data.csv")#
+#
+#need to figure out how many components, look at validation plot#
+pcr_pred <- predict(pcr_model, test_data, ncomp = 90)#
+response <- test_data["UNEMP_RATE"]#
+response <- as.matrix(response)#
+#
+#error, test accuracy#
+source("../functions/mse_function.R")#
+MSE_pcr = MSE(pcr_pred, response)#
+save(MSE_pcr, file = "../../data/MSE_pcr.RData")#
+#saving  the important stuff#
+sink(file = "../../data/pcr_model.txt")#
+print("The PCR model")#
+pcr_coef#
+print("applied predictors")#
+pcr_pred#
+print("The PCR MSE")#
+MSE_pcr#
+sink()
+scaled_data_2006 <- read.csv("../../data/scaled_data_2006.csv")#
+set.seed(1)#
+training_data <- scaled_data_2006[sample(nrow(scaled_data_2006), round(.75 * nrow(scaled_data_2006))),]#
+sort(training_data$X)#
+training_data <- training_data[,-1]#
+#
+write.csv(training_data, file = "../../data/training_data.csv")#
+#
+training_short_data <- training_data[,-which(names(training_data) == c("INEXPFTE", "TUITIONFEE_IN", "COSTT4_A", "AVGFACSAL", "PCTPELL", "C150_4", "C150_4", "C150_L4", "RET_FT4", "PELL_COMP_ORIG_YR2_RT", "PELL_COMP_ORIG_YR3_RT", "PELL_COMP_ORIG_YR4_RT", "PELL_RPY_5YR_RT", "NOPELL_RPY_5YR_RT"))]
+write.csv(training_short_data, file = "../../data/training_short_data.csv")
+data_short_2006 <- data_2006[,which(names(training_data) == c("INEXPFTE", "TUITIONFEE_IN", "COSTT4_A", "AVGFACSAL", "PCTPELL", "C150_4", "C150_4", "C150_L4", "RET_FT4", "PELL_COMP_ORIG_YR2_RT", "PELL_COMP_ORIG_YR3_RT", "PELL_COMP_ORIG_YR4_RT", "PELL_RPY_5YR_RT", "NOPELL_RPY_5YR_RT"))]
+data_short_2006 <- data_2006[,c("INEXPFTE", "TUITIONFEE_IN", "COSTT4_A", "AVGFACSAL", "PCTPELL", "C150_4", "C150_4", "C150_L4", "RET_FT4", "PELL_COMP_ORIG_YR2_RT", "PELL_COMP_ORIG_YR3_RT", "PELL_COMP_ORIG_YR4_RT", "PELL_RPY_5YR_RT", "NOPELL_RPY_5YR_RT"))]
+data_short_2006 <- data_2006[,c("INEXPFTE", "TUITIONFEE_IN", "COSTT4_A", "AVGFACSAL", "PCTPELL", "C150_4", "C150_4", "C150_L4", "RET_FT4", "PELL_COMP_ORIG_YR2_RT", "PELL_COMP_ORIG_YR3_RT", "PELL_COMP_ORIG_YR4_RT", "PELL_RPY_5YR_RT", "NOPELL_RPY_5YR_RT")]
+data_2006 <- read.csv("../../data/MERGED2005_06_PP.csv")
+for (i in 1:ncol(data_2006)) {#
+  if (is.factor(data_2006[,i]) == TRUE) {#
+    data_2006[,i] <- as.numeric(levels(data_2006[,i]))[data_2006[,i]]#
+  }#
+}
+data_short_2006 <- data_2006[,c("INEXPFTE", "TUITIONFEE_IN", "COSTT4_A", "AVGFACSAL", "PCTPELL", "C150_4", "C150_4", "C150_L4", "RET_FT4", "PELL_COMP_ORIG_YR2_RT", "PELL_COMP_ORIG_YR3_RT", "PELL_COMP_ORIG_YR4_RT", "PELL_RPY_5YR_RT", "NOPELL_RPY_5YR_RT")]
+data_2006 <- read.csv("../../data/MERGED2005_06_PP.csv")#
+#
+for (i in 1:ncol(data_2006)) {#
+  if (is.factor(data_2006[,i]) == TRUE) {#
+    data_2006[,i] <- as.numeric(levels(data_2006[,i]))[data_2006[,i]]#
+  }#
+}#
+#
+data_short_2006 <- data_2006[,c("INEXPFTE", "TUITIONFEE_IN", "COSTT4_A", "AVGFACSAL", "PCTPELL", "C150_4", "C150_4", "C150_L4", "RET_FT4", "PELL_COMP_ORIG_YR2_RT", "PELL_COMP_ORIG_YR3_RT", "PELL_COMP_ORIG_YR4_RT", "PELL_RPY_5YR_RT", "NOPELL_RPY_5YR_RT")]#
+#
+write.csv(data_short_2006, file = "../../data/data_short_2006.csv")#
+#
+##### remove columns with greater than 50% of data missing#
+#
+data_2006 <- data_2006[, colSums(is.na(data_2006)) <= .5 * nrow(data_2006)]#
+#
+write.csv(data_2006, file = "../../data/data_2006.csv")#
+#
+##### scaling and mean centering data#
+#
+scaled_data_2006 <- scale(data_2006, center = TRUE, scale = TRUE)#
+scaled_data_2006 <- cbind( data_2006[, c(1,2)], scaled_data_2006[,c(-1,-2)])#
+#
+for(i in 1:ncol(scaled_data_2006)){#
+  scaled_data_2006[is.na(scaled_data_2006[,i]), i] <- median(scaled_data_2006[,i], na.rm = TRUE)#
+}#
+#
+scaled_data_2006 <- scaled_data_2006[, colSums(is.na(scaled_data_2006)) <= .5 * nrow(scaled_data_2006)]#
+#
+write.csv(scaled_data_2006, file = "../../data/scaled_data_2006.csv")#
+#
+##### scaling and mean centering short data#
+#
+scaled_short_data_2006 <- scale(data_short_2006, center = TRUE, scale = TRUE)#
+scaled_short_data_2006 <- cbind( data_short_2006[, c(1,2)], scaled_short_data_2006[,c(-1,-2)])#
+#
+for(i in 1:ncol(scaled_short_data_2006)){#
+  scaled_short_data_2006[is.na(scaled_short_data_2006[,i]), i] <- median(scaled_short_data_2006[,i], na.rm = TRUE)#
+}#
+#
+scaled_short_data_2006 <- scaled_short_data_2006[, colSums(is.na(scaled_short_data_2006)) <= .5 * nrow(scaled_short_data_2006)]#
+#
+write.csv(scaled_short_data_2006, file = "../../data/scaled_short_data_2006.csv")
+scaled_data_2006 <- read.csv("../../data/scaled_data_2006.csv")#
+set.seed(1)#
+training_data <- scaled_data_2006[sample(nrow(scaled_data_2006), round(.75 * nrow(scaled_data_2006))),]#
+sort(training_data$X)#
+training_data <- training_data[,-1]#
+#
+write.csv(training_data, file = "../../data/training_data.csv")#
+#
+training_short_data <- training_data[,-which(names(training_data) == c("INEXPFTE", "TUITIONFEE_IN", "COSTT4_A", "AVGFACSAL", "PCTPELL", "C150_4", "C150_4", "C150_L4", "RET_FT4", "PELL_COMP_ORIG_YR2_RT", "PELL_COMP_ORIG_YR3_RT", "PELL_COMP_ORIG_YR4_RT", "PELL_RPY_5YR_RT", "NOPELL_RPY_5YR_RT"))]#
+#
+write.csv(training_short_data, file = "../../data/training_short_data.csv")#
+#
+set.seed(1)#
+test_data <- scaled_data_2006[-sample(nrow(scaled_data_2006), round(.75 * nrow(scaled_data_2006))),]#
+test_data <- test_data[,-1]#
+#
+write.csv(test_data, file = "../../data/test_data.csv")#
+#
+test_short_data <- test_data[,-which(names(test_data) == c("INEXPFTE", "TUITIONFEE_IN", "COSTT4_A", "AVGFACSAL", "PCTPELL", "C150_4", "C150_4", "C150_L4", "RET_FT4", "PELL_COMP_ORIG_YR2_RT", "PELL_COMP_ORIG_YR3_RT", "PELL_COMP_ORIG_YR4_RT", "PELL_RPY_5YR_RT", "NOPELL_RPY_5YR_RT"))]#
+#
+write.csv(test_short_data, file = "../../data/test_short_data.csv")
+data_2006 <- read.csv("../../data/MERGED2005_06_PP.csv")#
+#
+for (i in 1:ncol(data_2006)) {#
+  if (is.factor(data_2006[,i]) == TRUE) {#
+    data_2006[,i] <- as.numeric(levels(data_2006[,i]))[data_2006[,i]]#
+  }#
+}#
+#
+data_short_2006 <- data_2006[,c("UNEMP_RATE", "INEXPFTE", "TUITIONFEE_IN", "COSTT4_A", "AVGFACSAL", "PCTPELL", "C150_4", "C150_4", "C150_L4", "RET_FT4", "PELL_COMP_ORIG_YR2_RT", "PELL_COMP_ORIG_YR3_RT", "PELL_COMP_ORIG_YR4_RT", "PELL_RPY_5YR_RT", "NOPELL_RPY_5YR_RT")]#
+#
+write.csv(data_short_2006, file = "../../data/data_short_2006.csv")#
+#
+##### remove columns with greater than 50% of data missing#
+#
+data_2006 <- data_2006[, colSums(is.na(data_2006)) <= .5 * nrow(data_2006)]#
+#
+write.csv(data_2006, file = "../../data/data_2006.csv")#
+#
+##### scaling and mean centering data#
+#
+scaled_data_2006 <- scale(data_2006, center = TRUE, scale = TRUE)#
+scaled_data_2006 <- cbind( data_2006[, c(1,2)], scaled_data_2006[,c(-1,-2)])#
+#
+for(i in 1:ncol(scaled_data_2006)){#
+  scaled_data_2006[is.na(scaled_data_2006[,i]), i] <- median(scaled_data_2006[,i], na.rm = TRUE)#
+}#
+#
+scaled_data_2006 <- scaled_data_2006[, colSums(is.na(scaled_data_2006)) <= .5 * nrow(scaled_data_2006)]#
+#
+write.csv(scaled_data_2006, file = "../../data/scaled_data_2006.csv")#
+#
+##### scaling and mean centering short data#
+#
+scaled_short_data_2006 <- scale(data_short_2006, center = TRUE, scale = TRUE)#
+scaled_short_data_2006 <- cbind( data_short_2006[, c(1,2)], scaled_short_data_2006[,c(-1,-2)])#
+#
+for(i in 1:ncol(scaled_short_data_2006)){#
+  scaled_short_data_2006[is.na(scaled_short_data_2006[,i]), i] <- median(scaled_short_data_2006[,i], na.rm = TRUE)#
+}#
+#
+scaled_short_data_2006 <- scaled_short_data_2006[, colSums(is.na(scaled_short_data_2006)) <= .5 * nrow(scaled_short_data_2006)]#
+#
+write.csv(scaled_short_data_2006, file = "../../data/scaled_short_data_2006.csv")
+scaled_data_2006 <- read.csv("../../data/scaled_data_2006.csv")#
+set.seed(1)#
+training_data <- scaled_data_2006[sample(nrow(scaled_data_2006), round(.75 * nrow(scaled_data_2006))),]#
+sort(training_data$X)#
+training_data <- training_data[,-1]#
+#
+write.csv(training_data, file = "../../data/training_data.csv")#
+#
+training_short_data <- training_data[,-which(names(training_data) == c("UNEMP_RATE", "INEXPFTE", "TUITIONFEE_IN", "COSTT4_A", "AVGFACSAL", "PCTPELL", "C150_4", "C150_4", "C150_L4", "RET_FT4", "PELL_COMP_ORIG_YR2_RT", "PELL_COMP_ORIG_YR3_RT", "PELL_COMP_ORIG_YR4_RT", "PELL_RPY_5YR_RT", "NOPELL_RPY_5YR_RT"))]#
+#
+write.csv(training_short_data, file = "../../data/training_short_data.csv")#
+#
+set.seed(1)#
+test_data <- scaled_data_2006[-sample(nrow(scaled_data_2006), round(.75 * nrow(scaled_data_2006))),]#
+test_data <- test_data[,-1]#
+#
+write.csv(test_data, file = "../../data/test_data.csv")#
+#
+test_short_data <- test_data[,-which(names(test_data) == c("UNEMP_RATE", "INEXPFTE", "TUITIONFEE_IN", "COSTT4_A", "AVGFACSAL", "PCTPELL", "C150_4", "C150_4", "C150_L4", "RET_FT4", "PELL_COMP_ORIG_YR2_RT", "PELL_COMP_ORIG_YR3_RT", "PELL_COMP_ORIG_YR4_RT", "PELL_RPY_5YR_RT", "NOPELL_RPY_5YR_RT"))]#
+#
+write.csv(test_short_data, file = "../../data/test_short_data.csv")
+scaled_data_2006 <- read.csv("../../data/scaled_data_2006.csv")#
+set.seed(1)#
+training_data <- scaled_data_2006[sample(nrow(scaled_data_2006), round(.75 * nrow(scaled_data_2006))),]#
+sort(training_data$X)#
+training_data <- training_data[,-1]#
+#
+write.csv(training_data, file = "../../data/training_data.csv")#
+#
+training_short_data <- training_data[,c("UNEMP_RATE", "INEXPFTE", "TUITIONFEE_IN", "COSTT4_A", "AVGFACSAL", "PCTPELL", "C150_4", "C150_4", "C150_L4", "RET_FT4", "PELL_COMP_ORIG_YR2_RT", "PELL_COMP_ORIG_YR3_RT", "PELL_COMP_ORIG_YR4_RT", "PELL_RPY_5YR_RT", "NOPELL_RPY_5YR_RT")]#
+#
+write.csv(training_short_data, file = "../../data/training_short_data.csv")#
+#
+set.seed(1)#
+test_data <- scaled_data_2006[-sample(nrow(scaled_data_2006), round(.75 * nrow(scaled_data_2006))),]#
+test_data <- test_data[,-1]#
+#
+write.csv(test_data, file = "../../data/test_data.csv")#
+#
+test_short_data <- test_data[,c("UNEMP_RATE", "INEXPFTE", "TUITIONFEE_IN", "COSTT4_A", "AVGFACSAL", "PCTPELL", "C150_4", "C150_4", "C150_L4", "RET_FT4", "PELL_COMP_ORIG_YR2_RT", "PELL_COMP_ORIG_YR3_RT", "PELL_COMP_ORIG_YR4_RT", "PELL_RPY_5YR_RT", "NOPELL_RPY_5YR_RT")]#
+#
+write.csv(test_short_data, file = "../../data/test_short_data.csv")
+scaled_data_2006 <- read.csv("../../data/scaled_data_2006.csv")#
+#
+scaled_short_data_2006 <- read.csv("../../data/scaled_short_data_2006.csv")#
+#
+set.seed(1)#
+training_data <- scaled_data_2006[sample(nrow(scaled_data_2006), round(.75 * nrow(scaled_data_2006))),]#
+training_data <- training_data[,-1]#
+#
+write.csv(training_data, file = "../../data/training_data.csv")#
+#
+set.seed(1)#
+training_short_data <- scaled_short_data_2006[sample(nrow(scaled_short_data_2006), round(.75 * nrow(scaled_short_data_2006))),]#
+training_short_data <- training_short_data[,-1]#
+#
+write.csv(training_short_data, file = "../../data/training_short_data.csv")#
+#
+set.seed(1)#
+test_data <- scaled_data_2006[-sample(nrow(scaled_data_2006), round(.75 * nrow(scaled_data_2006))),]#
+test_data <- test_data[,-1]#
+#
+write.csv(test_data, file = "../../data/test_data.csv")#
+#
+set.seed(1)#
+test_short_data <- scaled_short_data_2006[-sample(nrow(scaled_short_data_2006), round(.75 * nrow(scaled_short_data_2006))),]#
+test_short_data <- test_short_data[,-1]#
+#
+write.csv(test_short_data, file = "../../data/test_short_data.csv")
+data_2006 <- read.csv("../../data/MERGED2005_06_PP.csv")#
+#
+for (i in 1:ncol(data_2006)) {#
+  if (is.factor(data_2006[,i]) == TRUE) {#
+    data_2006[,i] <- as.numeric(levels(data_2006[,i]))[data_2006[,i]]#
+  }#
+}#
+#
+data_short_2006 <- data_2006[,c("UNEMP_RATE", "INEXPFTE", "TUITIONFEE_IN", "AVGFACSAL", "C150_4", "C150_L4", "RET_FT4", "PELL_COMP_ORIG_YR2_RT", "PELL_COMP_ORIG_YR3_RT", "PELL_COMP_ORIG_YR4_RT", "CDR2", "CDR3")]#
+#
+write.csv(data_short_2006, file = "../../data/data_short_2006.csv")#
+#
+##### remove columns with greater than 50% of data missing#
+#
+data_2006 <- data_2006[, colSums(is.na(data_2006)) <= .5 * nrow(data_2006)]#
+#
+write.csv(data_2006, file = "../../data/data_2006.csv")#
+#
+##### scaling and mean centering data#
+#
+scaled_data_2006 <- scale(data_2006, center = TRUE, scale = TRUE)#
+scaled_data_2006 <- cbind( data_2006[, c(1,2)], scaled_data_2006[,c(-1,-2)])#
+#
+for(i in 1:ncol(scaled_data_2006)){#
+  scaled_data_2006[is.na(scaled_data_2006[,i]), i] <- median(scaled_data_2006[,i], na.rm = TRUE)#
+}#
+#
+scaled_data_2006 <- scaled_data_2006[, colSums(is.na(scaled_data_2006)) <= .5 * nrow(scaled_data_2006)]#
+#
+write.csv(scaled_data_2006, file = "../../data/scaled_data_2006.csv")#
+#
+##### scaling and mean centering short data#
+#
+scaled_short_data_2006 <- scale(data_short_2006, center = TRUE, scale = TRUE)#
+scaled_short_data_2006 <- cbind( data_short_2006[, c(1,2)], scaled_short_data_2006[,c(-1,-2)])#
+#
+for(i in 1:ncol(scaled_short_data_2006)){#
+  scaled_short_data_2006[is.na(scaled_short_data_2006[,i]), i] <- median(scaled_short_data_2006[,i], na.rm = TRUE)#
+}#
+#
+scaled_short_data_2006 <- scaled_short_data_2006[, colSums(is.na(scaled_short_data_2006)) <= .5 * nrow(scaled_short_data_2006)]#
+#
+write.csv(scaled_short_data_2006, file = "../../data/scaled_short_data_2006.csv")
+scaled_data_2006 <- read.csv("../../data/scaled_data_2006.csv")#
+#
+scaled_short_data_2006 <- read.csv("../../data/scaled_short_data_2006.csv")#
+#
+set.seed(1)#
+training_data <- scaled_data_2006[sample(nrow(scaled_data_2006), round(.75 * nrow(scaled_data_2006))),]#
+training_data <- training_data[,-1]#
+#
+write.csv(training_data, file = "../../data/training_data.csv")#
+#
+set.seed(1)#
+training_short_data <- scaled_short_data_2006[sample(nrow(scaled_short_data_2006), round(.75 * nrow(scaled_short_data_2006))),]#
+training_short_data <- training_short_data[,-1]#
+#
+write.csv(training_short_data, file = "../../data/training_short_data.csv")#
+#
+set.seed(1)#
+test_data <- scaled_data_2006[-sample(nrow(scaled_data_2006), round(.75 * nrow(scaled_data_2006))),]#
+test_data <- test_data[,-1]#
+#
+write.csv(test_data, file = "../../data/test_data.csv")#
+#
+set.seed(1)#
+test_short_data <- scaled_short_data_2006[-sample(nrow(scaled_short_data_2006), round(.75 * nrow(scaled_short_data_2006))),]#
+test_short_data <- test_short_data[,-1]#
+#
+write.csv(test_short_data, file = "../../data/test_short_data.csv")
