@@ -3,11 +3,19 @@
 \begin{document}
 \SweaveOpts{concordance=TRUE}
 
-\title{The Title}
-\author{A. Author}
+\title{Unemployment and its Educational Predictors}
+\author{
+Alcorn, Bryan\\
+Shane, Joelle\\
+Vogel, Abby\\
+Vogel, Todd\\
+}
 \date{\today}
 
 \maketitle
 
+\begin{abstract}
+In this research we look into the efficacy of secondary education on post graduation unemployment as well as whether public spending is effective at improving the quality of education.  To do this we utilized 3 predictive models (ridge, lasso, and pcr) and hypothesis testing.
+\end{abstract}
 
 \end{document}
