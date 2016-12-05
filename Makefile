@@ -44,6 +44,7 @@ hypothesis:
 	cd code/scripts && Rscript hypothesis.R
 	cd code/scripts && Rscript revised_hypothesis.R
 
+
 	
 #session info
 session:
@@ -113,7 +114,7 @@ clean:
 	
 #Shiny, run this last
 shiny:
-	cd shiny && Rscript -e 'library(shiny); shiny::runApp("./", launch.browser=TRUE)'
+	cd shiny && Rscript -e 'library(shiny);shiny::runApp("./", launch.browser=TRUE)'
 	
 
 #testing
