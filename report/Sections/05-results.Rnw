@@ -1,15 +1,4 @@
-\documentclass{article}
-\usepackage{Sweave, graphicx}
-\begin{document}
-\SweaveOpts{concordance=TRUE}
-\title{The Title}
-\author{A. Author}
-\date{\today}
 \maketitle
-
-
-
-
 \section{Results}
 
 \subsection{Modeling}
@@ -19,22 +8,22 @@ After forming the aforementioned regression models we found 10 coefficients that
 Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_3 + \beta_4 X_4 + \beta_5 X_5 + \beta_6 X_6 + \beta_7 X_7 + \beta_8 X_8 + \beta_9 X_9 + \beta_{10} X_{10}
 \end{equation}
 
-<<echo=FALSE,include=FALSE>>=
+<<MSE,echo=FALSE,include=FALSE>>=
 
-load('../../data/MSE_ridge.RData')
-load('../../data/MSE_pcr.RData')
-load('../../data/MSE_lasso.RData')
-load('../../data/ridge_model.RData')
-load('../../data/lasso_model.RData')
-load('../../data/pcr_model.RData')
-load('../../data/MSE_short_ridge.RData')
-load('../../data/MSE_short_pcr.RData')
-load('../../data/MSE_short_lasso.RData')
-load('../../data/ridge_short_model.RData')
-load('../../data/lasso_short_model.RData')
-load('../../data/pcr_short_model.RData')
-load('../../data/hyp_results.RData')
-load('../../data/rev_hyp_results.RData')
+load('../data/MSE_ridge.RData')
+load('../data/MSE_pcr.RData')
+load('../data/MSE_lasso.RData')
+load('../data/ridge_model.RData')
+load('../data/lasso_model.RData')
+load('../data/pcr_model.RData')
+load('../data/MSE_short_ridge.RData')
+load('../data/MSE_short_pcr.RData')
+load('../data/MSE_short_lasso.RData')
+load('../data/ridge_short_model.RData')
+load('../data/lasso_short_model.RData')
+load('../data/pcr_short_model.RData')
+load('../data/hyp_results.RData')
+load('../data/rev_hyp_results.RData')
 
 library(xtable)
 library(Matrix)
@@ -42,7 +31,7 @@ options(xtable.caption.placement = 'top', xtable.comment = FALSE)
 @
 
 \begin{center}
-<<echo=FALSE, label=tab1, results=tex>>=
+<<echo=FALSE, label=tab2, results='asis'>>=
 
 Variables <- c("UNEMP_RATE", "INEXPFTE", "TUITIONFEE_IN", "AVGFACSAL", "C150_4", "C150_L4", "RET_FT4", "PELL_COMP_ORIG_YR2_RT", "PELL_COMP_ORIG_YR3_RT", "PELL_COMP_ORIG_YR4_RT", "CDR2")
 
@@ -54,7 +43,7 @@ PCR <- append(PCR, 0, 0)
 Coef.frame <- data.frame(Variables, Ridge, Lasso, PCR)
 
 Coef_table <- xtable(Coef.frame, caption="Information about Model Coefficients", digits = 3)
-print(Coef_table, type="latex")
+print(Coef_table)
 @
 \end{center}
 
@@ -64,13 +53,16 @@ After finding the 5 predictive functions, we found the MSE's for each model:
 
 \begin{center}
 
-<<echo=FALSE, label=tab1, results=tex>>=
+<<echo=FALSE,label=tab3, results='asis'>>=
+library(xtable)
+library(Matrix)
+library(knitr)
 MSE <- c(MSE_ridge, MSE_short_ridge, MSE_lasso, MSE_short_lasso, MSE_pcr, MSE_short_pcr)
 Model <- c('Ridge', 'Short Ridge', 'Lasso', 'Short Lasso', 'PCR', 'Short PCR')
 mse.frame <- data.frame(Model, MSE)
 
 MSE_table <- xtable(mse.frame, caption="Information about Mean Squared Errors", digits = 3)
-print(MSE_table, type="latex")
+print(MSE_table)
 @
 
 \end{center}
@@ -85,7 +77,7 @@ For hypothesis testing method unemployment rate was set as our response variable
 If the amount of funding received by the school has no effect on quality of education rate, we should see little difference in the response variable (unemployment rate), and that difference is solely due to chance.
 
 
-\graphicspath{ {../../images/} }
+\graphicspath{ {../images/} }
 \begin{figure}
 \centering
 \includegraphics[width=0.5\textwidth]{unemployment}
@@ -104,7 +96,7 @@ print(estimate)
 To control for a difference in unemployment rate generated from the difference in faculty quality, the data was split into three groups, corresponding to schools that had low, medium, and high average faculty salary.  
 
 
-\graphicspath{ {../../images/} }
+\graphicspath{ {../images/} }
 \begin{figure}
 \centering
 \includegraphics[width=0.5\textwidth]{funding}
@@ -129,7 +121,5 @@ Estimate of the effect of spending on unemployment rate (high average faulty sal
 <<echo=FALSE>>=
 print(estimate_HS)
 @
-
-
 
 \end{document}
