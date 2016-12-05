@@ -1,7 +1,56 @@
-\documentclass{article}
-\usepackage{Sweave}
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
-\input{report-concordance}
 
 \title{Unemployment and its Educational Predictors}
 \author{
@@ -17,18 +66,7 @@ Vogel, Todd\\
 \begin{abstract}
 In this research we look into the efficacy of secondary education on post graduation unemployment as well as whether public spending is effective at improving the quality of education.  To do this we utilized 3 predictive models (ridge, lasso, and pcr) and hypothesis testing.
 \end{abstract}
-
-\end{document}\documentclass{article}
-\usepackage{Sweave}
-\begin{document}
-
-
-\title{The Title}
-\author{A. Author}
-\date{\today}
-
 \maketitle
-
 \section{Introduction}
 
 According to the US Bureau of Labor Statistics, those with a Bachelor's Degree have nearly twice the weekly earnings of those who have only a High School Degree (2006 Data). With the cost of education rising, it is ever important to be sure that the college a student choses attend will equipt them to have a career that can pay back their student loans. 
@@ -38,18 +76,7 @@ The College Scorecard ia a source of reliable nationwide data on over 7,000 inst
 The goal of this data was to create a resource for students, parents, and counsellors to be able to access information about the preformance of colleges and universities, and compare which school is the best fit. President Obama announced the New College Scorecard in September of 2015 as a means for people to better find an affordable and reputable institution to prepare themselves to enter the workforce. 
 
 The goal of this analysis is to determine the features of institutions that lead to high employment rates post-graduation in order to answer the research question: does public spending improve the quality of education? We assume that employment after graduation is an accurate reflection of the quality of education the students recieve at a particular school. By focusing on public spending through data on financial aid reciepients, in conjunciton with other predictor variables, this analysis will reveal the ways in which public spending can impact the quality of a post-secondary schooling. This analysis could also be used by schools that wish to increase their post-graduation employment rates.
-
-\end{document}\documentclass{article}
-\usepackage{Sweave}
-\begin{document}
-
-
-\title{The Title}
-\author{A. Author}
-\date{\today}
-
 \maketitle
-
 \section{Data}
 
 This analysis uses data from 2006. The 2006 data was selected because it contains the unemployment rate via Census Data, which was selected to be the response variable. Unemplyment rate was chosen as the response variable because it is a robust measure across different sized and located institutions.
@@ -80,20 +107,7 @@ Other variables were considered, but many weren't available in the 2006 data.
 
 Further analysis across years would provide a better look into weather or not a change in spending impacts the post-graduation unemployment rate, but was beyond the scope of the data available via The College Scorecard. 
 
-\end{document}
-\documentclass{article}
-\usepackage{Sweave}
-\begin{document}
-
-
-\title{The Title}
-\author{A. Author}
-\date{\today}
-
 \maketitle
-
-
-
 \section{Methods}
 
 This project involved the use and implementation of 3 different linear models as well as hypothesis testing.
@@ -140,19 +154,7 @@ To utilize this method we:
 \item Computed the estimate for effect of funding and variance of that effect.
 \end{itemize}
 
-
-\end{document}\documentclass{article}
-\usepackage{Sweave}
-\begin{document}
-
-
-\title{The Title}
-\author{A. Author}
-\date{\today}
-
 \maketitle
-
-
 \section{Analysis}
 
 \subsection{Modelling}
@@ -160,8 +162,9 @@ In the Results section of the report, we determined the mean squared error value
 
 In order to determine which variables most affected unemployment rates we look at the absolute values of the coefficients from our best model (ridge) and look at the top 5. 
 
+
 % latex table generated in R 3.3.2 by xtable 1.8-2 package
-% Sun Dec  4 22:07:12 2016
+% Mon Dec  5 04:21:12 2016
 \begin{table}[ht]
 \centering
 \begin{tabular}{rlr}
@@ -177,24 +180,13 @@ In order to determine which variables most affected unemployment rates we look a
 \end{tabular}
 \caption{Information about top 5  Ridge Model Coefficients} 
 \end{table}
+
+
 This result means that the 5 most important predictors of unemployment rate are poverty rate, \% white, \% bachelors degrees given (of total degrees given), \% black, and married.  Schools with higher poverty rates have higher unemployment after graduation, wheres the schools with higher values of the other 4 variables with have lower rates of unemployment.
 
 \subsection{Hypothesis Testing}
 The estimate for the effect of spending on quality of education recieved was about -5.4\%. This means every higher spending bracket is expected to have a 5.4\% increase in unemployment. The variance on this value was about 0.0025, making it significant. After separating the data by average faculty salary, we can see that unemployment was the highest among schools that had low average faculty salary and the lowest among schools taht had high average faculty salary. We still estimate that higher spending is associated with higher unemployment, but since controlling for just a single factor showed a decrease in the effect, we could expect continual descreases or even a reversal of the effect if we continued to control for more and more variables.
-
-
-\end{document}\documentclass{article}
-\usepackage{Sweave, graphicx}
-\begin{document}
-
-\title{The Title}
-\author{A. Author}
-\date{\today}
 \maketitle
-
-
-
-
 \section{Results}
 
 \subsection{Modeling}
@@ -204,3 +196,133 @@ After forming the aforementioned regression models we found 10 coefficients that
 Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_3 + \beta_4 X_4 + \beta_5 X_5 + \beta_6 X_6 + \beta_7 X_7 + \beta_8 X_8 + \beta_9 X_9 + \beta_{10} X_{10}
 \end{equation}
 
+
+
+\begin{center}
+\begin{table}[ht]
+\centering
+\caption{Information about Model Coefficients} 
+\begin{tabular}{rlrrr}
+  \hline
+ & Variables & Ridge & Lasso & PCR \\ 
+  \hline
+1 & UNEMP\_RATE & 0.000 & 0.000 & 0.000 \\ 
+  2 & INEXPFTE & 0.000 & -0.000 & -0.008 \\ 
+  3 & TUITIONFEE\_IN & -0.963 & -0.156 & -0.182 \\ 
+  4 & AVGFACSAL & -0.786 & -0.067 & -0.089 \\ 
+  5 & C150\_4 & -0.695 & -0.119 & -0.123 \\ 
+  6 & C150\_L4 & 0.594 & 0.000 & 0.002 \\ 
+  7 & RET\_FT4 & 0.978 & 0.000 & 0.027 \\ 
+  8 & PELL\_COMP\_ORIG\_YR2\_RT & -2.752 & 0.000 & -0.111 \\ 
+  9 & PELL\_COMP\_ORIG\_YR3\_RT & 0.491 & 0.042 & 0.125 \\ 
+  10 & PELL\_COMP\_ORIG\_YR4\_RT & 1.372 & 0.000 & 0.020 \\ 
+  11 & CDR2 & 0.498 & 0.120 & 0.166 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+\end{center}
+
+This table presents the fit between the prediction variables and the response variable ($Unemployment$) determined from the $cv.glmnet()$ and $pcr()$ functions, for each of our 3 models (Ridge, Lasso, PCR).
+
+After finding the 5 predictive functions, we found the MSE's for each model:
+
+\begin{center}
+
+\begin{table}[ht]
+\centering
+\caption{Information about Mean Squared Errors} 
+\begin{tabular}{rlr}
+  \hline
+ & Model & MSE \\ 
+  \hline
+1 & Ridge & 0.186 \\ 
+  2 & Short Ridge & 12.797 \\ 
+  3 & Lasso & 0.195 \\ 
+  4 & Short Lasso & 17.114 \\ 
+  5 & PCR & 0.277 \\ 
+  6 & Short PCR & 1.446 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+\end{center}
+
+
+Analysis of these numbers will reveal which model has the most predictive power.
+
+\subsection{Hypothesis Testing}
+
+For hypothesis testing method unemployment rate was set as our response variable and school funding was set as the independent variable (percent of students recieving financial aid).
+
+If the amount of funding received by the school has no effect on quality of education rate, we should see little difference in the response variable (unemployment rate), and that difference is solely due to chance.
+
+
+\graphicspath{ {../images/} }
+\begin{figure}
+\centering
+\includegraphics[width=0.5\textwidth]{unemployment}
+\caption{Effect of spending on unemployment rate}
+\end{figure}
+
+
+
+We looked for estimate (of effect of spending on unemployment). This value will reveal the relationship between our two variables.  A higher estimate means that spending has a significant effect on unemployment and a negative estimate means that spending has an inverse effect on unemployment.
+
+Estimate of effect of spending on unemployment rate:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+## [1] -0.05141263
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+To control for a difference in unemployment rate generated from the difference in faculty quality, the data was split into three groups, corresponding to schools that had low, medium, and high average faculty salary.  
+
+
+\graphicspath{ {../images/} }
+\begin{figure}
+\centering
+\includegraphics[width=0.5\textwidth]{funding}
+\caption{Effect of spending on unemployment rate, controlling for quality of teachers}
+\end{figure}
+
+
+While the results still show that more spending is associated with more unemployment, we can see that average faculty salaray did influcence unemployment rate, as schools that have higher average faculty salary also had a lower unemployment rate, in general. 
+
+Estimate of the effect of spending on unemployment rate (low average faulty salary):
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+## [1] -0.07196604
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+Estimate of the effect of spending on unemployment rate (middle average faulty salary):
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+## [1] -0.08068517
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+Estimate of the effect of spending on unemployment rate (high average faulty salary):
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+## [1] -0.06582947
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{document}
+\maketitle
+\section{Conclusion}
+From hypothesis testing, we found public spending negatively effected unemployment rate; schools that recieved more funding provided lower quality educations. These results are difficult to justify, given how many confounding factors there could be in the data. After trying to control for school quality the effect was less negative but still significant. To try and find predictors of unemployment rate, which would allow educational institutions to improve unemployment rate independent of the public spending they received, we ran a few different regression models. When predictors of unemployment rate were manually selected for the regression models, the mean squared error was much larger than when predictor variables were selected through dimension reduction methods.
+
+\end{document}

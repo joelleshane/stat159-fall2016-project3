@@ -1,16 +1,4 @@
-\documentclass{article}
-\usepackage{Sweave}
-\begin{document}
-\SweaveOpts{concordance=TRUE}
-
-\title{The Title}
-\author{A. Author}
-\date{\today}
-
 \maketitle
-
-
-
 \section{Methods}
 
 This project involved the use and implementation of 3 different linear models as well as hypothesis testing.
@@ -57,5 +45,3 @@ To utilize this method we:
 \item Computed the estimate for effect of funding and variance of that effect.
 \end{itemize}
 
-
-\end{document}

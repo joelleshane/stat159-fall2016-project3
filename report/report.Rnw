@@ -1,7 +1,5 @@
 \documentclass{article}
-\usepackage{Sweave}
 \begin{document}
-\SweaveOpts{concordance=TRUE}
 
 \title{Unemployment and its Educational Predictors}
 \author{
@@ -17,18 +15,7 @@ Vogel, Todd\\
 \begin{abstract}
 In this research we look into the efficacy of secondary education on post graduation unemployment as well as whether public spending is effective at improving the quality of education.  To do this we utilized 3 predictive models (ridge, lasso, and pcr) and hypothesis testing.
 \end{abstract}
-
-\end{document}\documentclass{article}
-\usepackage{Sweave}
-\begin{document}
-\SweaveOpts{concordance=TRUE}
-
-\title{The Title}
-\author{A. Author}
-\date{\today}
-
 \maketitle
-
 \section{Introduction}
 
 According to the US Bureau of Labor Statistics, those with a Bachelor's Degree have nearly twice the weekly earnings of those who have only a High School Degree (2006 Data). With the cost of education rising, it is ever important to be sure that the college a student choses attend will equipt them to have a career that can pay back their student loans. 
@@ -38,18 +25,7 @@ The College Scorecard ia a source of reliable nationwide data on over 7,000 inst
 The goal of this data was to create a resource for students, parents, and counsellors to be able to access information about the preformance of colleges and universities, and compare which school is the best fit. President Obama announced the New College Scorecard in September of 2015 as a means for people to better find an affordable and reputable institution to prepare themselves to enter the workforce. 
 
 The goal of this analysis is to determine the features of institutions that lead to high employment rates post-graduation in order to answer the research question: does public spending improve the quality of education? We assume that employment after graduation is an accurate reflection of the quality of education the students recieve at a particular school. By focusing on public spending through data on financial aid reciepients, in conjunciton with other predictor variables, this analysis will reveal the ways in which public spending can impact the quality of a post-secondary schooling. This analysis could also be used by schools that wish to increase their post-graduation employment rates.
-
-\end{document}\documentclass{article}
-\usepackage{Sweave}
-\begin{document}
-\SweaveOpts{concordance=TRUE}
-
-\title{The Title}
-\author{A. Author}
-\date{\today}
-
 \maketitle
-
 \section{Data}
 
 This analysis uses data from 2006. The 2006 data was selected because it contains the unemployment rate via Census Data, which was selected to be the response variable. Unemplyment rate was chosen as the response variable because it is a robust measure across different sized and located institutions.
@@ -80,20 +56,7 @@ Other variables were considered, but many weren't available in the 2006 data.
 
 Further analysis across years would provide a better look into weather or not a change in spending impacts the post-graduation unemployment rate, but was beyond the scope of the data available via The College Scorecard. 
 
-\end{document}
-\documentclass{article}
-\usepackage{Sweave}
-\begin{document}
-\SweaveOpts{concordance=TRUE}
-
-\title{The Title}
-\author{A. Author}
-\date{\today}
-
 \maketitle
-
-
-
 \section{Methods}
 
 This project involved the use and implementation of 3 different linear models as well as hypothesis testing.
@@ -140,19 +103,7 @@ To utilize this method we:
 \item Computed the estimate for effect of funding and variance of that effect.
 \end{itemize}
 
-
-\end{document}\documentclass{article}
-\usepackage{Sweave}
-\begin{document}
-\SweaveOpts{concordance=TRUE}
-
-\title{The Title}
-\author{A. Author}
-\date{\today}
-
 \maketitle
-
-
 \section{Analysis}
 
 \subsection{Modelling}
@@ -165,7 +116,7 @@ library(xtable)
 load('../data/ridge_model.RData')
 @
 
-<<echo=FALSE, label=tab1, results=tex>>=
+<<Best Predict, echo=FALSE, results='asis'>>=
 ridge_coefficient <- as.data.frame.matrix(ridge_coef)
 ridge_coefficient$'Predictors' <- row.names(ridge_coefficient)
 
@@ -182,27 +133,14 @@ Predictor <- as.vector(Predictor)
 coefficient_table <- data.frame(Predictor, Coefficient)
 
 Coefficient_table <- xtable(coefficient_table, caption="Information about top 5  Ridge Model Coefficients")
-print(Coefficient_table, type="latex")
+Coefficient_table
 @
 
 This result means that the 5 most important predictors of unemployment rate are poverty rate, \% white, \% bachelors degrees given (of total degrees given), \% black, and married.  Schools with higher poverty rates have higher unemployment after graduation, wheres the schools with higher values of the other 4 variables with have lower rates of unemployment.
 
 \subsection{Hypothesis Testing}
 The estimate for the effect of spending on quality of education recieved was about -5.4\%. This means every higher spending bracket is expected to have a 5.4\% increase in unemployment. The variance on this value was about 0.0025, making it significant. After separating the data by average faculty salary, we can see that unemployment was the highest among schools that had low average faculty salary and the lowest among schools taht had high average faculty salary. We still estimate that higher spending is associated with higher unemployment, but since controlling for just a single factor showed a decrease in the effect, we could expect continual descreases or even a reversal of the effect if we continued to control for more and more variables.
-
-
-\end{document}\documentclass{article}
-\usepackage{Sweave, graphicx}
-\begin{document}
-\SweaveOpts{concordance=TRUE}
-\title{The Title}
-\author{A. Author}
-\date{\today}
 \maketitle
-
-
-
-
 \section{Results}
 
 \subsection{Modeling}
@@ -212,7 +150,7 @@ After forming the aforementioned regression models we found 10 coefficients that
 Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_3 + \beta_4 X_4 + \beta_5 X_5 + \beta_6 X_6 + \beta_7 X_7 + \beta_8 X_8 + \beta_9 X_9 + \beta_{10} X_{10}
 \end{equation}
 
-<<echo=FALSE,include=FALSE>>=
+<<MSE,echo=FALSE,include=FALSE>>=
 
 load('../data/MSE_ridge.RData')
 load('../data/MSE_pcr.RData')
@@ -235,7 +173,7 @@ options(xtable.caption.placement = 'top', xtable.comment = FALSE)
 @
 
 \begin{center}
-<<echo=FALSE, label=tab1, results=tex>>=
+<<echo=FALSE, label=tab2, results='asis'>>=
 
 Variables <- c("UNEMP_RATE", "INEXPFTE", "TUITIONFEE_IN", "AVGFACSAL", "C150_4", "C150_L4", "RET_FT4", "PELL_COMP_ORIG_YR2_RT", "PELL_COMP_ORIG_YR3_RT", "PELL_COMP_ORIG_YR4_RT", "CDR2")
 
@@ -247,7 +185,7 @@ PCR <- append(PCR, 0, 0)
 Coef.frame <- data.frame(Variables, Ridge, Lasso, PCR)
 
 Coef_table <- xtable(Coef.frame, caption="Information about Model Coefficients", digits = 3)
-print(Coef_table, type="latex")
+print(Coef_table)
 @
 \end{center}
 
@@ -257,13 +195,16 @@ After finding the 5 predictive functions, we found the MSE's for each model:
 
 \begin{center}
 
-<<echo=FALSE, label=tab1, results=tex>>=
+<<echo=FALSE,label=tab3, results='asis'>>=
+library(xtable)
+library(Matrix)
+library(knitr)
 MSE <- c(MSE_ridge, MSE_short_ridge, MSE_lasso, MSE_short_lasso, MSE_pcr, MSE_short_pcr)
 Model <- c('Ridge', 'Short Ridge', 'Lasso', 'Short Lasso', 'PCR', 'Short PCR')
 mse.frame <- data.frame(Model, MSE)
 
 MSE_table <- xtable(mse.frame, caption="Information about Mean Squared Errors", digits = 3)
-print(MSE_table, type="latex")
+print(MSE_table)
 @
 
 \end{center}
@@ -278,7 +219,7 @@ For hypothesis testing method unemployment rate was set as our response variable
 If the amount of funding received by the school has no effect on quality of education rate, we should see little difference in the response variable (unemployment rate), and that difference is solely due to chance.
 
 
-\graphicspath{ {../../images/} }
+\graphicspath{ {../images/} }
 \begin{figure}
 \centering
 \includegraphics[width=0.5\textwidth]{unemployment}
@@ -297,7 +238,7 @@ print(estimate)
 To control for a difference in unemployment rate generated from the difference in faculty quality, the data was split into three groups, corresponding to schools that had low, medium, and high average faculty salary.  
 
 
-\graphicspath{ {../../images/} }
+\graphicspath{ {../images/} }
 \begin{figure}
 \centering
 \includegraphics[width=0.5\textwidth]{funding}
@@ -323,19 +264,8 @@ Estimate of the effect of spending on unemployment rate (high average faulty sal
 print(estimate_HS)
 @
 
-
-
-\end{document}\documentclass{article}
-\usepackage{Sweave}
-\begin{document}
-\SweaveOpts{concordance=TRUE}
-
-\title{The Title}
-\author{A. Author}
-\date{\today}
-
+\end{document}
 \maketitle
-
 \section{Conclusion}
 From hypothesis testing, we found public spending negatively effected unemployment rate; schools that recieved more funding provided lower quality educations. These results are difficult to justify, given how many confounding factors there could be in the data. After trying to control for school quality the effect was less negative but still significant. To try and find predictors of unemployment rate, which would allow educational institutions to improve unemployment rate independent of the public spending they received, we ran a few different regression models. When predictors of unemployment rate were manually selected for the regression models, the mean squared error was much larger than when predictor variables were selected through dimension reduction methods.
 

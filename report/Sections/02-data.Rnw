@@ -1,14 +1,4 @@
-\documentclass{article}
-\usepackage{Sweave}
-\begin{document}
-\SweaveOpts{concordance=TRUE}
-
-\title{The Title}
-\author{A. Author}
-\date{\today}
-
 \maketitle
-
 \section{Data}
 
 This analysis uses data from 2006. The 2006 data was selected because it contains the unemployment rate via Census Data, which was selected to be the response variable. Unemplyment rate was chosen as the response variable because it is a robust measure across different sized and located institutions.
@@ -39,4 +29,3 @@ Other variables were considered, but many weren't available in the 2006 data.
 
 Further analysis across years would provide a better look into weather or not a change in spending impacts the post-graduation unemployment rate, but was beyond the scope of the data available via The College Scorecard. 
 
-\end{document}
