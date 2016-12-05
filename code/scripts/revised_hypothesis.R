@@ -25,37 +25,19 @@ LFLS <- subset(low, low$AVGFACSAL < 4500)
 MFLS <- subset(mid, mid$AVGFACSAL < 4500)
 HFLS <- subset(high, high$AVGFACSAL < 4500)
 
-length(LFLS[[1]])
-length(MFLS[[1]])
-length(HFLS[[1]])
-
 LFMS <- subset(low, low$AVGFACSAL >= 4500 & low$AVGFACSAL < 6000)
 MFMS <- subset(mid, mid$AVGFACSAL >= 4500 & mid$AVGFACSAL < 6000)
 HFMS <- subset(high, high$AVGFACSAL >= 4500 & high$AVGFACSAL < 6000)
 
-length(LFMS[[1]])
-length(MFMS[[1]])
-length(HFMS[[1]])
-
 LFHS <- subset(low, low$AVGFACSAL >= 6000)
 MFHS <- subset(mid, mid$AVGFACSAL >= 6000)
 HFHS <- subset(high, high$AVGFACSAL >= 6000)
-
-length(LFHS[[1]])
-length(MFHS[[1]])
-length(HFHS[[1]])
-
 
 #### Response Variable:
 #### Unemployment Rate - Number of students not working and not enrolled 6 years after entry (COUNT_NWNE_P6 - row 1894 / COUNT_WNE_P6 - row 1895)
 
 #### Getting rid of response variables that are non-numeric values and finding response variable
 
-```
-for (i in (c(low, low_mid, mid_high, high))){
-noquote(paste("unemp", i, sep = ""))  <- unemployment_six_years(i)
-}
-```
 
 source("../functions/unemployment.R")
 
@@ -70,8 +52,6 @@ MFLS_mean <- mean(unemp_MFLS)
 unemp_HFLS <- unemployment_six_years(HFLS)
 HFLS_mean <- mean(unemp_HFLS)
 
-barplot(c(LFLS_mean, MFLS_mean, HFLS_mean))
-
 #Within Medium Faculty Salary -- comparing different funding levels and unemployment rates
 
 unemp_LFMS <- unemployment_six_years(LFMS)
@@ -82,8 +62,6 @@ MFMS_mean <- mean(unemp_MFMS)
 
 unemp_HFMS <- unemployment_six_years(HFMS)
 HFMS_mean <- mean(unemp_HFMS)
-
-barplot(c(LFMS_mean, MFMS_mean, HFMS_mean))
 
 #Within High Faculty Salary -- comparing different funding levels and unemployment rates
 
@@ -104,11 +82,6 @@ counts <- matrix(c(LS, MS, HS), nrow = 3, ncol = 3)
 png("../../images/funding.png")
 barplot(height = counts, col = c("darkblue", "red", "purple"), beside = TRUE, main = "Bar Plot of Unemployment Rate", names.arg = c("Low", "Medium", "High"), xlab = "Average Faculty Salary", ylab = "Unemployment Rate", ylim = c(0, 0.18))
 legend("topright", legend = c("Low Funding", "Medium Funding", "High Funding"), fill = c("darkblue", "red", "purple"), cex = 0.5)
-dev.off()
-
-
-png("../../images/unemployment.png")
-barplot(c(low_mean, low_mid_mean, mid_high_mean, high_mean), col = c("#DB71C3", "#49A8BE", "#C8A9D1", "#D11D56"), main = "Unemployment Rate by Aid Percentage", xlab = "Percentage of Students who Recieved Financial Aid", ylab = "Unemployment Rate Six Years after Entry", names.arg = c("Low", "Low-Middle", "Middle-High", "High"), cex.names = 0.6)
 dev.off()
 
 
