@@ -1,6 +1,6 @@
 library(shiny)
 library(pls)
-library("glmnet")
+library(glmnet)
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
