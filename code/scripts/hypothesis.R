@@ -27,7 +27,7 @@ length(pct_fin)
 
 data_2006 <- cbind(data_2006, pct_fin)
 
-png("../../images/percent_aided_students_hist.png")
+png('../../images/percent_aided_students_hist.png')
 hist(data_2006$pct_fin, breaks = 30, main = "Histogram of Financial Aid", xlab = "Percent of Students")
 dev.off()
 

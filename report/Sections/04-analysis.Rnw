@@ -19,7 +19,7 @@ In order to determine which variables most affected unemployment rates we look a
 <<echo=FALSE,include=FALSE>>=
 library(Matrix)
 library(xtable)
-load('../../data/ridge_model.RData')
+load('../data/ridge_model.RData')
 @
 
 <<echo=FALSE, label=tab1, results=tex>>=

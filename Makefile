@@ -98,8 +98,8 @@ combined = report.Rnw
 
 report: $(main)
 report.pdf: $(combined)
-	cd report; R -e "library(knitr)::knit(\"report.Rnw\")
-report.Rmd:
+	cd report; R -e "Sweave(\"report.Rnw\")"
+report.Rnw:
 	cd report; cat Sections/*.Rnw > $@
 
 #creating the slides
