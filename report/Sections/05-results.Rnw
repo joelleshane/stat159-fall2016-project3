@@ -12,7 +12,7 @@
 
 \section{Results}
 
-\subsection{Modelling}
+\subsection{Modeling}
 After forming the aforementioned regression models we found 10 coefficients that represent the best fit for each model. The resulting predictive function looks like:
 
 \begin{equation}
@@ -34,6 +34,7 @@ load('../../data/ridge_short_model.RData')
 load('../../data/lasso_short_model.RData')
 load('../../data/pcr_short_model.RData')
 load('../../data/hyp_results.RData')
+load('../../data/rev_hyp_results.RData')
 
 library(xtable)
 library(Matrix)
@@ -100,5 +101,33 @@ Estimate of effect of spending on unemployment rate:
 print(estimate)
 @
 
+To control for a difference in unemployment rate generated from the difference in faculty quality, the data was split into three groups, corresponding to schools that had low, medium, and high average faculty salary.  
+
+
+\graphicspath{ {../../images/} }
+\begin{figure}
+\centering
+\includegraphics[width=0.5\textwidth]{funding}
+\caption{Effect of spending on unemployment rate, controlling for quality of teachers}
+\end{figure}
+
+
+While the results still show that more spending is associated with more unemployment, we can see that average faculty salaray did influcence unemployment rate, as schools that have higher average faculty salary also had a lower unemployment rate, in general. 
+
+Estimate of the effect of spending on unemployment rate (low average faulty salary):
+<<echo=FALSE>>=
+print(estimate_LS)
+@
+
+Estimate of the effect of spending on unemployment rate (middle average faulty salary):
+<<echo=FALSE>>=
+print(estimate_MS)
+@
+
+
+Estimate of the effect of spending on unemployment rate (high average faulty salary):
+<<echo=FALSE>>=
+print(estimate_HS)
+@
 
 \end{document}

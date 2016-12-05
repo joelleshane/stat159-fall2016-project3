@@ -1,7 +1,7 @@
 \documentclass{article}
 \usepackage{Sweave}
 \begin{document}
-\SweaveOpts{concordance=TRUE}
+\input{04-analysis-concordance}
 \maketitle
 
 
@@ -11,4 +11,4 @@
 In the Results section of the report, we determined the mean squared error values for each of our 3 models (one model with every variable from the data included and one where we preselected 10 variables).  For the full Ridge, Lasso, and PCR the MSE's were 0.186, 0.195, and 0.271 respectively. For the short Ridge, Lasso, and PCR the MSE's were 12.797, 17.114, and 1.446 respectively. Because our data was mean centered and standardized, all of these values exist on the same scale and can thus be compared. Mean squared error values represent the average sum of the errors between actual and predicted response values. Therefore, the smaller the MSE value the smaller the error, and the better the predictive model.  Given this, 0.186 is our smallest MSE value meaning Ridge is our best predictive model. This results are unsurprising to an extent, each of the MSE's for the shortened models were much higher meaning that preselecting predictors negatively effects the modelling process.  
 
 \subsection{Hypothesis Testing}
-The estimate for the effect of spending on quality of education recieved was about -5.4\%. This means every higher spending bracket is expected to have a 5.4\% increase in unemployment. The variance on this value was about 0.0025, making it significant. After separating the data by average faculty salary, we can see that unemployment was the highest among schools that had low average faculty salary and the lowest among schools taht had high average faculty salary. We still estimate that higher spending is associated with higher unemployment, but since controlling for just a single factor showed a decrease in the effect, we could expect continual descreases or even a reversal of the effect if we continued to control for more and more variables. 
+The estimate for the effect of spending on quality of education recieved was about -5.4\%\
