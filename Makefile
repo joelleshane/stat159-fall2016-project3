@@ -44,6 +44,7 @@ hypothesis:
 	cd code/scripts && Rscript hypothesis.R
 	cd code/scripts && Rscript revised_hypothesis.R
 
+
 	
 #session info
 session:
@@ -93,13 +94,13 @@ documentation:
 
 #creating the report - depends on running the regression
 main = report.pdf
-combined = report.Rmd
+combined = report.Rnw
 
 report: $(main)
 report.pdf: $(combined)
-	cd report; R -e "rmarkdown::render(\"report.Rmd\", \"all\")"
+	cd report; R -e "library(knitr)::knit(\"report.Rnw\")
 report.Rmd:
-	cd report; cat sections/*.Rmd > $@
+	cd report; cat Sections/*.Rnw > $@
 
 #creating the slides
 slides:
@@ -113,8 +114,7 @@ clean:
 	
 #Shiny, run this last
 shiny:
-	cd shiny && Rscript -e 'library(shiny); shiny::runApp("./", launch.browser=TRUE)'
-	
+	cd shiny && Rscript -e 'library(shiny);shiny::runApp("./", launch.browser=TRUE)'	
 
 #testing
 test:
