@@ -95,10 +95,13 @@ documentation:
 #creating the report - depends on running the regression
 main = report.pdf
 combined = report.Rnw
+tex = report.tex
 
-report: $(main)
-report.pdf: $(combined)
-	cd report; R -e "Sweave(\"report.Rnw\")"
+report: $(tex) #
+# report.pdf: $(combined)
+# 	cd report; Rscript -e "library(knitr);Sweave2knitr('report.Rnw');knit2pdf('report-knitr.Rnw', output = 'report-knitr.tex')"
+report.tex: $(combined)
+	cd report; Rscript -e "library(knitr); knit2pdf('report.Rnw', output = 'report.tex')"
 report.Rnw:
 	cd report; cat Sections/*.Rnw > $@
 
@@ -109,6 +112,8 @@ slides:
 #cleaning the report
 clean:
 	rm report/report.*
+	rm report/Sections/ *.tex
+	rm report/Sections/ *.pdf
 	rm slides/slides.html
 	rm session-info.txt
 	
@@ -128,11 +133,6 @@ test:
 
 ######### Extra commands ##########
 
-clean_all:
-	rm -r images/*
-	rm report/report.*
-	rm slides/slides.html
-	rm session-info.txt
 	
 clean_slides:
 	rm slides/slides.html
