@@ -83,20 +83,22 @@ For hypothesis testing method unemployment rate was set as our response variable
 
 If the amount of funding received by the school has no effect on quality of education rate, we should see little difference in the response variable (unemployment rate), and that difference is solely due to chance.
 
+
 \graphicspath{ {../../images/} }
 \begin{figure}
 \centering
-\includegraphics[scale=.5]{unemployment}
-\caption{The}
+\includegraphics[width=0.5\textwidth]{unemployment}
+\caption{Effect of spending on unemployment rate}
 \end{figure}
 
 
-We looked for estimate (of effect of spending on unemployment). This value will reveal the relationship between our two variables.  A higher estimate means that spending has a significant effect on unemployment and a negative estimate means that spending has an inverse effect on unemployment
 
+We looked for estimate (of effect of spending on unemployment). This value will reveal the relationship between our two variables.  A higher estimate means that spending has a significant effect on unemployment and a negative estimate means that spending has an inverse effect on unemployment.
+
+Estimate of effect of spending on unemployment rate:
 <<echo=FALSE>>=
 print(estimate)
 @
-
 
 
 \end{document}
