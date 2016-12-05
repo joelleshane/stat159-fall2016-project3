@@ -1,0 +1,14 @@
+\documentclass{article}
+\usepackage{Sweave}
+\begin{document}
+\input{04-analysis-concordance}
+\maketitle
+
+
+\section{Analysis}
+
+\subsection{Modeling}
+In the Results section of the report, we determined the mean squared error values for each of our 3 models (one model with every variable from the data included and one where we preselected 10 variables).  For the full Ridge, Lasso, and PCR the MSE's were 0.186, 0.195, and 0.271 respectively. For the short Ridge, Lasso, and PCR the MSE's were 12.797, 17.114, and 1.446 respectively. Because our data was mean centered and standardized, all of these values exist on the same scale and can thus be compared. Mean squared error values represent the average sum of the errors between actual and predicted response values. Therefore, the smaller the MSE value the smaller the error, and the better the predictive model.  Given this, 0.186 is our smallest MSE value meaning Ridge is our best predictive model. This results are unsurprising to an extent, each of the MSE's for the shortened models were much higher meaning that preselecting predictors negatively effects the modelling process.  
+
+\subsection{Hypothesis Testing}
+The estimate for the effect of spending on quality of education recieved was about -5.4\%\

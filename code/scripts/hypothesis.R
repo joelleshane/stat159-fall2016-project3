@@ -22,6 +22,9 @@ pct_fin <- lo + m1 + m2 + h1
 
 #### Visualizing data to get a better idea of how to split it into groups
 
+nrow(data_2006)
+length(pct_fin)
+
 data_2006 <- cbind(data_2006, pct_fin)
 
 png("../../images/percent_aided_students_hist.png")

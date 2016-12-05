@@ -1,9 +1,9 @@
 [1] "Low Faculty Salary Estimate of Funding Effect"
-[1] high end : -0.0530084166570504
-[1] low end : -0.0909236605528164
+[1] high end : NaN
+[1] low end : NaN
 [1] "Medium Faculty Salary Estimate of Funding Effect"
-[1] high end : -0.0697141592316958
-[1] low end : -0.0916561790642427
+[1] high end : NaN
+[1] low end : NaN
 [1] "High Faculty Salary Estimate of Funding Effect"
-[1] high end : -0.0561303162847456
-[1] low end : -0.0755286328647883
+[1] high end : NaN
+[1] low end : NaN

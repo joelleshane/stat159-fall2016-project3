@@ -13,9 +13,9 @@ data_short_2006 <- data_2006[,c("UNEMP_RATE", "INEXPFTE", "TUITIONFEE_IN", "AVGF
 write.csv(data_short_2006, file = "../../data/data_short_2006.csv")
 
 
-##### remove columns with less than 25% of data missing
+##### remove columns with less than 50% of data missing
 
-data_2006 <- data_2006[, colSums(is.na(data_2006)) <= .25 * nrow(data_2006)]
+data_2006 <- data_2006[, colSums(is.na(data_2006)) <= .5 * nrow(data_2006)]
 
 data_2006 <- data_2006[,c(-1,-2,-3)]
 
