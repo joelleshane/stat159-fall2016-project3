@@ -92,12 +92,12 @@ report.Rmd:
 
 #creating the slides
 slides:
-	cd slides && R -e "rmarkdown::render('presentation.Rmd')"
+	cd slides && R -e "rmarkdown::render('slides.Rmd')"
 
 #cleaning the report
 clean:
 	rm report/report.*
-	rm slides/presentation.html
+	rm slides/slides.html
 	rm session-info.txt
 	
 
@@ -109,14 +109,19 @@ test:
 ######### NOTES #########
 #remove any data that you end up not using to save time for new people, don't want to #download everthing 
 #need to download file "MERGED2005_2006_PP.csv" for (data_cleaning.R)
-#remove any data that you end up not using to save time for new people, don't want to #download everything
-#need to download data file “MERGED2005_06_PP.csv” (data_cleaning.R)
 
 
 ######### Extra commands ##########
 
-rm_test_data:
-	cd data; rm data_2006.csv scaled_data_2006.csv training_data.csv test_data.csv
+clean_all:
+	rm -r images/*
+	rm report/report.*
+	rm slides/slides.html
+	rm session-info.txt
+	
+clean_slides:
+	rm slides/slides.html
+	
 
 
 

@@ -1,0 +1,9 @@
+\section{Introduction}
+
+According to the US Bureau of Labor Statistics, those with a Bachelor's Degree have nearly twice the weekly earnings of those who have only a High School Degree (2015 Data). With the cost of education rising, it is ever important to be sure that the college a student choses attend will equipt them to have a career that can pay back their student loans. 
+
+The College Scorecard ia a source of reliable nationwide data on over 7,000 institutions. This site, collegescorecard.gov, is a project of the Department of Education to aggregate annual data on higher education institutions. It has information from 19 years assembled from numerous sources. More information on the data can be found at collegescorecard.gov/data. 
+
+The goal of this data was to create a resource for students, parents, and counsellors to be able to access information about the preformance of colleges and universities, and compare which school is the best fit. President Obama announced the New College Scorecard in September of 2015 as a means for people to better find an affordable and reputable institution to prepare themselves to enter the workforce. 
+
+The goal of this analysis is to determine the features of institutions that lead to high employment rates post-graduation. By focusing on public spending through data on financial aid reciepients, in conjunciton with other predictor variables, this analysis will determine the important factors for students to research when deciding on a post-secondary school. This analysis could also be used by schools that wish to increase their post-graduation employment rates. 

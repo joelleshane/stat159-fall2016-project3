@@ -147,19 +147,22 @@ pcr_short_coef
 ## Modeling : Comparing Models
 
 ```{r, echo = FALSE, include = FALSE}
-load("../data/")
-load("../MSE_pcr.RData")
-load("../MSE_short_pcr.RData")
+load("../data/MSE_lasso.RData")
+load("../data/MSE_ridge.Rdata")
+load("../data/MSE_short_ridge.RData")
+load("../data/MSE_short_lasso.RData")
+load("../data/MSE_pcr.RData")
+load("../data/MSE_short_pcr.RData")
 ```
 
 Mean Squared Error of Model 
 
 | Dataset | MSE
 | ------|---- | 
-| Ridge: Full Data | ddd |
-| Ridge : Shortened Data | ddd |
-| Lasso : Full Data | ddd |
-| Lasso: Shortened Data | dda |
+| Ridge: Full Data | `r MSE_ridge` |
+| Ridge : Shortened Data | `r MSE_short_ridge` |
+| Lasso : Full Data | `r MSE_lasso` |
+| Lasso: Shortened Data | `r MSE_short_lasso` |
 | PCR : Full Data | `r MSE_pcr` |
 | PCR : Shortened Data | `r MSE_short_pcr` |
 
