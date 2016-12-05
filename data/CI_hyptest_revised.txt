@@ -1,9 +1,0 @@
-[1] "Low Faculty Salary Estimate of Funding Effect"
-[1] high end : NaN
-[1] low end : NaN
-[1] "Medium Faculty Salary Estimate of Funding Effect"
-[1] high end : NaN
-[1] low end : NaN
-[1] "High Faculty Salary Estimate of Funding Effect"
-[1] high end : NaN
-[1] low end : NaN
