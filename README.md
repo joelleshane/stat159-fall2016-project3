@@ -25,11 +25,11 @@ The directory `images/` contains image output from the scripts. These are stored
 
 The directory `report/` contains the .Rnw file that compiles the report in both .pdf and .html formats.
 
-The directory `shiny/` contains 
+The directory `shiny/` contains the shiny app that displays the charts comparing the models and their outputs.
 
 The directory `slides/` contains the .Rmd file that produces an html file including a presentation that summarized the methods, data, and results of the project.
 
-The directory `documentation/` contains documentation from teh college scorecard website that contains more in depth information about the data
+The directory `documentation/` contains documentation from the college scorecard website that contains more in depth information about the data
 
 ## Instructions for Reproducing this project:
 
