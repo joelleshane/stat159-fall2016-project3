@@ -14,7 +14,18 @@ test_that( "MSE Test", {
   expect_that(func_answer, equals(package_asnwer, tolerance = .1))
 })
 
+source("../functions/unemployment.R")
 
+test_that( "Unemployment Test", {
+	
+	COUNT_NWNE_P6 <- c(1,2,3)
+	COUNT_WNE_P6 <- c(4,4,8)
+	df <- data.frame(COUNT_NWNE_P6, COUNT_WNE_P6)
+	total <- COUNT_NWNE_P6 + COUNT_WNE_P6
+	values <- COUNT_NWNE_P6 / total
+	unemp_output = unemployment_six_years(df)
+	expect_that(values, equals(unemp_output, tolerance = 0.1))
+})
 
 
 

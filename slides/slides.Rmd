@@ -1,5 +1,5 @@
 ---
-title: "Predicting and Validationg College Success"
+title: "Predicting and Validating College Success"
 author: "Bryan Alcorn, Joella Shane, Todd Vogel, and Abby Vogel"
 output: 
   ioslides_presentation:
@@ -157,7 +157,7 @@ load("../data/MSE_short_pcr.RData")
 
 Mean Squared Error of Model 
 
-| Dataset | MSE
+| Dataset | MSE |
 | ------|---- | 
 | Ridge: Full Data | `r MSE_ridge` |
 | Ridge : Shortened Data | `r MSE_short_ridge` |
@@ -166,5 +166,7 @@ Mean Squared Error of Model
 | PCR : Full Data | `r MSE_pcr` |
 | PCR : Shortened Data | `r MSE_short_pcr` |
 
+
 ## Conclusions
+
 
