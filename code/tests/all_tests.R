@@ -1,12 +1,13 @@
 source("../functions/mse_function.R")
 load("../../data/testing_ridge.RData")
-require("hydroGOF")
-require(testthat)
+library(hydroGOF)
+library(testthat)
+library(pls)
 
 test_that( "MSE Test", {
   
   test_set <- read.csv(file = "../../data/test_data.csv")
-  response = test_set$Balance
+  response = test_set$UNEMP_RATE
   length(response)
   length(test_ridge)
   func_answer = MSE(test_ridge, response)
