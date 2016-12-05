@@ -4,6 +4,7 @@
 
 #Begin Analysis on the training data
 training_data <- read.csv("../../data/training_data.csv")
+training_data <- training_data[,-1]
 
 
 #unemployment rate, this is our first indicator of a successful college
@@ -39,6 +40,8 @@ dev.off()
 
 #Test Data
 test_data <- read.csv("../../data/test_data.csv")
+test_data <- test_data[,-1]
+
 
 #need to figure out how many components, look at validation plot
 pcr_pred <- predict(pcr_model, test_data, ncomp = 90)

@@ -146,6 +146,8 @@ x_HS <- c(unemp_LFHS, unemp_MFHS, unemp_HFHS)
 varx_HS <- (var(x_HS)) * (((.5^2)/length(unemp_LFHS)) + 
                     ((.5^2)/length(unemp_MFHS)) +
                      (1/length(unemp_HFHS)))
+                     
+save(estimate_LS, estimate_MS, estimate_HS, varx_LS, varx_MS, varx_HS, file = "../../data/rev_hyp_results.RData")
 
 ### Constructing confidence interval:
 

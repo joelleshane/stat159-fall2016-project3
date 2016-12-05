@@ -11,6 +11,9 @@
 .PHONY: data
 .PHONY: documentation
 .PHONY: shiny
+.PHONY: dataclean
+.PHONY: hypothesis
+.PHONY: open_slides
 
 #make a data phony
 all:
@@ -19,21 +22,27 @@ all:
 	make regressions
 	make tests
 	make slides
+	make hypothesis
 	make report
-	make shiny
 	make session
+	make shiny
 
 #all regression models
 regressions:
-	make ols
-	make ridge
-	make lasso
+	make model
 	make pca
-	make plsr
 	
 #runnings the scripts
+eda:
+	cd code/scripts && Rscript eda_script.R
+model:
+	cd code/scripts && Rscript regression_lasso.R
+	cd code/scripts && Rscript regression_ridge.R
 pca:
 	cd code/scripts && Rscript pca_analysis.R
+hypothesis:
+	cd code/scripts && Rscript hypothesis.R
+	cd code/scripts && Rscript revised_hypothesis.R
 
 	
 #session info
@@ -49,7 +58,9 @@ new_NSLDS = data/new_NSLDS.csv
 post_earnings = data/post_earning.csv
 clean_data = data/test_data.csv
 
-data: dataset scorecard recent new_NSLDS post_earnings clean_data   
+
+#Now running Make
+data: dataset scorecard recent new_NSLDS post_earnings dataclean	  
 	
 data/dataset.zip:
 	curl -o data/dataset.zip "https://ed-public-download.apps.cloud.gov/downloads/CollegeScorecard_Raw_Data.zip"
@@ -68,7 +79,7 @@ data/new_NSLDS.csv:
 data/post_earning.csv:
 	curl -o data/post_earning.csv "https://ed-public-download.apps.cloud.gov/downloads/Most-Recent-Cohorts-Treasury-Elements.csv"
 	
-clean_data:
+dataclean:
 	cd code/scripts; Rscript data_cleaning.R
 	cd code/scripts; Rscript data_separation.R
 	
@@ -100,6 +111,10 @@ clean:
 	rm slides/slides.html
 	rm session-info.txt
 	
+#Shiny, run this last
+shiny:
+	cd shiny && Rscript -e 'library(shiny); shiny::runApp("./", launch.browser=TRUE)'
+	
 
 #testing
 test:
@@ -121,6 +136,9 @@ clean_all:
 	
 clean_slides:
 	rm slides/slides.html
+	
+open_slides:
+	open slides/slides.html
 	
 
 
