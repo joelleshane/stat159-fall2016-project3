@@ -15,9 +15,11 @@
 .PHONY: hypothesis
 .PHONY: open_slides
 .PHONY: all_data
+.PHONY: directories
 
 #make a data phony
 all:
+	make directories
 	make data
 	make eda
 	make regressions
@@ -27,6 +29,11 @@ all:
 	make report
 	make session
 	make shiny
+	
+#Making the directories
+directories: 
+	-mkdir data
+	-mkdir images
 
 #all regression models
 regressions:
@@ -57,7 +64,6 @@ clean_data = data/test_data.csv
 data: data/ $(dataset) dataclean
 		
 data/dataset.zip:
-	-mkdir data
 	curl -o data/dataset.zip "https://ed-public-download.apps.cloud.gov/downloads/CollegeScorecard_Raw_Data.zip"
 	unzip data/dataset.zip -d ./data
 
