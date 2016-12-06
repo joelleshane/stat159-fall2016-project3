@@ -45,8 +45,6 @@ hypothesis:
 	cd code/scripts && Rscript hypothesis.R
 	cd code/scripts && Rscript revised_hypothesis.R
 
-
-	
 #session info
 session:
 	bash session.sh
@@ -55,12 +53,11 @@ session:
 dataset = data/dataset.zip
 clean_data = data/test_data.csv
 
-
 #Now running Make
-data: $(dataset) dataclean	  
-	
+data: data/ $(dataset) dataclean
+		
 data/dataset.zip:
-	curl -o data/dataset.zip "https://ed-public-download.apps.cloud.gov/downloads/CollegeScorecard_Raw_Data.zip"
+	mkdir data && curl -o data/dataset.zip "https://ed-public-download.apps.cloud.gov/downloads/CollegeScorecard_Raw_Data.zip"
 	unzip data/dataset.zip -d ./data
 
 dataclean:
