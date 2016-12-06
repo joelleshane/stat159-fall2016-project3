@@ -121,5 +121,3 @@ Estimate of the effect of spending on unemployment rate (high average faulty sal
 <<echo=FALSE>>=
 print(estimate_HS)
 @
-
-\end{document}

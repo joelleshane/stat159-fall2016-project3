@@ -263,8 +263,6 @@ Estimate of the effect of spending on unemployment rate (high average faulty sal
 <<echo=FALSE>>=
 print(estimate_HS)
 @
-
-\end{document}
 \maketitle
 \section{Conclusion}
 From hypothesis testing, we found public spending negatively effected unemployment rate; schools that recieved more funding provided lower quality educations. These results are difficult to justify, given how many confounding factors there could be in the data. After trying to control for school quality the effect was less negative but still significant. To try and find predictors of unemployment rate, which would allow educational institutions to improve unemployment rate independent of the public spending they received, we ran a few different regression models. When predictors of unemployment rate were manually selected for the regression models, the mean squared error was much larger than when predictor variables were selected through dimension reduction methods.

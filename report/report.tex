@@ -164,18 +164,18 @@ In order to determine which variables most affected unemployment rates we look a
 
 
 % latex table generated in R 3.3.2 by xtable 1.8-2 package
-% Mon Dec  5 04:21:12 2016
+% Mon Dec  5 15:14:06 2016
 \begin{table}[ht]
 \centering
 \begin{tabular}{rlr}
   \hline
  & Predictor & Coefficient \\ 
   \hline
-1 & POVERTY\_RATE & 0.72 \\ 
+1 & POVERTY\_RATE & 0.71 \\ 
   2 & PCT\_WHITE & -0.42 \\ 
   3 & PCT\_BA & -0.18 \\ 
-  4 & PCT\_BLACK & -0.15 \\ 
-  5 & MARRIED & -0.13 \\ 
+  4 & PCT\_BLACK & -0.14 \\ 
+  5 & PCT25\_EARN\_WNE\_P6 & -0.11 \\ 
    \hline
 \end{tabular}
 \caption{Information about top 5  Ridge Model Coefficients} 
@@ -236,11 +236,11 @@ After finding the 5 predictive functions, we found the MSE's for each model:
   \hline
  & Model & MSE \\ 
   \hline
-1 & Ridge & 0.186 \\ 
+1 & Ridge & 0.184 \\ 
   2 & Short Ridge & 12.797 \\ 
-  3 & Lasso & 0.195 \\ 
+  3 & Lasso & 0.193 \\ 
   4 & Short Lasso & 17.114 \\ 
-  5 & PCR & 0.277 \\ 
+  5 & PCR & 0.278 \\ 
   6 & Short PCR & 1.446 \\ 
    \hline
 \end{tabular}
@@ -319,8 +319,6 @@ Estimate of the effect of spending on unemployment rate (high average faulty sal
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-
-\end{document}
 \maketitle
 \section{Conclusion}
 From hypothesis testing, we found public spending negatively effected unemployment rate; schools that recieved more funding provided lower quality educations. These results are difficult to justify, given how many confounding factors there could be in the data. After trying to control for school quality the effect was less negative but still significant. To try and find predictors of unemployment rate, which would allow educational institutions to improve unemployment rate independent of the public spending they received, we ran a few different regression models. When predictors of unemployment rate were manually selected for the regression models, the mean squared error was much larger than when predictor variables were selected through dimension reduction methods.
