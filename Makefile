@@ -14,6 +14,7 @@
 .PHONY: dataclean
 .PHONY: hypothesis
 .PHONY: open_slides
+.PHONY: all_data
 
 #make a data phony
 all:
@@ -21,8 +22,8 @@ all:
 	make eda
 	make regressions
 	make tests
-	make slides
 	make hypothesis
+	make slides
 	make report
 	make session
 	make shiny
@@ -50,36 +51,18 @@ hypothesis:
 session:
 	bash session.sh
 		
-	
 #getting all data files and getting training and test sets
 dataset = data/dataset.zip
-scorecard = data/scorecard.csv
-recent = data/recent.csv
-new_NSLDS = data/new_NSLDS.csv
-post_earnings = data/post_earning.csv
 clean_data = data/test_data.csv
 
 
 #Now running Make
-data: dataset scorecard recent new_NSLDS post_earnings dataclean	  
+data: $(dataset) dataclean	  
 	
 data/dataset.zip:
 	curl -o data/dataset.zip "https://ed-public-download.apps.cloud.gov/downloads/CollegeScorecard_Raw_Data.zip"
 	unzip data/dataset.zip -d ./data
-	unzip data/Crosswalks_20160908.zip
-	
-data/scorecard.csv:
-	curl -o data/scorecard.csv "https://ed-public-download.apps.cloud.gov/downloads/Most-Recent-Cohorts-Scorecard-Elements.csv"
-	
-data/recent.csv:
-	curl -o data/recent.csv "https://ed-public-download.apps.cloud.gov/downloads/Most-Recent-Cohorts-All-Data-Elements.csv"
-	
-data/new_NSLDS.csv:
-	curl -o data/new_NSLDS.csv "https://ed-public-download.apps.cloud.gov/downloads/Most-Recent-Cohorts-NSLDS-Elements.csv"
-	
-data/post_earning.csv:
-	curl -o data/post_earning.csv "https://ed-public-download.apps.cloud.gov/downloads/Most-Recent-Cohorts-Treasury-Elements.csv"
-	
+
 dataclean:
 	cd code/scripts; Rscript data_cleaning.R
 	cd code/scripts; Rscript data_separation.R
@@ -111,34 +94,54 @@ slides:
 
 #cleaning the report
 clean:
-	rm report/report.*
-	rm report/Sections/ *.tex
-	rm report/Sections/ *.pdf
-	rm slides/slides.html
-	rm session-info.txt
+	-rm report/report.*
+	-rm report/Sections/*.tex
+	-rm report/Sections/*.pdf
+	-rm slides/slides.html
+	-rm session-info.txt
 	
 #Shiny, run this last
 shiny:
 	cd shiny && Rscript -e 'library(shiny);shiny::runApp("./", launch.browser=TRUE)'	
 
 #testing
-test:
+tests:
 	cd code/tests; Rscript -e 'library(testthat); test_file("all_tests.R")'
 
 
 ######### NOTES #########
-#remove any data that you end up not using to save time for new people, don't want to #download everthing 
-#need to download file "MERGED2005_2006_PP.csv" for (data_cleaning.R)
 
 
 ######### Extra commands ##########
 
-	
 clean_slides:
-	rm slides/slides.html
+	-rm slides/slides.html
 	
 open_slides:
 	open slides/slides.html
+	
+open_report:
+	open report/report.pdf
+	
+scorecard = data/scorecard.csv
+recent = data/recent.csv
+new_NSLDS = data/new_NSLDS.csv
+post_earnings = data/post_earning.csv
+	
+all_data: $(scorecard) $(recent) $(new_NSLDS) $(post_earnings) #getting the rest of the data
+	unzip data/Crosswalks_20160908.zip -d ./data
+	
+data/new_NSLDS.csv:
+	curl -o data/new_NSLDS.csv "https://ed-public-download.apps.cloud.gov/downloads/Most-Recent-Cohorts-NSLDS-Elements.csv"
+	
+data/recent.csv:
+	curl -o data/recent.csv "https://ed-public-download.apps.cloud.gov/downloads/Most-Recent-Cohorts-All-Data-Elements.csv"
+	
+data/post_earning.csv:
+	curl -o data/post_earning.csv "https://ed-public-download.apps.cloud.gov/downloads/Most-Recent-Cohorts-Treasury-Elements.csv"
+	
+data/scorecard.csv:
+	curl -o data/scorecard.csv "https://ed-public-download.apps.cloud.gov/downloads/Most-Recent-Cohorts-Scorecard-Elements.csv"
 	
 
 

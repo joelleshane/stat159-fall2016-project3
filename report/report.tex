@@ -164,7 +164,7 @@ In order to determine which variables most affected unemployment rates we look a
 
 
 % latex table generated in R 3.3.2 by xtable 1.8-2 package
-% Mon Dec  5 15:14:06 2016
+% Mon Dec  5 17:55:29 2016
 \begin{table}[ht]
 \centering
 \begin{tabular}{rlr}
@@ -321,6 +321,32 @@ Estimate of the effect of spending on unemployment rate (high average faulty sal
 \end{knitrout}
 \maketitle
 \section{Conclusion}
-From hypothesis testing, we found public spending negatively effected unemployment rate; schools that recieved more funding provided lower quality educations. These results are difficult to justify, given how many confounding factors there could be in the data. After trying to control for school quality the effect was less negative but still significant. To try and find predictors of unemployment rate, which would allow educational institutions to improve unemployment rate independent of the public spending they received, we ran a few different regression models. When predictors of unemployment rate were manually selected for the regression models, the mean squared error was much larger than when predictor variables were selected through dimension reduction methods.
+
+From hypothesis testing, we found public spending negatively effected unemployment rate; schools that recieved more funding provided lower quality educations. These results are difficult to justify, given how many confounding factors there could be in the data. After trying to control for school quality the effect was less negative but still significant. To try and find predictors of unemployment rate, which would allow educational institutions to improve unemployment rate independent of the public spending they received, we ran a few different regression models. When predictors of unemployment rate were manually selected for the regression models, the mean squared error was much larger than when predictor variables were selected through dimension reduction methods. 
+
+\maketitle
+\section{Appendix}
+
+\subsection{Additional Information and thoughts about this project - Further reading}
+
+We originally wanted to include funding in our research model. 
+
+While we could not completely answer the research question, hopefully this project gave a better idea of how certain variables might contribute to the success of certain decisions. As students, we are concerned with how decisions are made about how to distribute resources towards bettering education. Since we were missing a lot of data and not able to compare over the years for change, we could not completely answer how to make the best decision to better educational success. 
+
+\subsection{Further Possibilities}
+Hopefully important decisions are made with data like this. We developed a project as a guide for further analysis. With more data and analysis, we would like to analyze the best predictor of how to actually tell what indicates the success of an institution. We went through some of the post graduation data by hand and thought unemployment is a good indicator, but probably not the best. We learned from our short models that hand selecting data does not produce the best results. A better predictor of an institution's success is probably a combinations of factors, not just one.
+
+Another further step would be more complicated algorithms. One idea we had was running a machine learning algorithm such as a neural net to try and classify the data into certain levels such as needs improvement all the way to highly successful institutions. Running this would tell help us classify new institutions as either successful or not as well as telling us what variables would make the university better. The idea behind this is maximum effect for the added effort. The reason this is superior to our linear models is it actually classifies the data. Instead of just predicting what the unemployment rate might be with a certain combination of variables, we would instead be able to classify and make judgements. 
+
+\subsection{Problems and shortcomings}
+Hand selecting data is not an ideal statistical approach, but we did it to see if we could predict about as accurately with only a limited number of variables. We hand selected these variables because we wanted to see if things we intuitively thought were relative would actually be useful predictors. Turns out there are hiding factors that contribute more to unemployment in institutions than we thought. Again, this indicates how important further testing should be done for better decision making. 
+
+After we hand selected what we thought were pertinent variables, we were disappointed to learn that many were mostly null in the year we selected, another shortcoming indicating how important data is to better results. 
+
+What is a key variable? Key variables defined as ones that we think may indicate a successful university in that they will have a low unemployment rate. These are things we care about and want to compare across schools. If we can say something like in state tuition has x weight it is more helpful than comparing one of the more specific variables
+
+We initially thought PCA would be helpful in grouping data into components so we could find a subset of the data that was more important to the data. Unfortunately, with this many variables, we were only able to put them all in one component making that plan pointless. 
+
+
 
 \end{document}
