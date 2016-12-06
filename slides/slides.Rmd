@@ -6,6 +6,7 @@ output:
       fig_height: 4
       fig_width: 4
       smaller : true
+      df_print: default
 ---
 
 ## Introduction 
@@ -122,24 +123,18 @@ Eleven variables thought to be significant were pulled in order to get more inte
 
 ## Modeling: Results
 
-```{r, echo = FALSE, xtable}
+```{r, echo = FALSE, include=FALSE}
 load("../data/lasso_short_model.RData")
 load("../data/ridge_short_model.Rdata")
 load("../data/pcr_short_model.RData")
-<<<<<<< HEAD
 
-library(xtable)
-library(Matrix)
-options(xtable.caption.placement = 'top', xtable.comment = FALSE)
-=======
 
 library(xtable)
 library(Matrix)
 options(xtable.caption.placement = 'top', xtable.comment = FALSE)
 ```
 
-```{r, echo=FALSE, xtable, results='asis', include = FALSE}
->>>>>>> 72aafb16b230596a028f56b32e2a6a63e97cd171
+```{r, echo=FALSE}
 
 Variables <- c("UNEMP_RATE", "INEXPFTE", "TUITIONFEE_IN", "AVGFACSAL", "C150_4", "C150_L4", "RET_FT4", "PELL_COMP_ORIG_YR2_RT", "PELL_COMP_ORIG_YR3_RT", "PELL_COMP_ORIG_YR4_RT", "CDR2")
 
@@ -151,13 +146,9 @@ PCR <- append(PCR, 0, 0)
 Coef.frame <- data.frame(Variables, Ridge, Lasso, PCR)
 
 Coef_table <- xtable(Coef.frame, caption="Information about Model Coefficients", digits = 3)
-print(Coef_table)
+print.data.frame(Coef.frame, type="latex")
 ```
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 72aafb16b230596a028f56b32e2a6a63e97cd171
 ## Modeling : Comparing Models
 
 ```{r, echo = FALSE, include = FALSE}
