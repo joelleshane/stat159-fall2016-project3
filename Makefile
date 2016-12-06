@@ -57,7 +57,8 @@ clean_data = data/test_data.csv
 data: data/ $(dataset) dataclean
 		
 data/dataset.zip:
-	mkdir data && curl -o data/dataset.zip "https://ed-public-download.apps.cloud.gov/downloads/CollegeScorecard_Raw_Data.zip"
+	-mkdir data
+	curl -o data/dataset.zip "https://ed-public-download.apps.cloud.gov/downloads/CollegeScorecard_Raw_Data.zip"
 	unzip data/dataset.zip -d ./data
 
 dataclean:
