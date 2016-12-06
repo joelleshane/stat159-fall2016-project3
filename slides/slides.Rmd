@@ -120,16 +120,26 @@ PCR is the dimension reduction modelling methods we used.  This method labors un
 
 Eleven variables thought to be significant were pulled in order to get more interpretable results with less betas. 
 
-## Modeling: Lasso -- Results
+## Modeling: Results
 
 ```{r, echo = FALSE, xtable}
 load("../data/lasso_short_model.RData")
 load("../data/ridge_short_model.Rdata")
 load("../data/pcr_short_model.RData")
+<<<<<<< HEAD
 
 library(xtable)
 library(Matrix)
 options(xtable.caption.placement = 'top', xtable.comment = FALSE)
+=======
+
+library(xtable)
+library(Matrix)
+options(xtable.caption.placement = 'top', xtable.comment = FALSE)
+```
+
+```{r, echo=FALSE, xtable, results='asis', include = FALSE}
+>>>>>>> 72aafb16b230596a028f56b32e2a6a63e97cd171
 
 Variables <- c("UNEMP_RATE", "INEXPFTE", "TUITIONFEE_IN", "AVGFACSAL", "C150_4", "C150_L4", "RET_FT4", "PELL_COMP_ORIG_YR2_RT", "PELL_COMP_ORIG_YR3_RT", "PELL_COMP_ORIG_YR4_RT", "CDR2")
 
@@ -144,6 +154,10 @@ Coef_table <- xtable(Coef.frame, caption="Information about Model Coefficients",
 print(Coef_table)
 ```
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 72aafb16b230596a028f56b32e2a6a63e97cd171
 ## Modeling : Comparing Models
 
 ```{r, echo = FALSE, include = FALSE}

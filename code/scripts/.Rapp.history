@@ -538,68 +538,6 @@ MSE_ridge#
 print("Coefficients for the model run on the full data set")#
 ridge_coef#
 sink()
-library("glmnet")#
-library("lars")#
-library("MASS")#
-#
-training_data <- read.csv(file = "../../data/training_data.csv")#
-training_data <- training_data[,-1]#
-#
-#formatting response and predictors #
-response <- training_data$LN_MEDIAN_HH_INC #Log of median income#
-response <- as.matrix(response)#
-predictors <- training_data[,-which(names(training_data) == "LN_MEDIAN_HH_INC")]  #everythning but median income#
-predictors <- as.matrix(predictors)#
-grid <- 10^seq(10, -2, length = 100)#
-set.seed(100)#
-cross_v <- cv.glmnet(x = predictors, y = response, intercept = FALSE, standardize = FALSE, lambda = grid, alpha = 0)#
-best_model_ridge <- coef(cross_v, cross_v$lambda.min)#
-ridge_model <- best_model_ridge#
-#saving coefficients of the model#
-save(best_model_ridge,ridge_model, file = "../../data/ridge_model.RData")#
-#Adding Histograms to Images#
-png('../../images/CV_Errors_Ridge.png')#
-plot(cross_v, main = "CV Errors Ridge")#
-dev.off()#
-test_set <- read.csv(file = "../../data/test_data.csv")#
-response = test_set$LN_MEDIAN_HH_INC#
-test_set <- test_set[,-1]#
-test_set <- test_set[,-which(names(training_data) == "LN_MEDIAN_HH_INC")] #
-test_predictors = as.matrix(test_set)#
-#
-test_ridge <- predict(cross_v, newx = test_predictors, s = "lambda.min", type="response")#
-save(test_ridge,file =  "../../data/testing_ridge.RData")#
-#
-source("../functions/mse_function.R")#
-MSE_ridge = MSE(test_ridge, response)#
-#
-save(MSE_ridge, file = "../../data/MSE_ridge.RData" )#
-#
-full_data <- read.csv(file = "../../data/scaled_data_2006.csv")#
-full_data <- full_data[,-1]#
-#
-response <- full_data$LN_MEDIAN_HH_INC #median income#
-response <- as.matrix(response)#
-predictors <- full_data[,-which(names(training_data) == "LN_MEDIAN_HH_INC")]  #everythning but median income#
-predictors <- as.matrix(predictors)#
-#
-#rerunning model on the full data set#
-full_ridge = glmnet(x = predictors, y = response, intercept = FALSE, standardize = FALSE, lambda = cross_v$lambda.min, alpha = 0)#
-#
-#getting coefficients and saving#
-ridge_coef <- coef(full_ridge)#
-save(ridge_coef, file = "../../data/full_coeffecients_ridge.RData")  #
-#
-#saving data from this model to a txt file#
-sink(file = "../../data/ridge_model.txt")#
-best_model_ridge#
-print("Coefficients for the Ridge Model")#
-best_model_ridge#
-print("MSE for the Ridge Model")#
-MSE_ridge#
-print("Coefficients for the model run on the full data set")#
-ridge_coef#
-sink()
 data_2006 <- read.csv("../../data/MERGED2005_06_PP.csv")#
 #
 for (i in 1:ncol(data_2006)) {#
@@ -1097,3 +1035,743 @@ test_short_data <- scaled_short_data_2006[-sample(nrow(scaled_short_data_2006), 
 test_short_data <- test_short_data[,-1]#
 #
 write.csv(test_short_data, file = "../../data/test_short_data.csv")
+data_2006 <- read.csv("../../data/MERGED2005_06_PP.csv")#
+#
+for (i in 1:ncol(data_2006)) {#
+  if (is.factor(data_2006[,i]) == TRUE) {#
+    data_2006[,i] <- as.numeric(levels(data_2006[,i]))[data_2006[,i]]#
+  }#
+}#
+#
+data_short_2006 <- data_2006[,c("UNEMP_RATE", "INEXPFTE", "TUITIONFEE_IN", "AVGFACSAL", "C150_4", "C150_L4", "RET_FT4", "PELL_COMP_ORIG_YR2_RT", "PELL_COMP_ORIG_YR3_RT", "PELL_COMP_ORIG_YR4_RT", "CDR2")]#
+#
+write.csv(data_short_2006, file = "../../data/data_short_2006.csv")#
+##### remove columns with less than 25% of data missing#
+#
+data_2006 <- data_2006[, colSums(is.na(data_2006)) <= .25 * nrow(data_2006)]#
+#
+data_2006 <- data_2006[,c(-1,-2,-3)]#
+#
+write.csv(data_2006, file = "../../data/data_2006.csv")#
+#
+##### scaling and mean centering data#
+#
+scaled_data_2006 <- scale(data_2006, center = TRUE, scale = TRUE)#
+scaled_data_2006 <- cbind( data_2006[, c(1,2)], scaled_data_2006[,c(-1,-2)])#
+#
+for(i in 1:ncol(scaled_data_2006)){#
+  scaled_data_2006[is.na(scaled_data_2006[,i]), i] <- median(scaled_data_2006[,i], na.rm = TRUE)#
+}#
+#
+scaled_data_2006 <- scaled_data_2006[, colSums(is.na(scaled_data_2006)) <= .5 * nrow(scaled_data_2006)]#
+#
+write.csv(scaled_data_2006, file = "../../data/scaled_data_2006.csv")#
+#
+##### scaling and mean centering short data#
+#
+scaled_short_data_2006 <- scale(data_short_2006, center = TRUE, scale = TRUE)#
+scaled_short_data_2006 <- cbind( data_short_2006[, c(1,2)], scaled_short_data_2006[,c(-1,-2)])#
+#
+for(i in 1:ncol(scaled_short_data_2006)){#
+  scaled_short_data_2006[is.na(scaled_short_data_2006[,i]), i] <- median(scaled_short_data_2006[,i], na.rm = TRUE)#
+}#
+#
+scaled_short_data_2006 <- scaled_short_data_2006[, colSums(is.na(scaled_short_data_2006)) <= .5 * nrow(scaled_short_data_2006)]#
+#
+write.csv(scaled_short_data_2006, file = "../../data/scaled_short_data_2006.csv")
+scaled_data_2006 <- read.csv("../../data/scaled_data_2006.csv")#
+#
+scaled_short_data_2006 <- read.csv("../../data/scaled_short_data_2006.csv")#
+#
+set.seed(1)#
+training_data <- scaled_data_2006[sample(nrow(scaled_data_2006), round(.75 * nrow(scaled_data_2006))),]#
+training_data <- training_data[,-1]#
+#
+write.csv(training_data, file = "../../data/training_data.csv")#
+#
+set.seed(1)#
+training_short_data <- scaled_short_data_2006[sample(nrow(scaled_short_data_2006), round(.75 * nrow(scaled_short_data_2006))),]#
+training_short_data <- training_short_data[,-1]#
+#
+write.csv(training_short_data, file = "../../data/training_short_data.csv")#
+#
+set.seed(1)#
+test_data <- scaled_data_2006[-sample(nrow(scaled_data_2006), round(.75 * nrow(scaled_data_2006))),]#
+test_data <- test_data[,-1]#
+#
+write.csv(test_data, file = "../../data/test_data.csv")#
+#
+set.seed(1)#
+test_short_data <- scaled_short_data_2006[-sample(nrow(scaled_short_data_2006), round(.75 * nrow(scaled_short_data_2006))),]#
+test_short_data <- test_short_data[,-1]#
+#
+write.csv(test_short_data, file = "../../data/test_short_data.csv")
+### Hypothesis Testing#
+#
+#### This files contains code to run hypothesis tests to see if different levels of funding have a significant impact on the quality of education.#
+#
+### Reading in the data#
+#
+data_2006 <- read.csv("../../data/data_2006.csv")#
+scaled <- read.csv("../../data/scaled_data_2006.csv")#
+test <- read.csv("../../data/test_data.csv")#
+train <- read.csv("../../data/training_data.csv")#
+#
+### Breaking the data into groups dependent on how much federal funding the school/students enrolled at the school received#
+#### Independent Variable :#
+#### Percent of undergraduates recieving federal financial aid#
+#
+lo <- data_2006$INC_PCT_LO#
+m1 <- data_2006$INC_PCT_M1#
+m2 <- data_2006$INC_PCT_M2#
+h1 <- data_2006$INC_PCT_H1#
+pct_fin <- lo + m1 + m2 + h1#
+#### Visualizing data to get a better idea of how to split it into groups#
+#
+data_2006 <- cbind(data_2006, pct_fin)#
+#
+png("../../images/percent_aided_students_hist.png")#
+hist(data_2006$pct_fin, breaks = 30, main = "Histogram of Financial Aid", xlab = "Percent of Students")#
+dev.off()#
+#
+mysum <- summary(pct_fin)#
+#
+save(mysum, file = "../../data/financial_aid_percentage.RData")#
+#
+#### Splitting the data by percentage of federal financial aid recieved by students#
+low <- subset(data_2006, pct_fin >= 0.6 & pct_fin < 0.91)#
+low_mid <- subset(data_2006, pct_fin >= 0.91 & pct_fin < 0.96)#
+mid_high <- subset(data_2006, pct_fin >= 0.96 & pct_fin < 0.984)#
+high <- subset(data_2006, pct_fin >= 0.984 & pct_fin < 1)#
+#
+save(low, low_mid, mid_high, high, file = "../../data/data_by_finaid.RData")#
+#### Response Variable:#
+#### Unemployment Rate - Number of students not working and not enrolled 6 years after entry (COUNT_NWNE_P6 - row 1894 / COUNT_WNE_P6 - row 1895)#
+#
+#### Getting rid of response variables that are non-numeric values and finding response variable#
+source("../functions/unemployment.R")#
+#
+unemp_low <- unemployment_six_years(low)#
+low_mean <- mean(unemp_low)#
+#
+unemp_low_mid <- unemployment_six_years(low_mid)#
+low_mid_mean <- mean(unemp_low_mid)#
+#
+unemp_mid_high <- unemployment_six_years(mid_high)#
+mid_high_mean <- mean(unemp_mid_high)#
+#
+unemp_high <- unemployment_six_years(high)#
+high_mean <- mean(unemp_high)#
+#
+png("../../images/unemployment.png")#
+barplot(c(low_mean, low_mid_mean, mid_high_mean, high_mean), col = c("#DB71C3", "#49A8BE", "#C8A9D1", "#D11D56"), main = "Unemployment Rate by Aid Percentage", xlab = "Percentage of Students who Recieved Financial Aid", ylab = "Unemployment Rate Six Years after Entry", names.arg = c("Low", "Low-Middle", "Middle-High", "High"), cex.names = 0.6)#
+dev.off()#
+### Null hypothesis says all funding groups should have the same preformance #
+### W(u) = (-.5, -.5, 0, .5, .5)#
+### 1/2(u1 + u2) = 1/2(u4 + u5)#
+#
+### Response variable will be unemployment rate, making estimate of effect of funding on unemployment rate#
+#
+estimate <- (.5*low_mean + .5*low_mid_mean) - (.5*mid_high_mean + .5*high_mean)#
+#### standard error = wi^2 * sum(var(mean of yi))#
+#### --> sigma^2 * sum(wi^2 / ni)#
+#
+#### wi = -.5 if i = 1 or 2#
+#### wi = .5 if i = 3, 4#
+#
+### Finding standard error of estimate#
+x <- c(unemp_low, unemp_low_mid, unemp_mid_high, unemp_high)#
+varx <- (var(x)) * (((.5^2)/length(unemp_low)) + #
+                    ((.5^2)/length(unemp_low_mid)) +#
+                     ((.5^2)/length(unemp_mid_high)) +#
+                     ((.5^2)/length(unemp_high))#
+                     )#
+save(estimate, x, varx, file = "../../data/hyp_results.RData")#
+#
+### Constructing confidence interval:#
+#
+sink("../../data/CI_hyptest_1.txt")#
+noquote(paste("high end :", estimate + (1.96 * sqrt(varx)), sep = " "))#
+noquote(paste("low end :", estimate - (1.96*sqrt(varx)), sep = " "))#
+sink()
+# Purpose of this file: Use PCA #
+# This helps with dimension reduction and reducing the risk of multicollinearity#
+#Begin Analysis on the training data#
+training_data <- read.csv("../../data/training_data.csv")#
+#unemployment rate, this is our first indicator of a successful college#
+set.seed (1000)#
+pca<- prcomp(training_data, center = TRUE, scale. = FALSE)#
+#
+#note that the first component contains all the variance pca this means all the variance in the data is explained in the first principal component#
+plot(pca, type = "l")#
+summary(pca)#
+#
+#All the data goes to the first component, no dimensionality reduction is useful #
+#for principal component regression#
+require(pls) #
+#
+set.seed (1000)#
+pcr_model <- pcr(UNEMP_RATE~., data = training_data, scale = TRUE, validation = "CV")#
+#
+ncomp_pcr <- which(pcr_model$validation$PRESS == min(pcr_model$validation$PRESS)) #selects components with best model#
+pcr_coef <- coef(pcr_model)#
+save(pcr_coef,pcr_model, file = "../../data/pcr_model.RData")#
+predplot(pcr_model)#
+coefplot(pcr_model)#
+#
+#Adding Histograms to Images#
+png('../../images/CV_Errors_pcr.png')#
+validationplot(pcr_model, val.type = "MSEP")#
+dev.off()#
+#Test Data#
+test_data <- read.csv("../../data/test_data.csv")#
+#
+#need to figure out how many components, look at validation plot#
+pcr_pred <- predict(pcr_model, test_data, ncomp = 90)#
+response <- test_data["UNEMP_RATE"]#
+response <- as.matrix(response)#
+#
+#error, test accuracy#
+source("../functions/mse_function.R")#
+MSE_pcr = MSE(pcr_pred, response)#
+save(MSE_pcr, file = "../../data/MSE_pcr.RData")#
+#saving  the important stuff#
+sink(file = "../../data/pcr_model.txt")#
+print("The PCR model")#
+pcr_coef#
+print("applied predictors")#
+pcr_pred#
+print("The PCR MSE")#
+MSE_pcr#
+sink()#
+######### SHORT VERSION ###########
+#
+#Begin Analysis on the short training data#
+training_short_data <- read.csv("../../data/training_short_data.csv")#
+training_short_data <- training_short_data[,-1]#
+#
+#for principal component regression#
+#
+set.seed (1000)#
+pcr_short_model <- pcr(UNEMP_RATE~., data = training_short_data, scale = TRUE, validation = "CV")#
+#
+ncomp_short_pcr <- which(pcr_short_model$validation$PRESS == min(pcr_short_model$validation$PRESS)) #selects components with best model#
+pcr_short_coef <- coef(pcr_short_model)#
+save(pcr_short_coef, pcr_short_model, file = "../../data/pcr_short_model.RData")#
+predplot(pcr_short_model)#
+coefplot(pcr_short_model)#
+#
+#Adding Histograms to Images#
+png('../../images/CV_Errors_pcr.png')#
+validationplot(pcr_short_model, val.type = "MSEP")#
+dev.off()#
+#Test Data#
+test_short_data <- read.csv("../../data/test_short_data.csv")#
+test_short_data <- test_short_data[,-1]#
+#
+#need to figure out how many components, look at validation plot#
+pcr_short_pred <- predict(pcr_short_model, test_short_data, ncomp = length(pcr_short_coef))#
+response_short <- test_short_data["UNEMP_RATE"]#
+#
+response_short <- as.matrix(response_short)#
+#
+#error, test accuracy#
+source("../functions/mse_function.R")#
+MSE_short_pcr = MSE(pcr_short_pred, response_short)#
+save(MSE_short_pcr, file = "../../data/MSE_short_pcr.RData")#
+#saving  the important stuff#
+sink(file = "../../data/pcr_short_model.txt")#
+print("The PCR model")#
+pcr_short_coef#
+print("applied predictors")#
+pcr_short_pred#
+print("The PCR MSE")#
+MSE_short_pcr#
+sink()
+#Beggining Lasso Regression#
+#
+library("glmnet")#
+library("lars")#
+#
+training_data <- read.csv("../../data/training_data.csv")#
+training_data <- training_data[,-1]#
+#
+#Getting response and predictors#
+response <- training_data$UNEMP_RATE#
+response <- as.matrix(response)#
+predictors <- training_data[,-which(names(training_data) == "UNEMP_RATE")]#
+predictors <- as.matrix(predictors)#
+#
+grid <- 10^seq(10, -2, length = 100)#
+#
+set.seed(1)#
+lasso_model <- cv.glmnet(predictors, response, lambda = grid, alpha = 1, intercept = FALSE, standardize = FALSE)#
+lasso_coef <- coef(lasso_model, lasso_model$lambda.min)#
+#
+save(lasso_coef,lasso_model, file = "../../data/lasso_model.RData")#
+#
+png("../../images/CV_errors_lasso.png")#
+plot(lasso_model, main = "CV Errors Lasso")#
+dev.off()#
+#
+test_data <- read.csv("../../data/test_data.csv")#
+test_data <- test_data[,-1]#
+test_predictors <- test_data[,-which(names(training_data) == "UNEMP_RATE")]#
+test_predictors <- as.matrix(test_predictors)#
+test_response <- test_data$UNEMP_RATE#
+#
+predicted_response <- predict(lasso_model, newx=test_predictors, s = "lambda.min", type = "response")#
+predicted_response <- as.vector(predicted_response)#
+#
+source("../functions/mse_function.R")#
+MSE_lasso <- MSE(predicted_response, test_response)#
+save(MSE_lasso, file = "../../data/MSE_lasso.RData")#
+scaled_data_2006 <- read.csv("../../data/scaled_data_2006.csv")#
+scaled_data_2006 <- scaled_data_2006[,-1]#
+total_response <- scaled_data_2006$UNEMP_RATE#
+total_response <- as.matrix(total_response)#
+total_predictors <- scaled_data_2006[,-which(names(training_data) == "UNEMP_RATE")]#
+total_predictors <- as.matrix(total_predictors)#
+full_lasso <- glmnet(total_predictors, total_response, lambda = lasso_model$lambda.min, alpha = 1, intercept = FALSE, standardize = FALSE)#
+full_coefficients <- coef(full_lasso)#
+#
+save(full_coefficients, file = "../../data/full_coefficients_lasso.RData")#
+sink("../../data/lasso_model.txt")#
+print("model coefficients")#
+lasso_coef#
+print("prediction mse")#
+MSE_lasso#
+print("full model coefficients")#
+full_coefficients#
+sink()#
+########## Short Version ########## #
+training_short_data <- read.csv("../../data/training_short_data.csv")#
+training_short_data <- training_short_data[,-1]#
+#
+#Getting response and predictors#
+response_short <- training_short_data$UNEMP_RATE#
+response_short <- as.matrix(response)#
+predictors_short <- training_short_data[,-which(names(training_short_data) == "UNEMP_RATE")]#
+predictors_short <- as.matrix(predictors_short)#
+#
+grid <- 10^seq(10, -2, length = 100)#
+#
+set.seed(1)#
+lasso_short_model <- cv.glmnet(predictors_short, response_short, lambda = grid, alpha = 1, intercept = FALSE, standardize = FALSE)#
+lasso_short_coef <- coef(lasso_short_model, lasso_short_model$lambda.min)#
+#
+save(lasso_short_coef,lasso_short_model, file = "../../data/lasso_short_model.RData")#
+#
+png("../../images/CV_errors_lasso.png")#
+plot(lasso_short_model, main = "CV Short Errors Lasso")#
+dev.off()#
+#
+test_short_data <- read.csv("../../data/test_short_data.csv")#
+test_short_data <- test_short_data[,-1]#
+test_short_predictors <- test_short_data[,-which(names(training_short_data) == "UNEMP_RATE")]#
+test_short_predictors <- as.matrix(test_short_predictors)#
+test_short_response <- test_short_data$UNEMP_RATE#
+#
+predicted_short_response <- predict(lasso_short_model, newx=test_short_predictors, s = "lambda.min", type = "response")#
+predicted_short_response <- as.vector(predicted_short_response)#
+#
+source("../functions/mse_function.R")#
+MSE_short_lasso <- MSE(predicted_short_response, test_short_response)#
+save(MSE_short_lasso, file = "../../data/MSE_short_lasso.RData")#
+scaled_short_data_2006 <- read.csv("../../data/scaled_short_data_2006.csv")#
+scaled_short_data_2006 <- scaled_short_data_2006[,-1]#
+total_short_response <- scaled_short_data_2006$UNEMP_RATE#
+total_short_response <- as.matrix(total_short_response)#
+total_short_predictors <- scaled_short_data_2006[,-which(names(training_short_data) == "UNEMP_RATE")]#
+total_short_predictors <- as.matrix(total_short_predictors)#
+full_short_lasso <- glmnet(total_short_predictors, total_short_response, lambda = lasso_short_model$lambda.min, alpha = 1, intercept = FALSE, standardize = FALSE)#
+full_short_coefficients <- coef(full_lasso)#
+#
+save(full_short_coefficients, file = "../../data/full_short_coefficients_lasso.RData")#
+sink("../../data/lasso_short_model.txt")#
+print("model coefficients")#
+lasso_short_coef#
+print("prediction mse")#
+MSE_short_lasso#
+print("full model coefficients")#
+full_short_coefficients#
+sink()
+library("glmnet")#
+library("lars")#
+library("MASS")#
+#
+training_data <- read.csv(file = "../../data/training_data.csv")#
+training_data <- training_data[,-1]#
+#
+#formatting response and predictors #
+response <- training_data$UNEMP_RATE #Log of median income#
+response <- as.matrix(response)#
+predictors <- training_data[,-which(names(training_data) == "UNEMP_RATE")]  #everythning but median income#
+predictors <- as.matrix(predictors)#
+grid <- 10^seq(10, -2, length = 100)#
+set.seed(100)#
+ridge_model <- cv.glmnet(x = predictors, y = response, intercept = FALSE, standardize = FALSE, lambda = grid, alpha = 0)#
+ridge_coef <- coef(ridge_model, ridge_model$lambda.min)#
+#
+#saving coefficients of the model#
+save(ridge_coef, ridge_model, file = "../../data/ridge_model.RData")#
+#Adding Histograms to Images#
+png('../../images/CV_Errors_Ridge.png')#
+plot(ridge_model, main = "CV Errors Ridge")#
+dev.off()#
+test_set <- read.csv(file = "../../data/test_data.csv")#
+response = test_set$UNEMP_RATE#
+test_set <- test_set[,-1]#
+test_set <- test_set[,-which(names(training_data) == "UNEMP_RATE")] #
+test_predictors = as.matrix(test_set)#
+#
+test_ridge <- predict(ridge_model, newx = test_predictors, s = "lambda.min", type="response")#
+save(test_ridge,file =  "../../data/testing_ridge.RData")#
+#
+source("../functions/mse_function.R")#
+MSE_ridge = MSE(test_ridge, response)#
+#
+save(MSE_ridge, file = "../../data/MSE_ridge.RData" )#
+#
+full_data <- read.csv(file = "../../data/scaled_data_2006.csv")#
+full_data <- full_data[,-1]#
+#
+response <- full_data$UNEMP_RATE #median income#
+response <- as.matrix(response)#
+predictors <- full_data[,-which(names(training_data) == "UNEMP_RATE")]  #everythning but median income#
+predictors <- as.matrix(predictors)#
+#
+#rerunning model on the full data set#
+full_ridge = glmnet(x = predictors, y = response, intercept = FALSE, standardize = FALSE, lambda = ridge_model$lambda.min, alpha = 0)#
+#
+#getting coefficients and saving#
+full_ridge_coef <- coef(full_ridge)#
+save(full_ridge_coef, file = "../../data/full_coeffecients_ridge.RData")  #
+#
+#saving data from this model to a txt file#
+sink(file = "../../data/ridge_model.txt")#
+print("Coefficients for the Ridge Model")#
+ridge_coef#
+print("MSE for the Ridge Model")#
+MSE_ridge#
+print("Coefficients for the model run on the full data set")#
+full_ridge_coef#
+sink()#
+########## Short Ridge ########## #
+training_short_data <- read.csv(file = "../../data/training_short_data.csv")#
+training_short_data <- training_short_data[,-1]#
+#
+#formatting response and predictors #
+response_short <- training_short_data$UNEMP_RATE #Log of median income#
+response_short <- as.matrix(response_short)#
+predictors_short <- training_short_data[,-which(names(training_short_data) == "UNEMP_RATE")]  #everythning but median income#
+predictors_short <- as.matrix(predictors_short)#
+grid <- 10^seq(10, -2, length = 100)#
+set.seed(100)#
+ridge_short_model <- cv.glmnet(x = predictors_short, y = response_short, intercept = FALSE, standardize = FALSE, lambda = grid, alpha = 0)#
+ridge_short_coef <- coef(ridge_short_model, ridge_short_model$lambda.min)#
+#
+#saving coefficients of the model#
+save(ridge_short_coef, ridge_short_model, file = "../../data/ridge_short_model.RData")#
+#Adding Histograms to Images#
+png('../../images/CV_Errors_short_Ridge.png')#
+plot(ridge_short_model, main = "CV Errors Ridge")#
+dev.off()#
+test_short_data <- read.csv(file = "../../data/test_short_data.csv")#
+response_short = test_short_data$UNEMP_RATE#
+test_short_data <- test_short_data[,-1]#
+test_short_data <- test_short_data[,-which(names(training_short_data) == "UNEMP_RATE")] #
+test_short_predictors = as.matrix(test_short_data)#
+#
+test_short_ridge <- predict(ridge_short_model, newx = test_short_predictors, s = "lambda.min", type="response")#
+save(test_short_ridge,file =  "../../data/testing_short_ridge.RData")#
+#
+source("../functions/mse_function.R")#
+MSE_short_ridge = MSE(test_short_ridge, response_short)#
+#
+save(MSE_short_ridge, file = "../../data/MSE_short_ridge.RData" )#
+#
+full_short_data <- read.csv(file = "../../data/scaled_short_data_2006.csv")#
+full_short_data <- full_short_data[,-1]#
+#
+response_short <- full_short_data$UNEMP_RATE #median income#
+response_short <- as.matrix(response_short)#
+predictors_short <- full_short_data[,-which(names(full_short_data) == "UNEMP_RATE")]  #everythning but median income#
+predictors_short <- as.matrix(predictors_short)#
+#
+#rerunning model on the full data set#
+full_short_ridge = glmnet(x = predictors_short, y = response_short, intercept = FALSE, standardize = FALSE, lambda = ridge_short_model$lambda.min, alpha = 0)#
+#
+#getting coefficients and saving#
+full_short_ridge_coef <- coef(full_short_ridge)#
+save(full_short_ridge_coef, file = "../../data/full_short_coeffecients_ridge.RData")  #
+#
+#saving data from this model to a txt file#
+sink(file = "../../data/ridge_short_model.txt")#
+print("Coefficients for the Ridge Model")#
+ridge_short_coef#
+print("MSE for the Ridge Model")#
+MSE_short_ridge#
+print("Coefficients for the model run on the full data set")#
+full_short_ridge_coef#
+sink()
+#### This file contains a revised hypothesis test that controls for some potentially confounding factors in the first hypothesis test#
+#
+### Reading in the data#
+#
+data_2006 <- read.csv("../../data/data_2006.csv")#
+load("../../data/data_by_finaid.RData")#
+#
+#### Visualizing data to get a better idea of how to split it into groups#
+#
+data_2006$AVGFACSAL <- as.numeric(as.character(data_2006$AVGFACSAL))#
+data_2006 <- subset(data_2006, data_2006$AVGFACSAL != TRUE)#
+#
+png("../../images/fac_sal_hist.png")#
+hist(as.numeric(data_2006$AVGFACSAL), breaks = 50, main = "Histogram of Faculty Salary", xlab = "Monthly Faculty Salary")#
+dev.off()#
+#
+a <- summary(data_2006$AVGFACSAL)#
+save(a, file = "../../data/faculty_salaries.RData")#
+#
+### Grouping by average faculty salary#
+#
+mid <- rbind(low_mid, mid_high)#
+#
+LFLS <- subset(low, low$AVGFACSAL < 4500)#
+MFLS <- subset(mid, mid$AVGFACSAL < 4500)#
+HFLS <- subset(high, high$AVGFACSAL < 4500)#
+#
+length(LFLS[[1]])#
+length(MFLS[[1]])#
+length(HFLS[[1]])#
+#
+LFMS <- subset(low, low$AVGFACSAL >= 4500 & low$AVGFACSAL < 6000)#
+MFMS <- subset(mid, mid$AVGFACSAL >= 4500 & mid$AVGFACSAL < 6000)#
+HFMS <- subset(high, high$AVGFACSAL >= 4500 & high$AVGFACSAL < 6000)#
+#
+length(LFMS[[1]])#
+length(MFMS[[1]])#
+length(HFMS[[1]])#
+#
+LFHS <- subset(low, low$AVGFACSAL >= 6000)#
+MFHS <- subset(mid, mid$AVGFACSAL >= 6000)#
+HFHS <- subset(high, high$AVGFACSAL >= 6000)#
+#
+length(LFHS[[1]])#
+length(MFHS[[1]])#
+length(HFHS[[1]])#
+#### Response Variable:#
+#### Unemployment Rate - Number of students not working and not enrolled 6 years after entry (COUNT_NWNE_P6 - row 1894 / COUNT_WNE_P6 - row 1895)#
+#
+#### Getting rid of response variables that are non-numeric values and finding response variable#
+#
+```#
+for (i in (c(low, low_mid, mid_high, high))){#
+noquote(paste("unemp", i, sep = ""))  <- unemployment_six_years(i)#
+}#
+```#
+#
+source("../functions/unemployment.R")#
+#
+#Within Low Faculty Salary -- comparing different funding levels and unemployment rates#
+#
+unemp_LFLS <- unemployment_six_years(LFLS)#
+LFLS_mean <- mean(unemp_LFLS)#
+#
+unemp_MFLS <- unemployment_six_years(MFLS)#
+MFLS_mean <- mean(unemp_MFLS)#
+#
+unemp_HFLS <- unemployment_six_years(HFLS)#
+HFLS_mean <- mean(unemp_HFLS)#
+#
+barplot(c(LFLS_mean, MFLS_mean, HFLS_mean))#
+#
+#Within Medium Faculty Salary -- comparing different funding levels and unemployment rates#
+#
+unemp_LFMS <- unemployment_six_years(LFMS)#
+LFMS_mean <- mean(unemp_LFMS)#
+#
+unemp_MFMS <- unemployment_six_years(MFMS)#
+MFMS_mean <- mean(unemp_MFMS)#
+#
+unemp_HFMS <- unemployment_six_years(HFMS)#
+HFMS_mean <- mean(unemp_HFMS)#
+#
+barplot(c(LFMS_mean, MFMS_mean, HFMS_mean))#
+#
+#Within High Faculty Salary -- comparing different funding levels and unemployment rates#
+#
+unemp_LFHS <- unemployment_six_years(LFHS)#
+LFHS_mean <- mean(unemp_LFHS)#
+#
+unemp_MFHS <- unemployment_six_years(MFHS)#
+MFHS_mean <- mean(unemp_MFHS)#
+#
+unemp_HFHS <- unemployment_six_years(HFHS)#
+HFHS_mean <- mean(unemp_HFHS)#
+#
+LS <- c(LFLS_mean, MFLS_mean, HFLS_mean)#
+MS <- c(LFMS_mean, MFMS_mean, HFMS_mean)#
+HS <- c(LFHS_mean, MFHS_mean, HFHS_mean)#
+counts <- matrix(c(LS, MS, HS), nrow = 3, ncol = 3)#
+#
+png("../../images/funding.png")#
+barplot(height = counts, col = c("darkblue", "red", "purple"), beside = TRUE, main = "Bar Plot of Unemployment Rate", names.arg = c("Low", "Medium", "High"), xlab = "Average Faculty Salary", ylab = "Unemployment Rate", ylim = c(0, 0.18))#
+legend("topright", legend = c("Low Funding", "Medium Funding", "High Funding"), fill = c("darkblue", "red", "purple"), cex = 0.5)#
+dev.off()#
+png("../../images/unemployment.png")#
+barplot(c(low_mean, low_mid_mean, mid_high_mean, high_mean), col = c("#DB71C3", "#49A8BE", "#C8A9D1", "#D11D56"), main = "Unemployment Rate by Aid Percentage", xlab = "Percentage of Students who Recieved Financial Aid", ylab = "Unemployment Rate Six Years after Entry", names.arg = c("Low", "Low-Middle", "Middle-High", "High"), cex.names = 0.6)#
+dev.off()#
+### Response variable will be unemployment rate, making estimate of effect of funding on unemployment rate#
+### 1/2(u1 + u2) = u3#
+#
+estimate_LS <- (.5*LFLS_mean + .5*MFLS_mean) - HFLS_mean#
+#
+estimate_MS <- (.5*LFMS_mean  + .5*MFMS_mean) - HFMS_mean#
+#
+estimate_HS <- (.5*LFHS_mean + .5*MFHS_mean) - HFHS_mean#
+#### standard error = wi^2 * sum(var(mean of yi))#
+#### --> sigma^2 * sum(wi^2 / ni)#
+#
+#### wi = -.5 if i = 1 or 2#
+#### wi = 1 if i = 3#
+#
+### Finding standard error of estimate#
+x_LS <- c(unemp_LFLS, unemp_MFLS, unemp_HFLS)#
+varx_LS <- var(x_LS) * (((.5^2)/length(unemp_LFLS)) +#
+                      ((.5^2)/length(unemp_MFLS)) +#
+                          (1/length(unemp_HFLS)))#
+x_MS <- c(unemp_LFMS, unemp_MFMS, unemp_HFMS)#
+varx_MS <- var(x_MS) * (((.5^2)/length(unemp_LFMS)) + #
+                    ((.5^2)/length(unemp_MFMS)) +#
+                     (1/length(unemp_HFMS)))#
+x_HS <- c(unemp_LFHS, unemp_MFHS, unemp_HFHS)#
+varx_HS <- (var(x_HS)) * (((.5^2)/length(unemp_LFHS)) + #
+                    ((.5^2)/length(unemp_MFHS)) +#
+                     (1/length(unemp_HFHS)))#
+#
+### Constructing confidence interval:#
+#
+sink("../../data/CI_hyptest_revised.txt")#
+paste("Low Faculty Salary Estimate of Funding Effect")#
+noquote(paste("high end :", estimate_LS + (1.96 * sqrt(varx_LS)), sep = " "))#
+noquote(paste("low end :", estimate_LS - (1.96*sqrt(varx_LS)), sep = " "))#
+paste("Medium Faculty Salary Estimate of Funding Effect")#
+noquote(paste("high end :", estimate_MS + (1.96 * sqrt(varx_MS)), sep = " "))#
+noquote(paste("low end :", estimate_MS - (1.96*sqrt(varx_MS)), sep = " "))#
+paste("High Faculty Salary Estimate of Funding Effect")#
+noquote(paste("high end :", estimate_HS + (1.96 * sqrt(varx_HS)), sep = " "))#
+noquote(paste("low end :", estimate_HS - (1.96*sqrt(varx_HS)), sep = " "))#
+sink()
+data_2006 <- read.csv("../../data/MERGED2005_06_PP.csv")
+for (i in 1:ncol(data_2006)) {#
+  if (is.factor(data_2006[,i]) == TRUE) {#
+    data_2006[,i] <- as.numeric(levels(data_2006[,i]))[data_2006[,i]]#
+  }#
+}
+load('../../data/ridge_model.RData')#
+#
+ridge_coefficient <- as.data.frame.matrix(ridge_coef)#
+ridge_coefficient$'Predictors' <- row.names(ridge_coefficient)#
+ridge_coefficient <- ridge_coefficient[order(abs(ridge_coefficient[,1]), decreasing = TRUE),]#
+ridge_coefficient <- ridge_coefficient[1:5,]#
+#
+Coefficient <- ridge_coefficient$`1`#
+Coefficient <- as.vector(Coefficient)#
+Predictor <- ridge_coefficient$Predictors#
+Predictor <- as.vector(Predictor)#
+coefficient_table <- data.frame(Predictor, Coefficient)#
+#
+Coefficient_table <- xtable(coefficient_table, caption="Information about top 5  Ridge Model Coefficients")#
+print(Coefficient_table, type="latex")
+data_2006 <- read.csv("../../data/data_2006.csv")
+load("../../data/data_by_finaid.RData")
+data_2006$AVGFACSAL <- as.numeric(as.character(data_2006$AVGFACSAL))
+data_2006 <- subset(data_2006, data_2006$AVGFACSAL != TRUE)
+png("../../images/fac_sal_hist.png")
+png("../../images/fac_sal_hist.png")#
+hist(as.numeric(data_2006$AVGFACSAL), breaks = 50, main = "Histogram of Faculty Salary", xlab = "Monthly Faculty Salary")#
+dev.off()
+a <- summary(data_2006$AVGFACSAL)
+save(a, file = "../../data/faculty_salaries.RData")
+mid <- rbind(low_mid, mid_high)
+LFLS <- subset(low, low$AVGFACSAL < 4500)
+MFLS <- subset(mid, mid$AVGFACSAL < 4500)
+HFLS <- subset(high, high$AVGFACSAL < 4500)
+length(LFLS[[1]])#
+length(MFLS[[1]])#
+length(HFLS[[1]])
+LFMS <- subset(low, low$AVGFACSAL >= 4500 & low$AVGFACSAL < 6000)#
+MFMS <- subset(mid, mid$AVGFACSAL >= 4500 & mid$AVGFACSAL < 6000)#
+HFMS <- subset(high, high$AVGFACSAL >= 4500 & high$AVGFACSAL < 6000)
+length(LFMS[[1]])#
+length(MFMS[[1]])#
+length(HFMS[[1]])
+LFHS <- subset(low, low$AVGFACSAL >= 6000)#
+MFHS <- subset(mid, mid$AVGFACSAL >= 6000)#
+HFHS <- subset(high, high$AVGFACSAL >= 6000)
+length(LFHS[[1]])#
+length(MFHS[[1]])#
+length(HFHS[[1]])
+source("../functions/unemployment.R")
+unemp_LFLS <- unemployment_six_years(LFLS)#
+LFLS_mean <- mean(unemp_LFLS)
+unemp_MFLS <- unemployment_six_years(MFLS)#
+MFLS_mean <- mean(unemp_MFLS)
+unemp_HFLS <- unemployment_six_years(HFLS)#
+HFLS_mean <- mean(unemp_HFLS)
+barplot(c(LFLS_mean, MFLS_mean, HFLS_mean))
+unemp_LFMS <- unemployment_six_years(LFMS)#
+LFMS_mean <- mean(unemp_LFMS)
+unemp_MFMS <- unemployment_six_years(MFMS)#
+MFMS_mean <- mean(unemp_MFMS)
+unemp_HFMS <- unemployment_six_years(HFMS)#
+HFMS_mean <- mean(unemp_HFMS)
+unemp_LFHS <- unemployment_six_years(LFHS)
+LFHS_mean <- mean(unemp_LFHS)
+unemp_MFHS <- unemployment_six_years(MFHS)#
+MFHS_mean <- mean(unemp_MFHS)
+unemp_HFHS <- unemployment_six_years(HFHS)#
+HFHS_mean <- mean(unemp_HFHS)
+LS <- c(LFLS_mean, MFLS_mean, HFLS_mean)#
+MS <- c(LFMS_mean, MFMS_mean, HFMS_mean)#
+HS <- c(LFHS_mean, MFHS_mean, HFHS_mean)#
+counts <- matrix(c(LS, MS, HS), nrow = 3, ncol = 3)
+png("../../images/funding.png")#
+barplot(height = counts, col = c("darkblue", "red", "purple"), beside = TRUE, main = "Bar Plot of Unemployment Rate", names.arg = c("Low", "Medium", "High"), xlab = "Average Faculty Salary", ylab = "Unemployment Rate", ylim = c(0, 0.18))#
+legend("topright", legend = c("Low Funding", "Medium Funding", "High Funding"), fill = c("darkblue", "red", "purple"), cex = 0.5)#
+dev.off(
+)
+png("../../images/unemployment.png")#
+barplot(c(low_mean, low_mid_mean, mid_high_mean, high_mean), col = c("#DB71C3", "#49A8BE", "#C8A9D1", "#D11D56"), main = "Unemployment Rate by Aid Percentage", xlab = "Percentage of Students who Recieved Financial Aid", ylab = "Unemployment Rate Six Years after Entry", names.arg = c("Low", "Low-Middle", "Middle-High", "High"), cex.names = 0.6)#
+dev.off()
+estimate_LS <- (.5*LFLS_mean + .5*MFLS_mean) - HFLS_mean#
+#
+estimate_MS <- (.5*LFMS_mean  + .5*MFMS_mean) - HFMS_mean#
+#
+estimate_HS <- (.5*LFHS_mean + .5*MFHS_mean) - HFHS_mean
+x_LS <- c(unemp_LFLS, unemp_MFLS, unemp_HFLS)#
+varx_LS <- var(x_LS) * (((.5^2)/length(unemp_LFLS)) +#
+                      ((.5^2)/length(unemp_MFLS)) +#
+                          (1/length(unemp_HFLS)))
+x_MS <- c(unemp_LFMS, unemp_MFMS, unemp_HFMS)#
+varx_MS <- var(x_MS) * (((.5^2)/length(unemp_LFMS)) + #
+                    ((.5^2)/length(unemp_MFMS)) +#
+                     (1/length(unemp_HFMS)))#
+x_HS <- c(unemp_LFHS, unemp_MFHS, unemp_HFHS)#
+varx_HS <- (var(x_HS)) * (((.5^2)/length(unemp_LFHS)) + #
+                    ((.5^2)/length(unemp_MFHS)) +#
+                     (1/length(unemp_HFHS)))
+save(estimate_LS, estimate_MS, estimate_HS, varx_LS, varx_MS, varx_HS, file = "../../data/rev_hyp_results.RData")
+sink("../../data/CI_hyptest_revised.txt")#
+paste("Low Faculty Salary Estimate of Funding Effect")#
+noquote(paste("high end :", estimate_LS + (1.96 * sqrt(varx_LS)), sep = " "))#
+noquote(paste("low end :", estimate_LS - (1.96*sqrt(varx_LS)), sep = " "))#
+paste("Medium Faculty Salary Estimate of Funding Effect")#
+noquote(paste("high end :", estimate_MS + (1.96 * sqrt(varx_MS)), sep = " "))#
+noquote(paste("low end :", estimate_MS - (1.96*sqrt(varx_MS)), sep = " "))#
+paste("High Faculty Salary Estimate of Funding Effect")#
+noquote(paste("high end :", estimate_HS + (1.96 * sqrt(varx_HS)), sep = " "))#
+noquote(paste("low end :", estimate_HS - (1.96*sqrt(varx_HS)), sep = " "))#
+sink()
