@@ -33,3 +33,76 @@ Other packages we used
 glmnet, lars, MASS, pls, reshape2, Matrix
 R Version
 ---------
+Session Information
+
+R version 3.3.2 (2016-10-31)
+Platform: x86_64-apple-darwin16.1.0 (64-bit)
+Running under: macOS Sierra 10.12.1
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  base     
+
+other attached packages:
+ [1] testthat_1.0.2  reshape2_1.4.2  pls_2.5-0       MASS_7.3-45    
+ [5] lars_1.2        glmnet_2.0-5    foreach_1.4.3   Matrix_1.2-7.1 
+ [9] ggplot2_2.2.0   xtable_1.8-2    rmarkdown_1.2   knitr_1.15.1   
+[13] devtools_1.12.0
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_0.12.8      magrittr_1.5     munsell_0.4.3    colorspace_1.3-1
+ [5] lattice_0.20-34  R6_2.2.0         stringr_1.1.0    plyr_1.8.4      
+ [9] tools_3.3.2      grid_3.3.2       gtable_0.2.0     withr_1.0.2     
+[13] iterators_1.0.8  htmltools_0.3.5  lazyeval_0.2.0   rprojroot_1.1   
+[17] digest_0.6.10    assertthat_0.1   tibble_1.2       crayon_1.3.2    
+[21] codetools_0.2-15 memoise_1.0.0    evaluate_0.10    stringi_1.1.2   
+[25] methods_3.3.2    scales_0.4.1     backports_1.0.4 
+ setting  value                       
+ version  R version 3.3.2 (2016-10-31)
+ system   x86_64, darwin16.1.0        
+ ui       unknown                     
+ language (EN)                        
+ collate  en_US.UTF-8                 
+ tz       America/Los_Angeles         
+ date     2016-12-05                  
+
+ package    * version date       source        
+ assertthat   0.1     2013-12-06 CRAN (R 3.3.2)
+ backports    1.0.4   2016-10-24 CRAN (R 3.3.2)
+ codetools    0.2-15  2016-10-05 CRAN (R 3.3.2)
+ colorspace   1.3-1   2016-11-18 CRAN (R 3.3.2)
+ crayon       1.3.2   2016-06-28 CRAN (R 3.3.2)
+ devtools   * 1.12.0  2016-12-05 CRAN (R 3.3.2)
+ digest       0.6.10  2016-08-02 CRAN (R 3.3.2)
+ evaluate     0.10    2016-10-11 CRAN (R 3.3.2)
+ foreach    * 1.4.3   2015-10-13 CRAN (R 3.3.2)
+ ggplot2    * 2.2.0   2016-11-11 CRAN (R 3.3.2)
+ glmnet     * 2.0-5   2016-03-17 CRAN (R 3.3.2)
+ gtable       0.2.0   2016-02-26 CRAN (R 3.3.2)
+ htmltools    0.3.5   2016-03-21 CRAN (R 3.3.2)
+ iterators    1.0.8   2015-10-13 CRAN (R 3.3.2)
+ knitr      * 1.15.1  2016-11-22 CRAN (R 3.3.2)
+ lars       * 1.2     2013-04-24 CRAN (R 3.3.2)
+ lattice      0.20-34 2016-09-06 CRAN (R 3.3.2)
+ lazyeval     0.2.0   2016-06-12 CRAN (R 3.3.2)
+ magrittr     1.5     2014-11-22 CRAN (R 3.3.2)
+ MASS       * 7.3-45  2016-04-21 CRAN (R 3.3.2)
+ Matrix     * 1.2-7.1 2016-09-01 CRAN (R 3.3.2)
+ memoise      1.0.0   2016-01-29 CRAN (R 3.3.2)
+ munsell      0.4.3   2016-02-13 CRAN (R 3.3.2)
+ pls        * 2.5-0   2015-08-22 CRAN (R 3.3.2)
+ plyr         1.8.4   2016-06-08 CRAN (R 3.3.2)
+ R6           2.2.0   2016-10-05 CRAN (R 3.3.2)
+ Rcpp         0.12.8  2016-11-17 CRAN (R 3.3.2)
+ reshape2   * 1.4.2   2016-10-22 CRAN (R 3.3.2)
+ rmarkdown  * 1.2     2016-11-21 CRAN (R 3.3.2)
+ rprojroot    1.1     2016-10-29 CRAN (R 3.3.2)
+ scales       0.4.1   2016-11-09 CRAN (R 3.3.2)
+ stringi      1.1.2   2016-10-01 CRAN (R 3.3.2)
+ stringr      1.1.0   2016-08-19 CRAN (R 3.3.2)
+ testthat   * 1.0.2   2016-04-23 CRAN (R 3.3.2)
+ tibble       1.2     2016-08-26 CRAN (R 3.3.2)
+ withr        1.0.2   2016-06-20 CRAN (R 3.3.2)
+ xtable     * 1.8-2   2016-02-05 CRAN (R 3.3.2)
